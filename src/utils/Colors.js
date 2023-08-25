@@ -1,0 +1,16 @@
+export const Colors = {
+  Main: '#0183C1',
+  White: '#fff',
+  Black: '#000',
+  placeholderTextColor: '#E3E4E7',
+  Green: '#0F9804',
+  Grey: '#919191',
+  Yellow: '#FFB800',
+  ThemeRed: '#820000',
+  Danger: '#990000',
+  Ash: '#141824',
+  AshGrey: '#242424',
+  Non: 'transparent',
+  border: '#E4E5E7',
+  ThemeBlue: '#232A3E',
+};
