@@ -1,24 +1,40 @@
-export const ManageData = [
-  {title: 'Upload', id: 1},
-  {title: 'Video', id: 2},
+
+export const MapRadious = [
+  { id: '1', name: 'one' },
+  { id: '2', name: 'two' },
+  { id: '3', name: 'three' },
+  { id: '4', name: 'four' },
 ];
 
-export const LikeData = [
-  {name: 'Upload', id: 1},
-  {title: 'Video', id: 2},
+export const coordinates = [
+  { id: '1', name: 'one' },
+  { id: '2', name: 'two' },
+  { id: '3', name: 'three' },
+  { id: '4', name: 'four' },
 ];
 
-export const VideoData = [
-  {value: 'PodCast', key: 1},
-  {value: 'Music Video', key: 2},
+export const Type = [
+  { label: 'Type one', value: 'Type one' },
+  { label: 'Type two', value: 'Type two' },
+  { label: 'Type three', value: 'Type three' },
+  { label: 'Type four', value: 'Type four' },
 ];
 
-export const SongData = [
-  {key: '1', value: 'Pop'},
-  {key: '2', value: 'Jazz'},
-  {key: '3', value: 'Rock'},
-  {key: '4', value: 'R&B'},
-  {key: '5', value: 'Heavy Metal'},
-  {key: '6', value: 'Disco'},
-  {key: '7', value: 'Classical'},
+export const Customer = [
+  { label: 'Customer one', value: 'Customer one' },
+  { label: 'Customer two', value: 'Customer two' },
+  { label: 'Customer three', value: 'Customer three' },
+  { label: 'Customer four', value: 'Customer four' },
 ];
+
+export const Outline = [
+  { label: 'Outline one', value: 'Outline one' },
+  { label: 'Outline two', value: 'Outline two' },
+  { label: 'Outline three', value: 'Outline three' },
+  { label: 'Outline four', value: 'Customer four' },
+];
+
+export const FilterOutline = [
+  { title: 'Outline', id: 1 },
+  { title: 'Product View', id: 2 },
+]

@@ -19,7 +19,7 @@ const App = () => {
       ) : (
         <>
           {SignIn == null && <AuthNavigator />}
-          {SignIn !== null && <UserNavigator />}
+          {SignIn == "user@gmail.com" && <UserNavigator />}
         </>
       )}
     </>

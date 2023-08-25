@@ -30,7 +30,7 @@ const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.White} barStyle="dark-content" />
-      <LogoCard />
+      <LogoCard NoBack />
       <View style={styles.MainContainer}>
         <Text style={[GlobalStyle.Heading, { fontSize: scale(25) }]}>
           Welcome Back
@@ -94,6 +94,19 @@ const Login = ({ navigation }) => {
           style={[GlobalStyle.InputHeading, { textAlign: "center" }]}
         >
           Forget Password?
+        </Text>
+        <Text
+          // onPress={() => navigation.navigate("FindAccount")}
+          style={[
+            GlobalStyle.InputHeading,
+            {
+              textAlign: "center",
+              color: Colors.red,
+              marginTop: verticalScale(7),
+            },
+          ]}
+        >
+          Contact Your Admin
         </Text>
         <CustomButton
           containerStyle={styles.MainContainer}

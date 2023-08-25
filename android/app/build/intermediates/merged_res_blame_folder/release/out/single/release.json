@@ -1,0 +1,102 @@
+[
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_excel.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_excel.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnativedropdownselectlist_assets_images_chevron.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnativedropdownselectlist_assets_images_chevron.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_powerpoint.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_powerpoint.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_logo.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_logo.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_filter.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_filter.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.tailored_insights.app-main-37:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnativedropdownselectlist_assets_images_search.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnativedropdownselectlist_assets_images_search.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnativedropdownselectlist_assets_images_check.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnativedropdownselectlist_assets_images_check.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnativedropdownselectlist_assets_images_close.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnativedropdownselectlist_assets_images_close.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.tailored_insights.app-main-37:/mipmap-mdpi/ic_launcher_round.png"
+    }
+]

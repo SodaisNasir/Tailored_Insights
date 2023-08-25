@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
 
   font: {
     color: Colors.White,
-    fontSize: scale(15),
+    fontSize: scale(20),
     textTransform: 'capitalize',
-    fontFamily: Font.Poppins500,
+    fontFamily: Font.Inter600,
   },
 });

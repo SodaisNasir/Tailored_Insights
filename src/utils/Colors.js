@@ -13,4 +13,5 @@ export const Colors = {
   Non: 'transparent',
   border: '#E4E5E7',
   ThemeBlue: '#232A3E',
+  red: '#AF6455',
 };

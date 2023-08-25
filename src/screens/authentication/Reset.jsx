@@ -141,14 +141,14 @@ const Reset = ({ route, navigation }) => {
 };
 const styles = StyleSheet.create({
   Find: {
-    color: Colors.Yellow,
-    fontFamily: Font.Gilroy500,
+    color: Colors.Main,
+    fontFamily: Font.Inter500,
     fontSize: scale(30),
     textAlign: "center",
   },
   Search: {
-    color: Colors.White,
-    fontFamily: Font.Gilroy500,
+    color: Colors.Grey,
+    fontFamily: Font.Inter500,
     fontSize: scale(16),
     textAlign: "center",
     marginTop: verticalScale(20),

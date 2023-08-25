@@ -34,13 +34,13 @@ export const GlobalStyle = StyleSheet.create({
   subHeading: {
     color: Colors.MidGrey,
     fontSize: scale(15),
-    fontFamily: Font.Poppins400,
+    fontFamily: Font.Inter400,
   },
   showBar: {
     display: 'flex',
-    backgroundColor: Colors.ThemeGrey,
+    backgroundColor: Colors.White,
     height: verticalScale(60),
-    borderTopColor: Colors.ThemeGrey,
+    borderTopColor: Colors.border,
   },
   HideBar: {
     display: 'none',
@@ -49,7 +49,7 @@ export const GlobalStyle = StyleSheet.create({
     fontSize: scale(16),
     textAlign: 'center',
     padding: moderateScale(20),
-    fontFamily: Font.Gilroy600,
+    fontFamily: Font.Inter600,
     color: Colors.ThemeBlue,
   },
   ModalContainer: {
@@ -180,4 +180,13 @@ export const GlobalStyle = StyleSheet.create({
     foreground: true,
     borderless: true,
   },
+  Padding: {
+    paddingHorizontal: moderateScale(20)
+  },
+  space: {
+    width: scale(10)
+  },
+  verticalSpace: {
+    height: verticalScale(10)
+  }
 });
