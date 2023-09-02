@@ -5,6 +5,7 @@ import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { Colors } from '../utils/Colors';
 import { Font } from '../utils/font';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const PasswordInput = forwardRef((props, ref) => {
   const [password, setPassword] = useState(true)
@@ -17,7 +18,7 @@ const PasswordInput = forwardRef((props, ref) => {
   });
 
   return (
-    <View style={[styles.smallbox, props.style, props.Hello]}>
+    <View style={[styles.MainBox, props.style, props.Hello]}>
       <Fontisto
         name={'unlocked'}
         size={scale(20)}
@@ -40,10 +41,9 @@ const PasswordInput = forwardRef((props, ref) => {
         pattern={props.pattern}
         label={props.label}
         placeholderStyle={props.placeholderStyle}
-        fontSize={props.fontSize}
         maxLength={props.maxLength}
       />
-      <Text style={styles.Text} onPress={() => setPassword(!password)}>{password ? 'SHOW' : 'HIDE'}</Text>
+      <Entypo onPress={() => setPassword(!password)} name={password ? 'eye' : 'eye-with-line'} color={Colors.Ash} size={scale(17)} />
     </View>
   );
 });
@@ -53,10 +53,11 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '100%',
     color: Colors.Black,
-    fontFamily: Font.Gilroy500,
-    paddingHorizontal: moderateScale(20),
+    fontFamily: Font.Inter500,
+    paddingHorizontal: moderateScale(15),
+    fontSize: scale(14)
   },
-  smallbox: {
+  MainBox: {
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -64,16 +65,11 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     width: '100%',
     paddingHorizontal: moderateScale(20),
-    height: verticalScale(50),
-    backgroundColor: 'transparent',
+    height: verticalScale(46),
+
     borderWidth: scale(1),
-    borderRadius: scale(20),
+    borderRadius: scale(12),
   },
-  Text: {
-    color: Colors.Black,
-    fontFamily: Font.Inter600,
-    fontSize: scale(15)
-  }
 });
 export default PasswordInput;
 

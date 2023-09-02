@@ -11,7 +11,6 @@ import Error from "../../components/Modal/Error";
 import Loading from "../../components/Modal/Loading";
 import { useDispatch } from "react-redux";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
-import Netinfo from "@react-native-community/netinfo";
 import Validation from "../../components/Validation";
 import LogoCard from "../../components/Card/LogoCard";
 import { EmailRegix } from "../../utils/url";
@@ -22,17 +21,7 @@ const FindAccount = ({ navigation }) => {
   const [index, setIndex] = useState(100);
   const [isEmailExist, setIsEmailExist] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = Netinfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
   const {
     control,
     handleSubmit,
@@ -99,7 +88,7 @@ const FindAccount = ({ navigation }) => {
 
       <Error isVisible={isEmailExist} message={"This email does not exists"} />
       <Loading isVisible={loading} />
-      <ConnectionModal isVisible={!isConnected} />
+      <ConnectionModal />
     </SafeAreaView>
   );
 };

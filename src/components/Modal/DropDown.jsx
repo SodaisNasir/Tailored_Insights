@@ -12,7 +12,9 @@ import { Colors } from "../../utils/Colors";
 
 const DropDown = forwardRef((props, ref) => {
   return (
-    <View style={props.style}>
+    // <View style={{ flexDirection: "row" }}>
+    <View style={{ width: "90%", alignSelf: "center" }}>
+      <Text style={styles.Text}>{props.title}</Text>
       <SelectList
         placeholder="Select a value"
         arrowicon={
@@ -26,6 +28,7 @@ const DropDown = forwardRef((props, ref) => {
         inputStyles={styles.inputStyles}
         data={props.items}
         setSelected={props.setValue}
+        search={false}
       />
     </View>
   );
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    marginTop: verticalScale(5),
     width: "100%",
     paddingHorizontal: moderateScale(15),
     height: verticalScale(42),
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
     height: verticalScale(50),
     alignItems: "center",
     borderRadius: scale(10),
-    marginTop: verticalScale(10),
     borderWidth: scale(1),
     borderColor: Colors.border,
   },
@@ -76,6 +77,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Non,
     borderWidth: scale(1),
     borderColor: Colors.Black,
+  },
+  Text: {
+    color: Colors.Main,
+    fontSize: scale(16),
+    fontFamily: Font.Inter600,
+    textTransform: "capitalize",
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(5),
   },
 });
 

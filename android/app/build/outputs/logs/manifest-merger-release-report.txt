@@ -6,6 +6,7 @@ INJECTED from D:\Farzam\Tailored_Insights\android\app\src\main\AndroidManifest.x
 INJECTED from D:\Farzam\Tailored_Insights\android\app\src\main\AndroidManifest.xml:1:1-28:12
 MERGED from [:react-native-vector-icons] D:\Farzam\Tailored_Insights\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-async-storage_async-storage] D:\Farzam\Tailored_Insights\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-community_geolocation] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\geolocation\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-community_netinfo] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-10:12
 MERGED from [:lottie-react-native] D:\Farzam\Tailored_Insights\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-document-picker] D:\Farzam\Tailored_Insights\node_modules\react-native-document-picker\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:2:1-7:12
@@ -26,8 +27,8 @@ MERGED from [androidx.autofill:autofill:1.1.0] C:\Users\Dell\.gradle\caches\tran
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Dell\.gradle\caches\transforms-3\d2a0ef851359ae355103c8a357e2e22c\transformed\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\7f8a12fa5e11d275ef7433bff5c1ada3\transformed\jetified-okhttp3-integration-4.12.0\AndroidManifest.xml:2:1-16:12
 MERGED from [com.github.bumptech.glide:glide:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\0eaf52f4c642de190d4dd4a67699b7b2\transformed\jetified-glide-4.12.0\AndroidManifest.xml:2:1-12:12
-MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:17:1-44:12
 MERGED from [com.google.android.gms:play-services-location:20.0.0] C:\Users\Dell\.gradle\caches\transforms-3\9a460770c6cb58caf18b70e6cbf4450a\transformed\jetified-play-services-location-20.0.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:17:1-44:12
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:16:1-24:12
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\e56f2621ef626fd464225cee132f3f36\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\bf9b6fb405d2f7fd8250171739588e78\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:16:1-26:12
@@ -124,10 +125,10 @@ MERGED from [com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\Dell
 MERGED from [com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\7f8a12fa5e11d275ef7433bff5c1ada3\transformed\jetified-okhttp3-integration-4.12.0\AndroidManifest.xml:10:5-14:19
 MERGED from [com.github.bumptech.glide:glide:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\0eaf52f4c642de190d4dd4a67699b7b2\transformed\jetified-glide-4.12.0\AndroidManifest.xml:10:5-20
 MERGED from [com.github.bumptech.glide:glide:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\0eaf52f4c642de190d4dd4a67699b7b2\transformed\jetified-glide-4.12.0\AndroidManifest.xml:10:5-20
-MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
-MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.android.gms:play-services-location:20.0.0] C:\Users\Dell\.gradle\caches\transforms-3\9a460770c6cb58caf18b70e6cbf4450a\transformed\jetified-play-services-location-20.0.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-location:20.0.0] C:\Users\Dell\.gradle\caches\transforms-3\9a460770c6cb58caf18b70e6cbf4450a\transformed\jetified-play-services-location-20.0.0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:19:5-23:19
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:19:5-23:19
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\e56f2621ef626fd464225cee132f3f36\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:5:5-20
@@ -206,6 +207,8 @@ MERGED from [:react-native-vector-icons] D:\Farzam\Tailored_Insights\node_module
 MERGED from [:react-native-vector-icons] D:\Farzam\Tailored_Insights\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-async-storage_async-storage] D:\Farzam\Tailored_Insights\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-async-storage_async-storage] D:\Farzam\Tailored_Insights\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-community_geolocation] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\geolocation\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-community_geolocation] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\geolocation\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-community_netinfo] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-community_netinfo] D:\Farzam\Tailored_Insights\node_modules\@react-native-community\netinfo\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
 MERGED from [:lottie-react-native] D:\Farzam\Tailored_Insights\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:5:5-44
@@ -246,10 +249,10 @@ MERGED from [com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\Dell
 MERGED from [com.github.bumptech.glide:okhttp3-integration:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\7f8a12fa5e11d275ef7433bff5c1ada3\transformed\jetified-okhttp3-integration-4.12.0\AndroidManifest.xml:6:5-8:41
 MERGED from [com.github.bumptech.glide:glide:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\0eaf52f4c642de190d4dd4a67699b7b2\transformed\jetified-glide-4.12.0\AndroidManifest.xml:6:5-8:41
 MERGED from [com.github.bumptech.glide:glide:4.12.0] C:\Users\Dell\.gradle\caches\transforms-3\0eaf52f4c642de190d4dd4a67699b7b2\transformed\jetified-glide-4.12.0\AndroidManifest.xml:6:5-8:41
-MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-location:20.0.0] C:\Users\Dell\.gradle\caches\transforms-3\9a460770c6cb58caf18b70e6cbf4450a\transformed\jetified-play-services-location-20.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-location:20.0.0] C:\Users\Dell\.gradle\caches\transforms-3\9a460770c6cb58caf18b70e6cbf4450a\transformed\jetified-play-services-location-20.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\4fe486e3c16899c67b1f49a3e3ae28f6\transformed\jetified-play-services-maps-18.0.2\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\Dell\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\Dell\.gradle\caches\transforms-3\e56f2621ef626fd464225cee132f3f36\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:4:5-43

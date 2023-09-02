@@ -7,6 +7,9 @@ import { Font } from '../utils/font';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Octicons from 'react-native-vector-icons/Octicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Entypo from 'react-native-vector-icons/Entypo';
 const CustomInput = forwardRef((props, ref) => {
   const { field } = useController({
     control: props.control,
@@ -15,28 +18,49 @@ const CustomInput = forwardRef((props, ref) => {
     rules: props.rules,
   });
   return (
-    <View style={[styles.smallbox, props.style, props.Hello]}>
-      {props.FontAwesome ? (
+    <View style={[styles.MainBox, props.style, props.Hello]}>
+      {props.FontAwesome && (
         <FontAwesome
           name={props.FontAwesome_Name}
           size={props.size}
           color={Colors.Black}
         />
-      ) : null}
-      {props.MaterialIcons ? (
+      )}
+      {props.MaterialIcons && (
         <MaterialIcons
           name={props.MaterialIcons_Name}
           size={props.size}
           color={Colors.Main}
         />
-      ) : null}
-      {props.Fontisto ? (
+      )}
+      {props.Fontisto && (
         <Fontisto
           name={props.Fontisto_Name}
           size={props.size}
-          color={Colors.Black}
+          color={Colors.Main}
         />
-      ) : null}
+      )}
+      {props.Octicons && (
+        <Octicons
+          name={props.Octicons_Name}
+          size={props.size}
+          color={Colors.Main}
+        />
+      )}
+      {props.FontAwesome5 && (
+        <FontAwesome5
+          name={props.FontAwesome5_Name}
+          size={props.size}
+          color={Colors.Main}
+        />
+      )}
+      {props.Entypo && (
+        <Entypo
+          name={props.Entypo_Name}
+          size={props.size}
+          color={Colors.Main}
+        />
+      )}
       <TextInput
         onFocus={props.onFocus}
         textContentType={props.textContentType}
@@ -54,7 +78,7 @@ const CustomInput = forwardRef((props, ref) => {
         pattern={props.pattern}
         label={props.label}
         placeholderStyle={props.placeholderStyle}
-        fontSize={props.fontSize}
+
         maxLength={props.maxLength}
         cursorColor={Colors.Main}
         keyboardAppearance='dark'
@@ -70,21 +94,21 @@ const styles = StyleSheet.create({
     height: '100%',
     color: Colors.Black,
     fontFamily: Font.Inter500,
-    paddingHorizontal: moderateScale(20),
+    paddingHorizontal: moderateScale(8),
+    fontSize: scale(14),
   },
-  smallbox: {
+  MainBox: {
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: verticalScale(20),
     width: '100%',
-    paddingHorizontal: moderateScale(20),
-    height: verticalScale(50),
-    backgroundColor: 'transparent',
+    paddingHorizontal: moderateScale(15),
+    height: verticalScale(46),
     borderWidth: scale(1),
-    borderColor: Colors.White,
-    borderRadius: scale(20),
+    borderColor: Colors.Main,
+    borderRadius: scale(12),
   },
 });
 export default CustomInput;

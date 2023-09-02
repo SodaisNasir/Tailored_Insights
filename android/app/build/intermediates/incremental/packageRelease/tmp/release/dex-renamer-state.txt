@@ -1,4 +1,4 @@
-#Fri Aug 25 19:01:13 PKT 2023
+#Mon Aug 28 19:22:00 PKT 2023
 base.1=D\:\\Farzam\\Tailored_Insights\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes2.dex
 path.1=classes2.dex
 base.0=D\:\\Farzam\\Tailored_Insights\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex

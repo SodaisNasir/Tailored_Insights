@@ -5,11 +5,12 @@ import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { Colors } from "../../utils/Colors";
-const LogoCard = ({ mailes, NoBack }) => {
+import { Font } from "../../utils/font";
+const LogoCard = ({ mailes, NoBack, Farm }) => {
   const navigation = useNavigation();
   return (
     <>
-      {NoBack ? null : (
+      {!NoBack && (
         <TouchableOpacity
           style={styles.arrowBox}
           onPress={() => navigation.goBack()}
@@ -34,16 +35,8 @@ const LogoCard = ({ mailes, NoBack }) => {
           />
         </View>
         <View>
-          <Text
-            style={[
-              GlobalStyle.Heading,
-              {
-                fontSize: scale(22),
-              },
-            ]}
-          >
-            Tailored insights
-          </Text>
+          <Text style={styles.Heading}>Tailored Insights</Text>
+          <Text style={styles.HeadingTwo}>Field Intelligence</Text>
           {mailes && (
             <Text
               style={[
@@ -54,6 +47,19 @@ const LogoCard = ({ mailes, NoBack }) => {
               ]}
             >
               Within 10 Miles of {`\n`} Lebanon PA
+            </Text>
+          )}
+          {Farm && (
+            <Text
+              style={[
+                GlobalStyle.Heading,
+                {
+                  fontSize: scale(18),
+                  fontFamily: Font.Inter600,
+                },
+              ]}
+            >
+              For <Text style={{ color: Colors.Main }}>Farmina</Text>
             </Text>
           )}
         </View>
@@ -76,6 +82,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: verticalScale(10),
+  },
+  Heading: {
+    fontSize: scale(22),
+    color: Colors.Sky,
+    textAlign: "center",
+    fontFamily: Font.Inter600,
+  },
+  HeadingTwo: {
+    textAlign: "center",
+    color: Colors.Main,
+    fontSize: scale(16),
+    // fontFamily: Font.Inter600,
+    fontStyle: "italic",
   },
 });
 export default LogoCard;

@@ -1,67 +1,89 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  PermissionsAndroid,
-  ActivityIndicator,
-} from "react-native";
+import React, { useRef, useEffect } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import Geolocation from "@react-native-community/geolocation";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Colors } from "../utils/Colors";
+import { scale } from "react-native-size-matters";
+const MapComponent = () => {
+  const mapRef = useRef(null);
+  const initialRegion = {
+    latitude: 0, // Replace with your initial latitude
+    longitude: 0, // Replace with your initial longitude
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
 
-import { Marker } from "react-native-maps";
-import MapView, { PROVIDER_DEFAULT, Callout } from "react-native-maps";
-import { Color } from "../utils/Colors";
+  const moveToCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newRegion = {
+          latitude,
+          longitude,
+          latitudeDelta: initialRegion.latitudeDelta,
+          longitudeDelta: initialRegion.longitudeDelta,
+        };
+        mapRef.current.animateToRegion(newRegion, 1000);
+      },
+      (error) => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
-export default function MapComponent({ data }) {
-  const [Pin, setPin] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-  });
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newRegion = {
+          latitude,
+          longitude,
+          latitudeDelta: initialRegion.latitudeDelta,
+          longitudeDelta: initialRegion.longitudeDelta,
+        };
+        mapRef.current.animateToRegion(newRegion, 0);
+      },
+      (error) => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }, []);
 
   return (
-    <View style={styles.MainContainer}>
-      <MapView
-        provider={PROVIDER_DEFAULT}
-        style={styles.mapStyle}
-        showsUserLocation={false}
-        zoomEnabled={true}
-        initialRegion={{
-          latitude: parseFloat(data?.latitude)
-            ? parseFloat(data?.latitude)
-            : 37.78825,
-          longitude: parseFloat(data?.longitude)
-            ? parseFloat(data?.longitude)
-            : -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
+    <View style={{ flex: 1 }}>
+      <MapView style={{ flex: 1 }} initialRegion={initialRegion} ref={mapRef}>
         <Marker
           coordinate={{
-            latitude: parseFloat(data?.latitude)
-              ? parseFloat(data?.latitude)
-              : 37.78825,
-            longitude: parseFloat(data?.longitude)
-              ? parseFloat(data?.longitude)
-              : -122.4324,
+            latitude: initialRegion.latitude,
+            longitude: initialRegion.longitude,
           }}
-          pinColor="red"
         />
       </MapView>
+      <TouchableOpacity
+        onPress={moveToCurrentLocation}
+        style={styles.LocationBox}
+      >
+        <MaterialIcons
+          name="location-searching"
+          color={Colors.Grey}
+          size={scale(24)}
+        />
+      </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    flex: 1,
+  LocationBox: {
+    position: "absolute",
+    bottom: scale(14),
+    right: scale(14),
+    elevation: 3,
+    borderRadius: scale(100),
+    backgroundColor: Colors.White,
+    width: scale(40),
+    height: scale(40),
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
-  },
-  mapStyle: {
-    height: "100%",
-    width: "100%",
-    zIndex: -17,
   },
 });
+export default MapComponent;

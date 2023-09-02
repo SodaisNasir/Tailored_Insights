@@ -27,10 +27,9 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
-import Netinfo from "@react-native-community/netinfo";
 import LogoCard from "../../components/Card/LogoCard";
 
-const windowHeight = Dimensions.get("window").height;
+const windowHeight = Dimensions.get("screen").height;
 const CELL_COUNT = 4;
 const Otp = ({ route, navigation }) => {
   // const { type, data, saveImage, user_id } = route.params;
@@ -38,7 +37,6 @@ const Otp = ({ route, navigation }) => {
   // const OTP = useSelector((state) => state.otp);
   const OTP = 1234;
 
-  const [isConnected, setIsConnected] = useState(false);
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -93,15 +91,6 @@ const Otp = ({ route, navigation }) => {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = Netinfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <LogoCard />
@@ -177,7 +166,7 @@ const Otp = ({ route, navigation }) => {
           message={"Your OTP is not correct"}
         />
       </ScrollView>
-      <ConnectionModal isVisible={!isConnected} />
+      <ConnectionModal />
     </SafeAreaView>
   );
 };

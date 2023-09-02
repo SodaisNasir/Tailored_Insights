@@ -1,5 +1,5 @@
 export const Colors = {
-  Main: '#0183C1',
+  Main: '#0284C2',
   White: '#fff',
   Black: '#000',
   placeholderTextColor: '#E3E4E7',
@@ -14,4 +14,5 @@ export const Colors = {
   border: '#E4E5E7',
   ThemeBlue: '#232A3E',
   red: '#AF6455',
+  Sky: "#20C0E8"
 };

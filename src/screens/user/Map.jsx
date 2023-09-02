@@ -19,12 +19,16 @@ import {
 import { Colors } from "../../utils/Colors";
 import { Font } from "../../utils/font";
 import { Controller, useForm } from "react-hook-form";
-import { MapRadious, coordinates } from "../../Constants/Data";
+import { MapRadious, Radius, coordinates } from "../../Constants/Data";
 import CustomButton from "../../components/CustomButton";
 import MapComponent from "../../components/MapComponent.jsx";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { IS_SIGN_IN } from "../../redux/reducer/Holder";
+import ConnectionModal from "../../components/Modal/ConnectionModal";
+import CustomInput from "../../components/CustomInput";
+import AnimatedDropDown from "../../components/AnimatedDropDown";
+import BottomText from "../../components/Card/BottomText";
 const Map = ({ navigation }) => {
   const dispatch = useDispatch();
   const {
@@ -41,58 +45,29 @@ const Map = ({ navigation }) => {
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.White} barStyle="dark-content" />
-      <LogoCard />
+      <LogoCard NoBack />
+      {/* <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}> */}
       <View style={GlobalStyle.Padding}>
-        <View style={GlobalStyle.Row}>
-          <View style={GlobalStyle.verticalSpace} />
-          <Text style={[GlobalStyle.Heading, { fontSize: scale(20) }]}>
-            Epicenter
-          </Text>
-          <View style={GlobalStyle.space} />
-          <View style={GlobalStyle.space} />
-          <View style={GlobalStyle.space} />
-          <View style={styles.box}>
-            <Text style={[GlobalStyle.Heading, { fontSize: scale(18) }]}>
-              Los Angeles
-            </Text>
-          </View>
-        </View>
+        <CustomInput
+          Entypo
+          Entypo_Name="location-pin"
+          size={scale(22)}
+          control={control}
+          name="location"
+          // rules={{
+          //   required: "*User id is required",
+          // }}
+          placeholder="Enter a location"
+        />
       </View>
       <View style={GlobalStyle.verticalSpace} />
-      <View style={[GlobalStyle.Row, { marginLeft: scale(20) }]}>
-        <Text style={[GlobalStyle.Heading, { fontSize: scale(20) }]}>
-          Los Angeles
-        </Text>
-        <View style={GlobalStyle.space} />
-        <ScrollView horizontal>
-          {MapRadious?.map((item, index) => {
-            return (
-              <View key={item.id} style={styles.smallBox}>
-                {/* <Controller
-                  control={control}
-                  rules={{
-                    required: "*required",
-                  }}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      placeholder="00"
-                      style={styles.input}
-                      maxLength={2}
-                      keyboardType="number-pad"
-                    />
-                  )}
-                  name={item.name}
-                /> */}
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-      <View style={GlobalStyle.verticalSpace} />
-      <View style={GlobalStyle.verticalSpace} />
+      <AnimatedDropDown options={Radius} />
       <CustomButton
-        title="Go"
-        containerStyle={{ borderRadius: scale(15) }}
+        title="SHOW RESULTS"
+        containerStyle={{
+          borderRadius: scale(15),
+          marginTop: verticalScale(10),
+        }}
         onPress={() => navigation.navigate("filter")}
       />
 
@@ -107,6 +82,9 @@ const Map = ({ navigation }) => {
           size={scale(25)}
         />
       </View>
+      {/* </ScrollView> */}
+      <ConnectionModal />
+      <BottomText />
     </SafeAreaView>
   );
 };
@@ -126,7 +104,6 @@ const styles = StyleSheet.create({
     borderWidth: scale(1),
     borderColor: Colors.Black,
     width: scale(50),
-    // width: "100%",
     aspectRatio: 1 / 1,
     marginRight: 3,
     justifyContent: "center",
@@ -138,7 +115,7 @@ const styles = StyleSheet.create({
     fontFamily: Font.Inter500,
   },
   MapBox: {
-    height: "50%",
+    height: "55%",
     marginVertical: verticalScale(15),
     borderRadius: scale(14),
     marginBottom: verticalScale(20),

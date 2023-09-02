@@ -6,6 +6,13 @@ export const MapRadious = [
   { id: '4', name: 'four' },
 ];
 
+export const Radius = [
+  { id: '1', name: 'one' },
+  { id: '2', name: 'two' },
+  { id: '3', name: 'three' },
+  { id: '4', name: 'four' },
+];
+
 export const coordinates = [
   { id: '1', name: 'one' },
   { id: '2', name: 'two' },
@@ -20,21 +27,44 @@ export const Type = [
   { label: 'Type four', value: 'Type four' },
 ];
 
-export const Customer = [
-  { label: 'Customer one', value: 'Customer one' },
-  { label: 'Customer two', value: 'Customer two' },
-  { label: 'Customer three', value: 'Customer three' },
-  { label: 'Customer four', value: 'Customer four' },
+export const FilterBy = [
+  { label: 'New', value: 'New' },
+  { label: 'Old', value: 'Old' },
 ];
 
-export const Outline = [
-  { label: 'Outline one', value: 'Outline one' },
-  { label: 'Outline two', value: 'Outline two' },
-  { label: 'Outline three', value: 'Outline three' },
-  { label: 'Outline four', value: 'Customer four' },
+export const SubFilter = [
+  { label: 'Sub one', value: 'Sub one' },
+  { label: 'Sub two', value: 'Sub two' },
 ];
 
 export const FilterOutline = [
   { title: 'Outline', id: 1 },
   { title: 'Product View', id: 2 },
 ]
+
+export const ChooseContact = [
+  { title: 'Reset Password  ', id: 1 },
+  { title: 'Make as Inactive', id: 2 },
+]
+
+export const WhatAreYou = [
+  { title: 'Vendor', id: 1 },
+  { title: 'Customer', id: 2 },
+]
+
+export const Money = [
+  { title: 'Trail', id: 1 },
+  { title: 'Paid', id: 2 },
+  { title: 'Close', id: 3 },
+]
+
+export const Access = [
+  { title: 'Full', id: 1 },
+  { title: 'Partial', id: 2 },
+]
+
+export const Exports = [
+  { value: 'CVS', id: 1, source: require('../assets/image/csv.png') },
+  { value: 'PDF', id: 2, source: require('../assets/image/pdf.png') },
+]
+

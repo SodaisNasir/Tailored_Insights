@@ -1,9 +1,5 @@
 [
     {
-        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_excel.png.flat",
-        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_excel.png"
-    },
-    {
         "merged": "com.tailored_insights.app-merged_res-36:/mipmap-hdpi_ic_launcher.png.flat",
         "source": "com.tailored_insights.app-main-37:/mipmap-hdpi/ic_launcher.png"
     },
@@ -14,10 +10,6 @@
     {
         "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
         "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
-    },
-    {
-        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_powerpoint.png.flat",
-        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_powerpoint.png"
     },
     {
         "merged": "com.tailored_insights.app-merged_res-36:/mipmap-xxhdpi_ic_launcher.png.flat",
@@ -36,10 +28,6 @@
         "source": "com.tailored_insights.app-res-30:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
     },
     {
-        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_filter.png.flat",
-        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_filter.png"
-    },
-    {
         "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
         "source": "com.tailored_insights.app-res-30:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
     },
@@ -50,6 +38,14 @@
     {
         "merged": "com.tailored_insights.app-merged_res-36:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
         "source": "com.tailored_insights.app-res-30:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_pdf.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_pdf.png"
+    },
+    {
+        "merged": "com.tailored_insights.app-merged_res-36:/drawable-mdpi_src_assets_image_csv.png.flat",
+        "source": "com.tailored_insights.app-res-30:/drawable-mdpi/src_assets_image_csv.png"
     },
     {
         "merged": "com.tailored_insights.app-merged_res-36:/drawable_rn_edit_text_material.xml.flat",

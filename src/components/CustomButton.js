@@ -8,7 +8,6 @@ const CustomButton = props => {
   return (
     <Pressable
       android_ripple={GlobalStyle.WhiteRippe}
-      disabled={props.disabled}
       onPress={props.onPress}
       style={[styles.containerStyle, props.containerStyle]}>
       <Text style={[styles.font, props.textStyle]}>{props.title}</Text>
@@ -23,21 +22,18 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: scale(100),
+    borderRadius: scale(8),
     marginTop: verticalScale(5),
     alignSelf: 'center',
     backgroundColor: Colors.Main,
-    height: verticalScale(52),
-    borderWidth: scale(1),
-    borderColor: Colors.Grey,
+    height: verticalScale(47),
     flexDirection: 'row',
     overflow: 'hidden',
   },
 
   font: {
     color: Colors.White,
-    fontSize: scale(20),
-    textTransform: 'capitalize',
+    fontSize: scale(16),
     fontFamily: Font.Inter600,
   },
 });

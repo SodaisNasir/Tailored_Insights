@@ -11,7 +11,6 @@ import Error from "../../components/Modal/Error";
 import CustomLotti from "../../components/Modal/CustomLotti";
 import Loading from "../../components/Modal/Loading";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
-import Netinfo from "@react-native-community/netinfo";
 import Validation from "../../components/Validation";
 import LogoCard from "../../components/Card/LogoCard";
 
@@ -21,7 +20,6 @@ const Reset = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
 
   const {
     control,
@@ -49,15 +47,6 @@ const Reset = ({ route, navigation }) => {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = Netinfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <LogoCard />
@@ -66,7 +55,7 @@ const Reset = ({ route, navigation }) => {
           <Text style={styles.Find}>Reset Your Password</Text>
           <Text style={styles.Search}>
             Please enter your{" "}
-            <Text style={{ color: Colors.Yellow }}>New Password.</Text> Password
+            <Text style={{ color: Colors.Main }}>New Password.</Text> Password
             must be on 8 characters
           </Text>
           <PasswordInput
@@ -135,7 +124,7 @@ const Reset = ({ route, navigation }) => {
         TextRestyle={{ color: Colors.ThemeBlue }}
       />
       <Loading isVisible={loading} />
-      <ConnectionModal isVisible={!isConnected} />
+      <ConnectionModal />
     </SafeAreaView>
   );
 };

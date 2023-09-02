@@ -16,7 +16,7 @@ import { Font } from "../../utils/font";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import CustomButton from "../CustomButton";
 
-const FilterModal = ({ visible, onClose }) => {
+const FilterModal = ({ visible, onClose, onPress }) => {
   const [type, setType] = useState("");
   const [customer, setCustomer] = useState("");
   const [outline, setOutline] = useState("");
@@ -33,7 +33,6 @@ const FilterModal = ({ visible, onClose }) => {
       swipeDirection="down"
       onSwipeComplete={onClose}
       isVisible={visible}
-      //   style={GlobalStyle.MainModal}
       onBackdropPress={onClose}
       onBackButtonPress={onClose}
     >
@@ -92,16 +91,30 @@ const FilterModal = ({ visible, onClose }) => {
                         ? "radio-btn-active"
                         : "radio-btn-passive"
                     }
-                    color={Colors.Black}
+                    color={
+                      searchSelected == item.id ? Colors.Main : Colors.Black
+                    }
                     size={scale(20)}
                   />
-                  <Text style={styles.title}>{item.title}</Text>
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color:
+                          searchSelected == item.id
+                            ? Colors.Main
+                            : Colors.Black,
+                      },
+                    ]}
+                  >
+                    {item.title}
+                  </Text>
                 </TouchableOpacity>
               );
             })}
           </View>
           <View style={GlobalStyle.verticalSpace} />
-          <CustomButton title="Narrative" />
+          <CustomButton title="Narrative" onPress={onClose} />
         </ScrollView>
       </View>
     </Modal>
@@ -122,7 +135,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(16),
     fontFamily: Font.Inter500,
-    color: Colors.Black,
   },
 });
 
