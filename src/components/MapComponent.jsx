@@ -5,7 +5,7 @@ import Geolocation from "@react-native-community/geolocation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Colors } from "../utils/Colors";
 import { scale } from "react-native-size-matters";
-const MapComponent = () => {
+const MapComponent = ({location}) => {
   const mapRef = useRef(null);
   const initialRegion = {
     latitude: 0, // Replace with your initial latitude
@@ -53,8 +53,8 @@ const MapComponent = () => {
       <MapView style={{ flex: 1 }} initialRegion={initialRegion} ref={mapRef}>
         <Marker
           coordinate={{
-            latitude: initialRegion.latitude,
-            longitude: initialRegion.longitude,
+            latitude: location.latitude,
+            longitude: location.longitude,
           }}
         />
       </MapView>

@@ -27,6 +27,8 @@ import com.dylanvann.fastimage.FastImageViewPackage;
 import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
+// react-native-location
+import com.github.reactnativecommunity.location.RNLocationPackage;
 // react-native-maps
 import com.rnmaps.maps.MapsPackage;
 // react-native-orientation-locker
@@ -90,6 +92,7 @@ public class PackageList {
       new FastImageViewPackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
+      new RNLocationPackage(),
       new MapsPackage(),
       new OrientationPackage(),
       new SafeAreaContextPackage(),

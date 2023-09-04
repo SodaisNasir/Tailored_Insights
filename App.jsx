@@ -3,14 +3,18 @@ import AuthNavigator from "./src/navigation/AuthNavigator";
 import UserNavigator from "./src/navigation/UserNavigator";
 import { useSelector } from "react-redux";
 import Splash from "./src/screens/authentication/Splash";
+import AdminNavigator from "./src/navigation/AdminNavigator";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
-  const SignIn = useSelector((state) => state.userDetails);
+  const SignIn = useSelector((state) => state.userData);
+
+
 
   setTimeout(() => {
     setLoading(false);
   }, 3000);
+  console.log(SignIn);
 
   return (
     <>
@@ -18,8 +22,14 @@ const App = () => {
         <Splash />
       ) : (
         <>
-          {SignIn == null && <AuthNavigator />}
-          {SignIn != null && <UserNavigator />}
+          {SignIn == null ? (
+            <AuthNavigator />
+            // && SignIn?.id?.slice(-2) != "00"
+          ) : SignIn != null  ? (
+            <UserNavigator />
+          ) : (
+            <AdminNavigator />
+          )}
         </>
       )}
     </>

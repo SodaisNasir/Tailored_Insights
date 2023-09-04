@@ -6,8 +6,9 @@ import {
   StatusBar,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
 import LogoCard from "../../components/Card/LogoCard";
 import {
@@ -29,6 +30,7 @@ import ConnectionModal from "../../components/Modal/ConnectionModal";
 import CustomInput from "../../components/CustomInput";
 import AnimatedDropDown from "../../components/AnimatedDropDown";
 import BottomText from "../../components/Card/BottomText";
+import RNLocation from "react-native-location";
 const Map = ({ navigation }) => {
   const dispatch = useDispatch();
   const {
@@ -38,6 +40,18 @@ const Map = ({ navigation }) => {
   } = useForm({
     defaultValues: "",
   });
+
+  const [location, setLocation] = useState(null);
+
+  useEffect(()=>{
+    RNLocation.getLatestLocation().then((latestLocation) => {
+      console.log(latestLocation);
+      setLocation({
+        latitude: latestLocation.latitude,
+        longitude: latestLocation.longitude,
+      });
+    });
+  },[])
 
   const LogOut = () => {
     dispatch({ type: IS_SIGN_IN, payload: null });
@@ -72,7 +86,10 @@ const Map = ({ navigation }) => {
       />
 
       <View style={styles.MapBox}>
-        <MapComponent item={coordinates} />
+        {
+          location == null ? <><ActivityIndicator/></> :
+        <MapComponent location={location} />
+        }
       </View>
       <View style={styles.LogoutBox}>
         <Ionicons

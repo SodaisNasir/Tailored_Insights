@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -23,10 +23,13 @@ import { useDispatch } from "react-redux";
 import LogoCard from "../../components/Card/LogoCard";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import BottomText from "../../components/Card/BottomText";
+import Loading from "../../components/Modal/Loading";
 import { login } from "../../redux/actions/AuthActions";
+import RNLocation from "react-native-location";
 
 const Login = ({ navigation }) => {
   const [index, setIndex] = useState(100);
+
   const dispatch = useDispatch();
   const { height } = Dimensions.get("screen");
   const {
@@ -34,10 +37,23 @@ const Login = ({ navigation }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "all" });
-
+  const [loading, setLoading] = useState(false);
   const onSubmit = (data) => {
-    dispatch(login(data));
+    dispatch(login(data, setLoading));
   };
+
+  useEffect(() => {
+    RNLocation.requestPermission({
+      ios: "whenInUse",
+      android: {
+        detail: "fine",
+      },
+    }).then((granted) => {
+      if (!granted) {
+        alert("Loaction Permission is Required");
+      }
+    });
+  });
 
   return (
     <SafeAreaView style={GlobalStyle.Container}>
@@ -140,6 +156,7 @@ const Login = ({ navigation }) => {
         <BottomText />
       </ScrollView>
       <ConnectionModal />
+      <Loading isVisible={loading} />
     </SafeAreaView>
   );
 };

@@ -1,7 +1,7 @@
-export const SIGN_IN = 'IS_SIGNIN';
+export const SIGN_IN = 'SIGNIN';
 
 const initialState = {
-  userDetails: null,
+userData: null,
 };
 
 const holderReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const holderReducer = (state = initialState, action) => {
     case SIGN_IN:
       return {
         ...state,
-        userDetails: action.payload,
+        userData: action.payload,
       };
     default: {
       return state;
