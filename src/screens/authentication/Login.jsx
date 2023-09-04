@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import LogoCard from "../../components/Card/LogoCard";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import BottomText from "../../components/Card/BottomText";
+import { login } from "../../redux/actions/AuthActions";
 
 const Login = ({ navigation }) => {
   const [index, setIndex] = useState(100);
@@ -35,7 +36,7 @@ const Login = ({ navigation }) => {
   } = useForm({ mode: "all" });
 
   const onSubmit = (data) => {
-    dispatch({ type: IS_SIGN_IN, payload: data.id });
+    dispatch(login(data));
   };
 
   return (
@@ -70,7 +71,7 @@ const Login = ({ navigation }) => {
             FontAwesome5_Name="user-alt"
             size={scale(20)}
             control={control}
-            keyboardType="number-pad"
+            keyboardType="default"
             name="id"
             rules={{
               required: "*User id is required",

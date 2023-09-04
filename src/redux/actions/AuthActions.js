@@ -1,12 +1,9 @@
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { OTP, REGISTER, TOKEN, USER_DETAILS } from '../reducer/Holder';
+import { OTP, REGISTER, SIGN_IN, TOKEN, USER_DETAILS } from '../reducer/Holder';
 import Toast from 'react-native-simple-toast';
 
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+
 import { BaseUrl } from '../../utils/url';
 
 // export const sign_in = (email, password) => {
@@ -21,147 +18,63 @@ import { BaseUrl } from '../../utils/url';
 //   };
 // };
 
-export const login = (data, setErrorModal, setLoading, OS) => {
+export const login = (data, setErrorModal, setLoading,) => {
   return async dispatch => {
     setLoading(true);
     const Data = await AsyncStorage.getItem('onesignaltoken');
     try {
-      let base_url = `${BaseUrl}login`;
-      let myData = new FormData();
+      let base_url = `${BaseUrl}user/findByInputParameter`;
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-      myData.append('email', data.email);
-      myData.append('password', data.password);
-      myData.append('device', OS);
-      myData.append('device_token', Data);
-      const response = await fetch(base_url, {
-        body: myData,
-        method: 'POST',
-        headers: 'bearer',
+      var raw = JSON.stringify({
+        "id": "ZSales00",
+        "currentPassword": "ZSI000PW"
       });
 
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      const response = await fetch(base_url, requestOptions);
+
       const responseData = await response.json();
-      if (responseData.success.status === 200) {
+      console.log('====================================');
+      console.log(responseData);
+      console.log('====================================');
+      if (responseData.statusCode == 0) {
+        dispatch({ type: SIGN_IN, payload: responseData.responseContent[0] })
         setLoading(false);
         await AsyncStorage.setItem(
           'user_details',
-          JSON.stringify(responseData.success.data),
+          JSON.stringify(responseData.responseContent[0]),
         );
 
-        await AsyncStorage.setItem(
-          'token',
-          JSON.stringify(responseData.success.token),
-        );
+
         Toast.show('successfully login');
         dispatch({ type: USER_DETAILS, payload: responseData.success.data });
         dispatch({ type: TOKEN, payload: responseData.success.token });
       } else {
         Toast.show('something went wrong');
+        alert("NO account found")
         setLoading(false);
       }
     } catch (error) {
       console.log('catch error login ', error);
-      setLoading(false);
-      setErrorModal(true);
-      setTimeout(() => {
-        setErrorModal(false);
-      }, 2000);
+      // setLoading(false);
+      // setErrorModal(true);
+      // setTimeout(() => {
+      //   setErrorModal(false);
+      // }, 2000);
     }
   };
 };
 
-export const googleSignin = (navigation, OS, setLoad) => {
-  return async dispatch => {
-    try {
-      GoogleSignin.configure({
-        webClientId:
-          Platform.OS == 'android'
-            ? '786806587743-sqmrhl9rjq5s9u5chjlg6tdref287rpg.apps.googleusercontent.com'
-            : '786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
 
-        offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-        forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-      });
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
 
-      const socialObj = {
-        email: userInfo.user.email ? userInfo.user.email : '',
-        firstName: userInfo.user.givenName,
-        lastName: userInfo.user.familyName,
-        picUrl: userInfo.user.photo,
-        uID: userInfo.user.id,
-        user_name: userInfo.user.name,
-      };
-
-      dispatch(social_signin(socialObj, navigation, OS, setLoad));
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('You cancelled the sign in.');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Google sign In operation is in process');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play Services not available');
-      } else {
-        console.log(
-          'Something unknown went wrong with Google sign in. ' + error.message,
-        );
-      }
-    }
-  };
-};
-const social_signin = (data, navigation, OS, setLoad) => {
-  setLoad(true);
-
-  return async dispatch => {
-    try {
-      let base_url = `${BaseUrl}social-id`;
-      let myData = new FormData();
-
-      const device_token = await AsyncStorage.getItem('onesignaltoken');
-
-      myData.append('social_id', data.uID);
-      myData.append('device', OS);
-      myData.append('device_token', device_token);
-
-      console.log('device_token ==>', device_token, 'data.uID ==>', data.uID)
-      const TokenData = await AsyncStorage.getItem('token');
-      const Token = JSON.parse(TokenData);
-
-      var myHeaders = new Headers();
-      myHeaders.append('Authorization', `Bearer ${Token}`);
-      const response = await fetch(base_url, {
-        body: myData,
-        method: 'POST',
-        headers: myHeaders,
-      });
-
-      const responseData = await response.json();
-      if (responseData?.success?.status == 200) {
-        await AsyncStorage.setItem(
-          'user_details',
-          JSON.stringify(responseData.success.data),
-        );
-        await AsyncStorage.setItem(
-          'token',
-          JSON.stringify(responseData.success.token),
-        );
-        Toast.show('successfully login');
-        setLoad(false);
-        dispatch({ type: USER_DETAILS, payload: responseData.success.data });
-        dispatch({ type: TOKEN, payload: responseData.success.token });
-      } else {
-        navigation.navigate('SignUp', {
-          social: 'social',
-          socialData: data,
-        });
-        setLoad(false);
-      }
-    } catch (error) {
-      console.log('social_SignIn catch error', error);
-      setLoad(false);
-    }
-  };
-};
 
 export const verify_email_before_registration = (
   data,

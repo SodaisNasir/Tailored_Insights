@@ -1,15 +1,15 @@
-export const IS_SIGN_IN = 'IS_SIGNIN';
+export const SIGN_IN = 'IS_SIGNIN';
 
 const initialState = {
-  isSignin: null,
+  userDetails: null,
 };
 
 const holderReducer = (state = initialState, action) => {
   switch (action.type) {
-    case IS_SIGN_IN:
+    case SIGN_IN:
       return {
         ...state,
-        isSignin: action.payload,
+        userDetails: action.payload,
       };
     default: {
       return state;

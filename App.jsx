@@ -6,7 +6,7 @@ import Splash from "./src/screens/authentication/Splash";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
-  const SignIn = useSelector((state) => state.isSignin);
+  const SignIn = useSelector((state) => state.userDetails);
 
   setTimeout(() => {
     setLoading(false);
@@ -19,7 +19,7 @@ const App = () => {
       ) : (
         <>
           {SignIn == null && <AuthNavigator />}
-          {SignIn == "1234" && <UserNavigator />}
+          {SignIn != null && <UserNavigator />}
         </>
       )}
     </>
