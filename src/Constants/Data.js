@@ -7,10 +7,10 @@ export const MapRadious = [
 ];
 
 export const Radius = [
-  { id: '1', name: '30' },
-  { id: '2', name: '40' },
-  { id: '3', name: '50' },
-  { id: '4', name: '60' },
+  { id: '1', name: '30', value: 3000 },
+  { id: '2', name: '40', value: 4000 },
+  { id: '3', name: '50', value: 5000 },
+  { id: '4', name: '60', value: 6000 },
 ];
 
 export const coordinates = [

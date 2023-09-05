@@ -122,7 +122,7 @@ const Login = ({ navigation }) => {
           />
           {errors.password && <Validation title={errors.password.message} />}
           <Text
-            onPress={() => navigation.navigate("contact_admin")}
+      
             style={[
               GlobalStyle.InputHeading,
               {

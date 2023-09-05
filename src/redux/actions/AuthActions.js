@@ -63,47 +63,55 @@ export const login = (data, setLoading) => {
           case "T":
             if (validationResponseData.responseContent[0].validatePeriod <= 0) {
               setLoading(false);
-              Toast.show("Trial Period is Over")
-            }
-            else{
+              Toast.show("Trial Period is Over");
+            } else {
               setLoading(false);
               await AsyncStorage.setItem(
                 "user_details",
                 JSON.stringify(responseData.responseContent[0])
               );
-      
-              dispatch({ type: SIGN_IN, payload: responseData.responseContent[0] });
+
+              dispatch({
+                type: SIGN_IN,
+                payload: responseData.responseContent[0],
+              });
               Toast.show("successfully login");
             }
-            case "C":
-              setLoading(false);
-              Toast.show("User Subscription need renewal")
+          case "C":
+            setLoading(false);
+            Toast.show("User Subscription need renewal");
 
-              case "P         ":
-                if (validationResponseData.responseContent[0].validatePeriod < 7) {
-                  setLoading(false);
-                  Toast.show(`Password expires in ${validationResponseData.responseContent[0].validatePeriod} days`)
-                }
-                else{
-                  setLoading(false);
-                  await AsyncStorage.setItem(
-                    "user_details",
-                    JSON.stringify(responseData.responseContent[0])
-                  );
-          
-                  dispatch({ type: SIGN_IN, payload: responseData.responseContent[0] });
-                  Toast.show("successfully login");
-                }
+          case "P         ":
+            if (validationResponseData.responseContent[0].validatePeriod < 7) {
+              setLoading(false);
+              Toast.show(
+                `Password expires in ${validationResponseData.responseContent[0].validatePeriod} days`
+              );
+            } else {
+              setLoading(false);
+              await AsyncStorage.setItem(
+                "user_details",
+                JSON.stringify(responseData.responseContent[0])
+              );
+
+              dispatch({
+                type: SIGN_IN,
+                payload: responseData.responseContent[0],
+              });
+              Toast.show("successfully login");
+            }
           default:
             setLoading(false);
             await AsyncStorage.setItem(
               "user_details",
               JSON.stringify(responseData.responseContent[0])
             );
-    
-            dispatch({ type: SIGN_IN, payload: responseData.responseContent[0] });
+
+            dispatch({
+              type: SIGN_IN,
+              payload: responseData.responseContent[0],
+            });
             Toast.show("successfully login");
-            
         }
       } else {
         if (responseData.statusDescription == "NO_RECORD_FOUND") {
@@ -489,24 +497,11 @@ export const Logout = (setLoad) => {
   return async (dispatch) => {
     try {
       setLoad(true);
-      const Data = await AsyncStorage.getItem("user_details");
-      const userDetails = JSON.parse(Data);
 
-      let base_url = `${BaseUrl}logout-user/${userDetails.id}`;
-
-      const response = await fetch(base_url, {
-        method: "post",
-      });
-      const responseData = await response.json();
-      if (responseData?.success?.status === 200) {
-        await AsyncStorage.removeItem("user_details");
-        dispatch({ type: USER_DETAILS, payload: null });
-        setLoad(false);
-        Toast.show("Successfully Logout");
-      } else {
-        Toast.show("something went wrong");
-        setLoad(false);
-      }
+      await AsyncStorage.removeItem("user_details");
+      dispatch({ type: SIGN_IN, payload: null });
+      setLoad(false);
+      Toast.show("Successfully Logout");
     } catch (error) {
       console.log("error", error);
     }

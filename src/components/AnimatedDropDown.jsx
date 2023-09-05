@@ -18,7 +18,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 // import { useSelector } from 'react-redux'
 
-const AnimatedDropDown = ({ options }) => {
+const AnimatedDropDown = ({ options,setRadius,onChangeRadius }) => {
   console.log("options", options);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -42,7 +42,7 @@ const AnimatedDropDown = ({ options }) => {
         width: "90%",
         alignSelf: "center",
       }}
-      onPress={() => selectOption(item)}
+      onPress={() =>{ selectOption(item) ;setRadius(item.value); onChangeRadius(item.value)}}
     >
       <Text style={styles.Name}>{item.name}</Text>
     </TouchableOpacity>
