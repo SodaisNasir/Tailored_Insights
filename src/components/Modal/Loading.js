@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, SafeAreaView, View} from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import {Colors} from '../../utils/Colors';
-import {scale} from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
+import { scale } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
-const Loading = ({isVisible}) => {
+const Loading = ({ isVisible }) => {
   return (
-    <SafeAreaView style={{justifyContent: 'center'}}>
+    <SafeAreaView style={{ justifyContent: 'center' }}>
       <ReactNativeModal
         visible={isVisible}
         style={[styles.modal, GlobalStyle.Container]}>

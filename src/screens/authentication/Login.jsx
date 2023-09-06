@@ -122,7 +122,6 @@ const Login = ({ navigation }) => {
           />
           {errors.password && <Validation title={errors.password.message} />}
           <Text
-      
             style={[
               GlobalStyle.InputHeading,
               {

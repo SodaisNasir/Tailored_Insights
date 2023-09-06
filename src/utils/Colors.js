@@ -14,5 +14,6 @@ export const Colors = {
   border: '#E4E5E7',
   ThemeBlue: '#232A3E',
   red: '#AF6455',
-  Sky: "#20C0E8"
+  Sky: "#20C0E8",
+  ThemeCream: '#F4F4F4',
 };
