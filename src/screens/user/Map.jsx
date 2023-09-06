@@ -51,6 +51,7 @@ const Map = ({ navigation }) => {
   });
   const [location, setLocation] = useState(null);
   const [radius, setRadius] = useState(300);
+  const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(false);
   const fetchAddress = (latestLocation) => {
     const apiKey = "AIzaSyDkHZhc1UElZ2N-wumI7kqQokBoiME1JIQ";
@@ -69,7 +70,10 @@ const Map = ({ navigation }) => {
   };
 
   useEffect(() => {
-    RNLocation.getLatestLocation().then((latestLocation) => {
+    RNLocation.getLatestLocation().then(async (latestLocation) => {
+      console.log("====================================");
+      console.log("latestLocation", latestLocation);
+      console.log("====================================");
       setLocation({
         latitude: latestLocation.latitude,
         longitude: latestLocation.longitude,
@@ -77,15 +81,15 @@ const Map = ({ navigation }) => {
 
       fetchAddress(latestLocation);
     });
-  }, []);
+  },[]);
 
   const onChangeRadius = async (radius) => {
     try {
-      let base_url = `${BaseUrl}/mapping/invoice-outlet-location`;
+      let base_url = `${BaseUrl}mapping/invoice-outlet-location`;
 
       const data = await AsyncStorage.getItem("user_details");
       const userData = JSON.parse(data);
-
+console.log("radius ==>",radius);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -96,11 +100,11 @@ const Map = ({ navigation }) => {
 
       switch (userData.type) {
         case "C":
-           customeridlo = userData.id;
-           customeridhi = userData.id;
-           case "V":
-            vendoridlo = userData.id;
-            vendoridhi = userData.id;
+          customeridlo = userData.id;
+          customeridhi = userData.id;
+        case "V":
+          vendoridlo = userData.id;
+          vendoridhi = userData.id;
         default:
           break;
       }
@@ -118,15 +122,17 @@ const Map = ({ navigation }) => {
       var raw = JSON.stringify({
         customeridlo: customeridlo,
         customeridhi: customeridhi,
-        vendoridlo:vendoridlo,
+        vendoridlo: vendoridlo,
         vendoridhi: vendoridhi,
         radius: radius,
-        elat: location.latitude,
-        elong: location.longitude,
+        // elat: location.latitude,
+        // elong: location.longitude,
+        elat: 45,
+        elong: 45,
         enddate: "2023-11-19",
         startDate: "2023-11-19",
       });
-
+console.log("raw ==>",raw);
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -139,11 +145,11 @@ const Map = ({ navigation }) => {
       const responseData = await response.json();
       console.log("responseData", responseData);
       if (responseData.statusCode == 0) {
-        console.log("responseData ====>",responseData);
+        console.log("responseData ====>", responseData);
+        setShops(responseData.responseContent)
       } else {
         if (responseData.statusDescription == "NO_RECORD_FOUND") {
           Toast.show("NO RECORD FOUND");
-        
         }
       }
     } catch (error) {
@@ -179,14 +185,18 @@ const Map = ({ navigation }) => {
         />
       </View>
       <View style={GlobalStyle.verticalSpace} />
-      <AnimatedDropDown options={Radius} setRadius={setRadius} onChangeRadius={onChangeRadius} />
+      <AnimatedDropDown
+        options={Radius}
+        setRadius={setRadius}
+        onChangeRadius={onChangeRadius}
+      />
       <CustomButton
         title="SHOW RESULTS"
         containerStyle={{
           borderRadius: scale(15),
           marginTop: verticalScale(10),
         }}
-        onPress={() => navigation.navigate("filter")}
+        onPress={() => navigation.navigate("filter", {radius : radius, address : address, location : location})}
       />
 
       <View style={styles.MapBox}>
@@ -198,8 +208,9 @@ const Map = ({ navigation }) => {
           <MapComponent
             location={location}
             fetchAddress={fetchAddress}
-            radius={radius}
+            radius={radius.value}
             setLocation={setLocation}
+            shops={shops}
           />
         )}
       </View>

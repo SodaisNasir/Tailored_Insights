@@ -5,7 +5,7 @@ import Geolocation from "@react-native-community/geolocation";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Colors } from "../utils/Colors";
 import { scale } from "react-native-size-matters";
-const MapComponent = ({ location, radius, fetchAddress, setLocation }) => {
+const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) => {
   const mapRef = useRef(null);
   const initialRegion = {
     latitude: 0, // Replace with your initial latitude
@@ -77,6 +77,21 @@ const MapComponent = ({ location, radius, fetchAddress, setLocation }) => {
             longitudeDelta: 0.0421,
           }}
         />
+
+        {
+          shops?.map((item) => 
+            
+          <Marker
+          title={item.contactName}
+          description={`Email : ${item.email} Phone : ${item.phone}`}
+          coordinate={{
+            latitude: item.dlat,
+            longitude: item.dlong,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          />)
+        }
       </MapView>
       <TouchableOpacity
         onPress={moveToCurrentLocation}

@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
 import LogBox from "../../components/Card/LogoCard";
 import { Colors } from "../../utils/Colors";
@@ -27,13 +27,31 @@ import ConnectionModal from "../../components/Modal/ConnectionModal";
 import { Exports, FilterBy, SubFilter, Type } from "../../Constants/Data";
 import DropDown from "../../components/Modal/DropDown";
 import BottomText from "../../components/Card/BottomText";
+import { useSelector } from "react-redux";
+import { State } from "react-native-image-zoom-viewer/built/image-viewer.type";
 
-const Filter = ({ navigation }) => {
+import {
+  ZTypeFilter,
+  ZTypeList,
+  CTypeList,
+  VTypeList,
+  VTypeListFullAccess,
+} from "../../Constants/Data";
+import { BaseUrl } from "../../utils/url";
+import { useFocusEffect } from "@react-navigation/native";
+
+const Filter = ({ navigation, route }) => {
   const [year, setYear] = useState(2023);
   const [number, setNumber] = useState(1);
   const [type, setType] = useState("");
   const [subFilter, setSubFilter] = useState("");
   const [customer, setCustomer] = useState("");
+
+  const [listType, setListType] = useState([]);
+  const [filterType, setFilterType] = useState([]);
+  const [subFilterType, setSubFilterType] = useState([]);
+  const { radius, address, location } = route.params;
+  const user = useSelector((state) => state.userData);
 
   const handleAdd = () => {
     setYear(year + 10);
@@ -77,6 +95,311 @@ const Filter = ({ navigation }) => {
     return tableData;
   };
 
+  const subCustomerType = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-customer_type`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.customerType,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subCustomer = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-customer`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.customerId,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subOutlet = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-outlet`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.contactName,
+            label: item.customerOutletId,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subFamily = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-family`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.family,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subCategory = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-category`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.familyCategoryId,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subVendor = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-vendor`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.vendorId,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const subSKU = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2023-11-19",
+      // radius: radius.value,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      // elat: location.latitude,
+      // elong: location.longitude,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-sku`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result.responseContent.map((item) => {
+          return {
+            value: item.name,
+            label: item.skuId,
+          };
+        });
+        console.log("result.responseContent", data);
+        setSubFilterType(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const onChangeListType = (value) => {
+    console.log("ON CHANGE ==>", value);
+    if (value == "Customer Type") {
+      subCustomerType();
+    } else if (value == "Customer") {
+      subCustomer();
+    } else if (value == "Outlet") {
+      subOutlet();
+    } else if (value == "Family") {
+      subFamily();
+    } else if (value == "Category") {
+      subCategory();
+    } else if (value == "Vendor") {
+      subVendor();
+    } else if (value == "SKU") {
+      subSKU();
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      filterDropDowns();
+    }, [])
+  );
+
+  const filterDropDowns = () => {
+    console.log("user.type ==>", user.type);
+
+    if (user.type == "V") {
+      if (user.status.trim() == "Y") {
+        setListType(VTypeListFullAccess);
+        setFilterType(VTypeListFullAccess);
+        console.log("full");
+      } else {
+        setListType(VTypeList);
+        setFilterType(VTypeList);
+      }
+    } else if (user.type == "C") {
+      setListType(CTypeList);
+      setFilterType(CTypeList);
+    } else if (user.type == "Z") {
+      setListType(ZTypeList);
+      setFilterType(ZTypeList);
+    }
+  };
+
   const tableData = generateTableData();
   return (
     <SafeAreaView style={GlobalStyle.Container}>
@@ -107,7 +430,9 @@ const Filter = ({ navigation }) => {
             <Text style={styles.back}>Back to Map</Text>
           </TouchableOpacity>
           <View>
-            <Text style={styles.miles}>Within (XX) miles of (location)</Text>
+            <Text
+              style={styles.miles}
+            >{`Within (${radius.name}) miles of (${address})`}</Text>
             <View style={GlobalStyle.Row}>
               {Exports?.map((item, index) => {
                 return (
@@ -125,19 +450,23 @@ const Filter = ({ navigation }) => {
 
         <DropDown
           title="list type"
-          items={Type}
+          items={listType}
           value={type}
-          setValue={(value) => setType(value)}
+          setValue={(value) => {
+            console.log("value", value);
+            setType(value);
+            onChangeListType(value);
+          }}
         />
         <DropDown
           title="Filter By"
-          items={FilterBy}
+          items={filterType}
           value={customer}
           setValue={(value) => setCustomer(value)}
         />
         <DropDown
           title="Sub Filter"
-          items={SubFilter}
+          items={subFilterType}
           value={subFilter}
           setValue={(value) => setSubFilter(value)}
         />
@@ -275,6 +604,9 @@ const styles = StyleSheet.create({
     color: Colors.Grey,
     fontSize: scale(12),
     textAlign: "right",
+    // marginRight:scale(50),
+    width: "30%",
+    // backgroundColor:'red'
   },
   BoxOfTableHeader: {
     width: "40%",

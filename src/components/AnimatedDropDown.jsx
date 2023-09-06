@@ -42,7 +42,7 @@ const AnimatedDropDown = ({ options,setRadius,onChangeRadius }) => {
         width: "90%",
         alignSelf: "center",
       }}
-      onPress={() =>{ selectOption(item) ;setRadius(item.value); onChangeRadius(item.value)}}
+      onPress={() =>{ selectOption(item) ;setRadius(item); onChangeRadius(item.value)}}
     >
       <Text style={styles.Name}>{item.name}</Text>
     </TouchableOpacity>

@@ -26,8 +26,11 @@ import CustomButton from "../../components/CustomButton";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import Admin_selectValue from "../../components/Card/Admin_selectValue";
 import BottomText from "../../components/Card/BottomText";
+import { useSelector } from "react-redux";
 const ContactAdmin = ({ navigation }) => {
   const [CheckSelected, setCheckSelected] = useState("");
+
+  const user = useSelector((state)=> state.userData)
   const handleCheck = (item) => {
     setCheckSelected(item.id);
   };
@@ -58,7 +61,10 @@ const ContactAdmin = ({ navigation }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={GlobalStyle.Padding}>
           <Text style={[GlobalStyle.Heading, { fontSize: scale(18) }]}>
-            Admin
+            Admin Center
+          </Text>
+          <Text style={[GlobalStyle.Heading, { fontSize: scale(15), color:Colors.Grey }]}>
+            {`Manage your accounts (${"XX"})`}
           </Text>
           <CustomInput
             FontAwesome5
@@ -90,7 +96,9 @@ const ContactAdmin = ({ navigation }) => {
           />
           <View style={GlobalStyle.verticalSpace} />
           <View style={GlobalStyle.verticalSpace} />
-          <View style={[GlobalStyle.Padding, styles.PopupBox]}>
+          {
+            user.type == "Z" &&
+            <View style={[GlobalStyle.Padding, styles.PopupBox]}>
             <View
               style={[GlobalStyle.Row, { justifyContent: "space-between" }]}
             >
@@ -158,7 +166,7 @@ const ContactAdmin = ({ navigation }) => {
                 onPress={() => navigation.navigate("login")}
               />
             </View>
-          </View>
+          </View>}
         </View>
       </ScrollView>
       <ConnectionModal />
