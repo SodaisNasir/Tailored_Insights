@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { Colors } from "../../utils/Colors";
 import { Font } from "../../utils/font";
-import { scale, verticalScale } from "react-native-size-matters";
+import {
+  moderateScale,
+  moderateVerticalScale,
+  scale,
+  verticalScale,
+} from "react-native-size-matters";
 import CustomButton from "../../components/CustomButton";
 import { useForm } from "react-hook-form";
 import PasswordInput from "../../components/PasswordInput";
@@ -13,8 +18,9 @@ import Loading from "../../components/Modal/Loading";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import Validation from "../../components/Validation";
 import LogoCard from "../../components/Card/LogoCard";
+import Modal from "react-native-modal";
 
-const Reset = ({ route, navigation }) => {
+const Reset = ({ visible, onClose,children }) => {
   // const { user_id } = route.params;
   // console.log("user_id", user_id);
   const [loading, setLoading] = useState(false);
@@ -38,7 +44,6 @@ const Reset = ({ route, navigation }) => {
       //   setLoading,
       //   type
       // );
-      navigation.navigate("login");
     } else {
       setErrorModal(true);
       setTimeout(() => {
@@ -49,69 +54,37 @@ const Reset = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={GlobalStyle.Container}>
-      <LogoCard />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Modal
+        isVisible={visible}
+        onBackdropPress={onClose}
+        onBackButtonPress={onClose}
+        style={[styles.modal]}
+      >
         <View style={styles.MainBox}>
-          <Text style={styles.Find}>Reset Your Password</Text>
-          <Text style={styles.Search}>
-            Please enter your{" "}
-            <Text style={{ color: Colors.Main }}>New Password.</Text> Password
-            must be on 8 characters
-          </Text>
-          <PasswordInput
-            control={control}
-            name="password"
-            rules={{
-              required: "*Password is required",
-              minLength: {
-                value: 8,
-                message: "*Password too short (minimum length is 8)",
-              },
-              maxLength: {
-                value: 16,
-                message: "*Password too long (maximum length is 16)",
-              },
-            }}
-            placeholder="New Password"
-            maxLength={16}
-            fontSize={scale(16)}
-            placeholderTextColor={"#32323266"}
-          />
-          {errors.password && <Validation title={errors.password.message} />}
-          <PasswordInput
-            control={control}
-            name="confirm_password"
-            rules={{
-              required: "*Password is required",
-              minLength: {
-                value: 8,
-                message: "*Password too short (minimum length is 8)",
-              },
-              maxLength: {
-                value: 16,
-                message: "*Password too long (maximum length is 16)",
-              },
-            }}
-            placeholder="Confirm Password"
-            maxLength={16}
-            fontSize={scale(16)}
-            placeholderTextColor={"#32323266"}
-          />
-
-          {errors.confirm_password && (
-            <Validation title={errors.confirm_password.message} />
-          )}
-          <CustomButton
-            onPress={handleSubmit(onSubmit)}
-            title="Confirm"
-            containerStyle={[
-              GlobalStyle.CustomButtonRestyle,
-              styles.containerStyle,
+          <Text style={styles.Find}>Change your password</Text>
+          {children}
+         
+          <View
+            style={[
+              GlobalStyle.Row,
+              { justifyContent: "space-evenly", width: "100%" },
             ]}
-            textStyle={{ color: Colors.ThemeBlue }}
-          />
+          >
+            <CustomButton
+              title="Confirm"
+              containerStyle={styles.CustomButtonRestyle}
+            />
+            <CustomButton
+              title="Cancel"
+              containerStyle={[
+                styles.CustomButtonRestyle,
+                { backgroundColor: Colors.red },
+              ]}
+              onPress={onClose}
+            />
+          </View>
         </View>
-      </ScrollView>
+      </Modal>
       <Error
         isVisible={errorModal}
         onClose={() => setErrorModal(false)}
@@ -132,30 +105,20 @@ const styles = StyleSheet.create({
   Find: {
     color: Colors.Main,
     fontFamily: Font.Inter500,
-    fontSize: scale(30),
-    textAlign: "center",
+    fontSize: scale(23),
   },
-  Search: {
-    color: Colors.Grey,
-    fontFamily: Font.Inter500,
-    fontSize: scale(16),
-    textAlign: "center",
-    marginTop: verticalScale(20),
-    marginBottom: verticalScale(20),
+  CustomButtonRestyle: {
+    backgroundColor: Colors.Green,
+    marginTop: verticalScale(10),
+    width: "35%",
   },
   MainBox: {
-    marginTop: "25%",
-    marginBottom: "10%",
-    marginHorizontal: scale(20),
-  },
-  Row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  containerStyle: {
     backgroundColor: Colors.White,
-    borderColor: Colors.ThemeBlue,
-    marginTop: "15%",
+    borderRadius: scale(10),
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: moderateVerticalScale(10),
+    paddingHorizontal: moderateScale(10),
   },
 });
 

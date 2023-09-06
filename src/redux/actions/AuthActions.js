@@ -17,7 +17,7 @@ import { BaseUrl } from "../../utils/url";
 //   };
 // };
 
-export const login = (data, setLoading) => {
+export const login = (data, setLoading, setShowPasswordTime) => {
   return async (dispatch) => {
     setLoading(true);
     const Data = await AsyncStorage.getItem("onesignaltoken");
@@ -59,7 +59,7 @@ export const login = (data, setLoading) => {
           requestOptions
         );
         const validationResponseData = await response.json();
-        switch (responseData.responseContent[0].trial) {
+        switch (responseData.responseContent[0].trial.trim()) {
           case "T":
             if (validationResponseData.responseContent[0].validatePeriod <= 0) {
               setLoading(false);
@@ -84,9 +84,18 @@ export const login = (data, setLoading) => {
           case "P         ":
             if (validationResponseData.responseContent[0].validatePeriod < 7) {
               setLoading(false);
+              setShowPasswordTime(true)
               Toast.show(
                 `Password expires in ${validationResponseData.responseContent[0].validatePeriod} days`
               );
+              await AsyncStorage.setItem(
+                "password",
+                JSON.stringify(data)
+              );
+              dispatch({
+                type: PASSWORD,
+                payload: data,
+              });
             } else {
               setLoading(false);
               await AsyncStorage.setItem(
