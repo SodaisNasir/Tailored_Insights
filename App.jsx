@@ -24,8 +24,8 @@ const App = () => {
         <>
           {SignIn == null ? (
             <AuthNavigator />
-            // 
-          ) : SignIn != null && SignIn?.id?.slice(-2) != "00"  ? (
+            // && SignIn?.id?.slice(-2) != "00"
+          ) : SignIn != null   ? (
             <UserNavigator />
           ) : (
             <AdminNavigator />

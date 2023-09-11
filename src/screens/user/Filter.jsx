@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
 import LogBox from "../../components/Card/LogoCard";
 import { Colors } from "../../utils/Colors";
@@ -50,11 +51,14 @@ const Filter = ({ navigation, route }) => {
   const [listType, setListType] = useState([]);
   const [filterType, setFilterType] = useState([]);
   const [subFilterType, setSubFilterType] = useState([]);
+  const [data, setData] = useState([]);
+
+  const [loading, setLoading] = useState(false);
   const { radius, address, location } = route.params;
   const user = useSelector((state) => state.userData);
 
   const handleAdd = () => {
-    setYear(year + 10);
+    setYear(year + 1);
   };
   const handleMinus = () => {
     setYear(year - 1);
@@ -69,19 +73,317 @@ const Filter = ({ navigation, route }) => {
     }
   };
 
-  const [tableHead] = useState([
-    "Back",
-    "QTY",
-    "SALES",
-    "Head4",
-    "Head5",
-    "Head6",
-    "Head7",
-    "Head8",
-    "Head9",
+  const getCustomerTypeData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2022-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "Y",
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-customer_type-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+             setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+  const getCustomerData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      enddate: "2023-11-19",
+      startDate: "2022-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "M",
+      neededQ: 4,
+      neededM: 11,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-customer-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+             setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+  const getOutletData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      startDate: "2022-11-19",
+      enddate: "2023-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "M",
+      neededQ: 4,
+      neededM: 11,
+      neededW: 2,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-outlet-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+            setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+  const getFamilyData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      startDate: "2022-11-19",
+      enddate: "2023-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "M",
+      neededQ: 4,
+      neededM: 11,
+      neededW: 2,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-family-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+             setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+  const getVendorData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      startDate: "2022-11-19",
+      enddate: "2023-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "M",
+      neededQ: 4,
+      neededM: 11,
+      neededW: 2,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-vendor-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+             setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+  const getSKUData = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      startDate: "2022-11-19",
+      enddate: "2023-11-19",
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+      demandingPage: "M",
+      neededQ: 4,
+      neededM: 11,
+      neededW: 2,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}mapping/invoice-sku-data-page`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+             setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", data);
+          });
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
+  };
+
+  // useEffect(()=>{
+  //   console.log("EFFECT DATA ==>",data);
+  //     },[data,setData])
+  const [tableHead, setTableHead] = useState([
+    // "Back",
+    // "QTY",
+    // "SALES",
+    // "Head4",
+    // "Head5",
+    // "Head6",
+    // "Head7",
+    // "Head8",
+    // "Head9",
   ]);
 
-  const [widthArr] = useState([150, 80, 100, 120, 140, 160, 180, 200, 200]);
+  const widthArr = [
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+    scale(150),
+  ];
 
   const generateTableData = () => {
     const tableData = [];
@@ -92,6 +394,7 @@ const Filter = ({ navigation, route }) => {
       }
       tableData.push(rowData);
     }
+    // console.log("tableData =====>",tableData);
     return tableData;
   };
 
@@ -375,6 +678,18 @@ const Filter = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      if (user.type == "V") {
+        if (user.status.trim() == "Y") {
+          getOutletData();
+          console.log("full");
+        } else {
+          getCustomerData();
+        }
+      } else if (user.type == "C") {
+        getOutletData();
+      } else if (user.type == "Z") {
+        getCustomerTypeData();
+      }
       filterDropDowns();
     }, [])
   );
@@ -523,32 +838,37 @@ const Filter = ({ navigation, route }) => {
         </View>
         <ScrollView horizontal showsVerticalScrollIndicator={false}>
           <View>
-            <Table>
-              <Row
-                data={tableHead}
-                widthArr={widthArr}
-                style={[
-                  styles.header,
-                  { backgroundColor: tableHead % 2 ? "#339CCC" : Colors.Main },
-                ]}
-                textStyle={[styles.text, { color: Colors.White }]}
-              />
-            </Table>
-            {console.log("widthArr", widthArr[0])}
-            <Table borderStyle={styles.borderStyle}>
-              {tableData.map((rowData, index) => (
+            {tableHead.length > 0 && (
+              <Table borderStyle={styles.headerBorderStyle}>
                 <Row
-                  key={index}
-                  data={rowData}
-                  widthArr={widthArr}
-                  style={[
-                    styles.row,
-                    index % 2 && { backgroundColor: Colors.White },
-                  ]}
-                  textStyle={styles.text}
+                  data={tableHead}
+                  widthArr={widthArr.slice(0, tableHead.length)}
+                  style={styles.header}
+                  textStyle={[styles.text, { color: Colors.White }]}
                 />
-              ))}
-            </Table>
+              </Table>
+            )}
+            {/* {console.log("widthArr", widthArr)} */}
+            {loading ? (
+              <View>
+                <ActivityIndicator size={"large"} style={{height:scale(200), width:scale(360)}} />
+              </View>
+            ) : (
+              <Table borderStyle={styles.borderStyle}>
+                {data.map((rowData, index) => (
+                  <Row
+                    key={index}
+                    data={rowData}
+                    widthArr={widthArr.slice(0, tableHead.length)}
+                    style={[
+                      styles.row,
+                      index % 2== 0 && { backgroundColor: Colors.White },
+                    ]}
+                    textStyle={styles.text}
+                  />
+                ))}
+              </Table>
+            )}
           </View>
         </ScrollView>
       </ScrollView>
@@ -580,14 +900,18 @@ const styles = StyleSheet.create({
 
   header: {
     height: verticalScale(50),
-    backgroundColor: Colors.Main,
+    backgroundColor: "#339CCC",
   },
   text: { textAlign: "center", fontFamily: Font.Inter400, color: Colors.Black },
-  row: { height: verticalScale(40), backgroundColor: "#E7E6E1" },
+  row: { height: verticalScale(50), backgroundColor: "#E7E6E1" },
   borderStyle: {
     borderWidth: scale(1),
-    borderColor: Colors.border,
+    borderColor: Colors.ThemeCream,
     borderTopColor: Colors.Main,
+  },
+  headerBorderStyle: {
+    borderWidth: scale(1),
+    borderColor: Colors.White,
   },
   back: {
     color: Colors.Main,
