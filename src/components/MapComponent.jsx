@@ -8,10 +8,10 @@ import { scale } from "react-native-size-matters";
 const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) => {
   const mapRef = useRef(null);
   const initialRegion = {
-    latitude: 0, // Replace with your initial latitude
-    longitude: 0, // Replace with your initial longitude
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitude: location.latitude, // Replace with your initial latitude
+    longitude: location.longitude, // Replace with your initial longitude
+    latitudeDelta: 0.00922,
+    longitudeDelta: 0.00421,
   };
 
   const moveToCurrentLocation = () => {
@@ -31,26 +31,26 @@ const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) =>
     );
   };
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const newRegion = {
-          latitude,
-          longitude,
-          latitudeDelta: initialRegion.latitudeDelta,
-          longitudeDelta: initialRegion.longitudeDelta,
-        };
-        mapRef.current.animateToRegion(newRegion, 0);
-      },
-      (error) => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  }, []);
+  // useEffect(() => {
+  //   Geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       const newRegion = {
+  //         latitude,
+  //         longitude,
+  //         latitudeDelta: initialRegion.latitudeDelta,
+  //         longitudeDelta: initialRegion.longitudeDelta,
+  //       };
+  //       mapRef.current.animateToRegion(newRegion, 0);
+  //     },
+  //     (error) => console.log(error),
+  //     { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  //   );
+  // }, []);
 
   return (
     <View style={{ flex: 1 }}>
-      <MapView style={{ flex: 1 }} initialRegion={initialRegion} ref={mapRef}>
+      <MapView style={{ flex: 1 }} initialRegion={initialRegion} ref={mapRef} >
         <Circle
           center={{
             latitude: location.latitude,
@@ -73,8 +73,8 @@ const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) =>
           coordinate={{
             latitude: location.latitude,
             longitude: location.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.00922,
+            longitudeDelta: 0.00421,
           }}
         />
 
@@ -87,13 +87,13 @@ const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) =>
           coordinate={{
             latitude: item.dlat,
             longitude: item.dlong,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.00922,
+            longitudeDelta: 0.00421,
           }}
           />)
         }
       </MapView>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={moveToCurrentLocation}
         style={styles.LocationBox}
       >
@@ -102,7 +102,7 @@ const MapComponent = ({ location, radius, fetchAddress, setLocation, shops }) =>
           color={Colors.Grey}
           size={scale(24)}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

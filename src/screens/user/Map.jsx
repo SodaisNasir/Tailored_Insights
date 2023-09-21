@@ -102,9 +102,11 @@ console.log("radius ==>",radius);
         case "C":
           customeridlo = userData.id;
           customeridhi = userData.id;
+          console.log("CASE C");
         case "V":
           vendoridlo = userData.id;
           vendoridhi = userData.id;
+          console.log("CASE V");
         default:
           break;
       }
@@ -191,7 +193,7 @@ console.log("raw ==>",raw);
         onChangeRadius={onChangeRadius}
       />
       <CustomButton
-        title="SHOW RESULTS"
+        title="SELECT FILTERS"
         containerStyle={{
           borderRadius: scale(15),
           marginTop: verticalScale(10),

@@ -132,10 +132,6 @@ export const login = (data, setLoading, setShowPasswordTime) => {
       console.log("catch error login ", error);
       setLoading(false);
 
-      // setTimeout(() => {
-      //   setErrorModal(false);
-      // }, 2000);
-      alert("Error");
     }
   };
 };

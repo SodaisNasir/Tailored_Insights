@@ -30,6 +30,7 @@ import DropDown from "../../components/Modal/DropDown";
 import BottomText from "../../components/Card/BottomText";
 import { useSelector } from "react-redux";
 import { State } from "react-native-image-zoom-viewer/built/image-viewer.type";
+import RadioButtonRN from "radio-buttons-react-native";
 
 import {
   ZTypeFilter,
@@ -40,6 +41,7 @@ import {
 } from "../../Constants/Data";
 import { BaseUrl } from "../../utils/url";
 import { useFocusEffect } from "@react-navigation/native";
+import Loading from "../../components/Modal/Loading";
 
 const Filter = ({ navigation, route }) => {
   const [year, setYear] = useState(2023);
@@ -48,12 +50,13 @@ const Filter = ({ navigation, route }) => {
   const [subFilter, setSubFilter] = useState("");
   const [customer, setCustomer] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const [listType, setListType] = useState([]);
   const [filterType, setFilterType] = useState([]);
   const [subFilterType, setSubFilterType] = useState([]);
   const [data, setData] = useState([]);
 
-  const [loading, setLoading] = useState(false);
   const { radius, address, location } = route.params;
   const user = useSelector((state) => state.userData);
 
@@ -107,7 +110,7 @@ const Filter = ({ navigation, route }) => {
               values = [...values, item[key]];
               // console.log("EXTRACTED VALUES ===>", values);
             });
-             setData((prevData) => [...prevData, values]);
+            setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
           });
           setLoading(false);
@@ -154,7 +157,7 @@ const Filter = ({ navigation, route }) => {
               values = [...values, item[key]];
               // console.log("EXTRACTED VALUES ===>", values);
             });
-             setData((prevData) => [...prevData, values]);
+            setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
           });
         }
@@ -250,7 +253,7 @@ const Filter = ({ navigation, route }) => {
               values = [...values, item[key]];
               // console.log("EXTRACTED VALUES ===>", values);
             });
-             setData((prevData) => [...prevData, values]);
+            setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
           });
           setLoading(false);
@@ -298,7 +301,7 @@ const Filter = ({ navigation, route }) => {
               values = [...values, item[key]];
               // console.log("EXTRACTED VALUES ===>", values);
             });
-             setData((prevData) => [...prevData, values]);
+            setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
           });
           setLoading(false);
@@ -346,7 +349,7 @@ const Filter = ({ navigation, route }) => {
               values = [...values, item[key]];
               // console.log("EXTRACTED VALUES ===>", values);
             });
-             setData((prevData) => [...prevData, values]);
+            setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
           });
           setLoading(false);
@@ -357,6 +360,9 @@ const Filter = ({ navigation, route }) => {
         setLoading(false);
       });
   };
+
+
+  
 
   // useEffect(()=>{
   //   console.log("EFFECT DATA ==>",data);
@@ -399,12 +405,13 @@ const Filter = ({ navigation, route }) => {
   };
 
   const subCustomerType = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -414,34 +421,35 @@ const Filter = ({ navigation, route }) => {
     });
 
     var requestOptions = {
-      method: "POST",
+      method: "Get",
       headers: myHeaders,
-      body: raw,
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-customer_type`, requestOptions)
+    fetch(`${BaseUrl}customerType/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
-            value: item.name,
-            label: item.customerType,
+            label: item.id,
+            values: item.name,
           };
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subCustomer = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -451,34 +459,36 @@ const Filter = ({ navigation, route }) => {
     });
 
     var requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: raw,
+      // body: raw,
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-customer`, requestOptions)
+    fetch(`${BaseUrl}customer/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
+            label : item.id,
             value: item.name,
-            label: item.customerId,
           };
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subOutlet = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -488,34 +498,37 @@ const Filter = ({ navigation, route }) => {
     });
 
     var requestOptions = {
-      method: "POST",
+      method: "Get",
       headers: myHeaders,
-      body: raw,
+      // body: raw,
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-outlet`, requestOptions)
+    fetch(`${BaseUrl}outlet/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        console.log("reslut ==>",result);
         const data = result.responseContent.map((item) => {
           return {
+            label: item.customerId,
             value: item.contactName,
-            label: item.customerOutletId,
           };
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subFamily = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -542,17 +555,19 @@ const Filter = ({ navigation, route }) => {
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subCategory = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -579,17 +594,19 @@ const Filter = ({ navigation, route }) => {
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subVendor = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -616,17 +633,19 @@ const Filter = ({ navigation, route }) => {
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
   const subSKU = () => {
+    setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-11-19",
-      startDate: "2023-11-19",
+      enddate: "2023-12-31",
+      startDate: "2023-01-01",
       // radius: radius.value,
       radius: 5000,
       elat: 45,
@@ -645,6 +664,7 @@ const Filter = ({ navigation, route }) => {
     fetch(`${BaseUrl}mapping/invoice-sku`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        console.log("SKU RESULT ===>",result);
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
@@ -653,11 +673,13 @@ const Filter = ({ navigation, route }) => {
         });
         console.log("result.responseContent", data);
         setSubFilterType(data);
+        setLoading(false);
+       
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);});
   };
 
-  const onChangeListType = (value) => {
+  const onChangeFilter = (value) => {
     console.log("ON CHANGE ==>", value);
     if (value == "Customer Type") {
       subCustomerType();
@@ -676,20 +698,39 @@ const Filter = ({ navigation, route }) => {
     }
   };
 
+  const onChangeListType = (value) =>{
+    console.log("ON CHANGE ==>", value);
+    if (value == "Customer Type") {
+      getCustomerTypeData();
+    } else if (value == "Customer") {
+      getCustomerData();
+    } else if (value == "Outlet") {
+      getFamilyData();
+    } else if (value == "Family") {
+      getFamilyData();
+    } else if (value == "Category") {
+      subCategory();
+    } else if (value == "Vendor") {
+      getVendorData();
+    } else if (value == "SKU") {
+      getSKUData();
+    }
+  }
+
   useFocusEffect(
     useCallback(() => {
-      if (user.type == "V") {
-        if (user.status.trim() == "Y") {
-          getOutletData();
-          console.log("full");
-        } else {
-          getCustomerData();
-        }
-      } else if (user.type == "C") {
-        getOutletData();
-      } else if (user.type == "Z") {
-        getCustomerTypeData();
-      }
+      // if (user.type == "V") {
+      //   if (user.status.trim() == "Y") {
+      //     getOutletData();
+      //     console.log("full");
+      //   } else {
+      //     getCustomerData();
+      //   }
+      // } else if (user.type == "C") {
+      //   getOutletData();
+      // } else if (user.type == "Z") {
+      //   getCustomerTypeData();
+      // }
       filterDropDowns();
     }, [])
   );
@@ -719,6 +760,7 @@ const Filter = ({ navigation, route }) => {
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <LogBox NoBack />
+      <Loading isVisible={loading} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={GlobalStyle.verticalSpace} />
         <View
@@ -744,7 +786,7 @@ const Filter = ({ navigation, route }) => {
             />
             <Text style={styles.back}>Back to Map</Text>
           </TouchableOpacity>
-          <View>
+          <View style={{ marginLeft:scale(10), marginRight:scale(70)}}>
             <Text
               style={styles.miles}
             >{`Within (${radius.name}) miles of (${address})`}</Text>
@@ -764,7 +806,7 @@ const Filter = ({ navigation, route }) => {
         </View>
 
         <DropDown
-          title="list type"
+          title="list By"
           items={listType}
           value={type}
           setValue={(value) => {
@@ -773,12 +815,37 @@ const Filter = ({ navigation, route }) => {
             onChangeListType(value);
           }}
         />
-        <DropDown
+        <View style={{ width: "90%", alignSelf: "center", flexDirection:'row', justifyContent:'space-between' }}>
+          <Text style={styles.Text}>Filter By</Text>
+          <TouchableOpacity onPress={()=> setCustomer(null)}>
+          <Text style={styles.Text}>Reset</Text>
+          </TouchableOpacity>
+        </View>
+        {
+          filterType.map(item =>{
+            return ( type != item.label ? <TouchableOpacity style={{width: "90%", alignSelf: "center", padding:scale(10)}}
+            onPress={()=> {setCustomer(item); onChangeFilter(item.value);}}
+            >
+              <View style={{alignItems:'center', flexDirection:'row',}}>
+                <View style={{height:scale(20), width:scale(20), borderColor:Colors.Main, borderRadius:scale(20), borderWidth:scale(1), justifyContent:'center'}}>
+                  <View style={{height:scale(10), width:scale(10), backgroundColor: customer?.label == item.label ?  Colors.Main : Colors.White, borderRadius:scale(20), alignSelf:'center'}}/>
+                </View>
+                <Text style={[styles.Text,{bottom:scale(2), marginLeft:scale(5)}]}>{item.label}</Text>
+              </View>
+            </TouchableOpacity>: null)
+          })
+        }
+        {/* <RadioButtonRN
+          data={filterType}
+          style={{ marginHorizontal: scale(20) }}
+          selectedBtn={(value) => {setCustomer(value); console.log("value ==>",value);}}
+        /> */}
+        {/* <DropDown
           title="Filter By"
           items={filterType}
           value={customer}
           setValue={(value) => setCustomer(value)}
-        />
+        /> */}
         <DropDown
           title="Sub Filter"
           items={subFilterType}
@@ -836,41 +903,6 @@ const Filter = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <ScrollView horizontal showsVerticalScrollIndicator={false}>
-          <View>
-            {tableHead.length > 0 && (
-              <Table borderStyle={styles.headerBorderStyle}>
-                <Row
-                  data={tableHead}
-                  widthArr={widthArr.slice(0, tableHead.length)}
-                  style={styles.header}
-                  textStyle={[styles.text, { color: Colors.White }]}
-                />
-              </Table>
-            )}
-            {/* {console.log("widthArr", widthArr)} */}
-            {loading ? (
-              <View>
-                <ActivityIndicator size={"large"} style={{height:scale(200), width:scale(360)}} />
-              </View>
-            ) : (
-              <Table borderStyle={styles.borderStyle}>
-                {data.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={rowData}
-                    widthArr={widthArr.slice(0, tableHead.length)}
-                    style={[
-                      styles.row,
-                      index % 2== 0 && { backgroundColor: Colors.White },
-                    ]}
-                    textStyle={styles.text}
-                  />
-                ))}
-              </Table>
-            )}
-          </View>
-        </ScrollView>
       </ScrollView>
       <BottomText />
       <ConnectionModal />
@@ -925,11 +957,11 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   miles: {
+
     color: Colors.Grey,
     fontSize: scale(12),
-    textAlign: "right",
     // marginRight:scale(50),
-    width: "30%",
+    // width: "80%",
     // backgroundColor:'red'
   },
   BoxOfTableHeader: {
@@ -944,5 +976,13 @@ const styles = StyleSheet.create({
   Back: {
     color: Colors.White,
     fontSize: scale(14),
+  },
+  Text: {
+    color: Colors.Main,
+    fontSize: scale(16),
+    fontFamily: Font.Inter600,
+    textTransform: "capitalize",
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(5),
   },
 });
