@@ -25,7 +25,7 @@ import CustomButton from "../../components/CustomButton";
 import MapComponent from "../../components/MapComponent.jsx";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
-import { IS_SIGN_IN, SIGN_IN } from "../../redux/reducer/Holder";
+import { IS_SIGN_IN, PRODUCTS, SIGN_IN } from "../../redux/reducer/Holder";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import CustomInput from "../../components/CustomInput";
 import AnimatedDropDown from "../../components/AnimatedDropDown";
@@ -35,6 +35,12 @@ import Loading from "../../components/Modal/Loading";
 import { Logout } from "../../redux/actions/AuthActions";
 import { BaseUrl } from "../../utils/url";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-simple-toast";
+
+
+
+
+
 const Map = ({ navigation }) => {
   const dispatch = useDispatch();
   const [address, setAddress] = useState("address");
@@ -69,6 +75,64 @@ const Map = ({ navigation }) => {
       .catch((error) => console.error("getAddressFromCoordinates =>", error));
   };
 
+  const fetchProductsData = async () => {
+    try {
+      setLoading(true);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append(
+        "Cookie",
+        "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
+      );
+
+      var raw = JSON.stringify({
+        customeridlo: 0,
+        customeridhi: 20000,
+        vendoridlo: 0,
+        vendoridhi: 20000,
+        enddate: "2023-08-1",
+        startDate: "2023-07-1",
+        radius: 5000,
+        elat: 45,
+        elong: 45,
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(
+        `${BaseUrl}mapping/invoice-dtls`,
+        requestOptions
+      );
+      const responseData = await response.json();
+      if (responseData.statusCode == "0") {
+        dispatch({
+          type: PRODUCTS,
+          payload: responseData.responseContent,
+        });
+        console.log("====================================");
+        console.log(
+          "responseData.responseContent",
+          responseData.responseContent
+        );
+        console.log("====================================");
+        setLoading(false);
+      } else {
+        Toast.show("NO RECORD FOUND");
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("====================================");
+      console.log("ERRROR IN DTLS ===>", error);
+      console.log("====================================");
+    }
+  };
+
   useEffect(() => {
     RNLocation.getLatestLocation().then(async (latestLocation) => {
       console.log("====================================");
@@ -78,10 +142,10 @@ const Map = ({ navigation }) => {
         latitude: latestLocation.latitude,
         longitude: latestLocation.longitude,
       });
-
+      fetchProductsData();
       fetchAddress(latestLocation);
     });
-  },[]);
+  }, []);
 
   const onChangeRadius = async (radius) => {
     try {
@@ -89,7 +153,7 @@ const Map = ({ navigation }) => {
 
       const data = await AsyncStorage.getItem("user_details");
       const userData = JSON.parse(data);
-console.log("radius ==>",radius);
+      console.log("radius ==>", radius);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -121,20 +185,32 @@ console.log("radius ==>",radius);
       //   "elat": 45,
       //   "elong": 45
       // }
+
+      // {
+      //   customeridlo: customeridlo,
+      //   customeridhi: customeridhi,
+      //   vendoridlo: vendoridlo,
+      //   vendoridhi: vendoridhi,
+      //   radius: radius,
+      //   // elat: location.latitude,
+      //   // elong: location.longitude,
+      //   elat: 45,
+      //   elong: 45,
+      //   enddate: "2023-11-19",
+      //   startDate: "2023-11-19",
+      // }
       var raw = JSON.stringify({
-        customeridlo: customeridlo,
-        customeridhi: customeridhi,
-        vendoridlo: vendoridlo,
-        vendoridhi: vendoridhi,
-        radius: radius,
-        // elat: location.latitude,
-        // elong: location.longitude,
-        elat: 45,
-        elong: 45,
+        customeridlo: 0,
+        customeridhi: 20000,
+        vendoridlo: 0,
+        vendoridhi: 20000,
         enddate: "2023-11-19",
         startDate: "2023-11-19",
+        radius: 5000,
+        elat: 45,
+        elong: 45,
       });
-console.log("raw ==>",raw);
+
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -148,7 +224,7 @@ console.log("raw ==>",raw);
       console.log("responseData", responseData);
       if (responseData.statusCode == 0) {
         console.log("responseData ====>", responseData);
-        setShops(responseData.responseContent)
+        setShops(responseData.responseContent);
       } else {
         if (responseData.statusDescription == "NO_RECORD_FOUND") {
           Toast.show("NO RECORD FOUND");
@@ -198,7 +274,13 @@ console.log("raw ==>",raw);
           borderRadius: scale(15),
           marginTop: verticalScale(10),
         }}
-        onPress={() => navigation.navigate("filter", {radius : radius, address : address, location : location})}
+        onPress={() =>
+          navigation.navigate("filter", {
+            radius: radius,
+            address: address,
+            location: location,
+          })
+        }
       />
 
       <View style={styles.MapBox}>

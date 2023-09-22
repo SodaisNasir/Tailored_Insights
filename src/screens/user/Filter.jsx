@@ -42,13 +42,14 @@ import {
 import { BaseUrl } from "../../utils/url";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../../components/Modal/Loading";
+import CustomButton from "../../components/CustomButton";
 
 const Filter = ({ navigation, route }) => {
   const [year, setYear] = useState(2023);
   const [number, setNumber] = useState(1);
   const [type, setType] = useState("");
   const [subFilter, setSubFilter] = useState("");
-  const [customer, setCustomer] = useState("");
+  const [filter, setFilter] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -59,6 +60,170 @@ const Filter = ({ navigation, route }) => {
 
   const { radius, address, location } = route.params;
   const user = useSelector((state) => state.userData);
+  const Products = useSelector((state) => state.ProductsData);
+
+  const Static = [
+    {
+      lable: 10655,
+      value: "10655-SOFTCARE COMPUTER CONSULTING",
+    },
+    {
+      lable: 10655,
+      value: "13348-SOFTCARE COMPUTER CONSULTING",
+    },
+    {
+      lable: 10660,
+      value: "10660-METRO K9 ACADEMY LLC",
+    },
+    {
+      lable: 10664,
+      value: "10664-NATURAL TAIL TREATS LLC",
+    },
+    {
+      lable: 10664,
+      value: "13356-NATURAL TAIL TREATS LLC",
+    },
+    {
+      lable: 10667,
+      value: "10667-FUSSY FRIENDS PET SUPPLY",
+    },
+    {
+      lable: 10667,
+      value: "13357-FUSSY FRIENDS PET SUPPLY",
+    },
+    {
+      lable: 10671,
+      value: "10671-The Grooming Shoppe  Inc dba the Petcare Market",
+    },
+    {
+      lable: 10671,
+      value: "18408-The Petcare  Market",
+    },
+    {
+      lable: 10675,
+      value: "10675-WOOF GANG BAKERY & GROOMING",
+    },
+    {
+      lable: 10676,
+      value: "10676-WHOLISTIC PAWS-RIDGEWOOD",
+    },
+    {
+      lable: 10676,
+      value: "13360-WHOLISTIC PAWS",
+    },
+    {
+      lable: 10676,
+      value: "13361-WHOLISTIC PAWS",
+    },
+    {
+      lable: 10676,
+      value: "18399-Wholistic Ridgewood ship to Ramsey",
+    },
+    {
+      lable: 10679,
+      value: "10679-DONNA S PET DEPOT",
+    },
+    {
+      lable: 10681,
+      value: "10681-BLACKINN",
+    },
+    {
+      lable: 10682,
+      value: "13362-SHAMPOOCHIES",
+    },
+    {
+      lable: 10683,
+      value: "10683-MAMA S & PAPA S",
+    },
+    {
+      lable: 10687,
+      value: "10687-PET SUPPLIES PLUS #4006",
+    },
+    {
+      lable: 10692,
+      value: "10692-WESTWOOD PETS UNLIMITED",
+    },
+    {
+      lable: 10692,
+      value: "19586-WESTWOOD PETS UNLIMITED",
+    },
+    {
+      lable: 10694,
+      value: "10694-Pet Goods",
+    },
+    {
+      lable: 10694,
+      value: "13363-PET GOODS-SUCCASUNNA",
+    },
+    {
+      lable: 10694,
+      value: "19626-Pet Goods 2 Roxbury",
+    },
+    {
+      lable: 10702,
+      value: "10702-Plaza Pet World, Inc.",
+    },
+    {
+      lable: 10702,
+      value: "18065-Plaza Pet World, Inc.",
+    },
+    {
+      lable: 10708,
+      value: "10708-MOYSESTRA ENTERPRISES, INC.",
+    },
+    {
+      lable: 10708,
+      value: "13370-PET SUPPLIES PLUS #4003",
+    },
+    {
+      lable: 10709,
+      value: "10709-PAWS TO LOVE ADOPTIONS,INC.",
+    },
+    {
+      lable: 10710,
+      value: "10710-AMY S ROYAL TREATMENT",
+    },
+    {
+      lable: 10711,
+      value: "10711-Hound About Town (McWilliams)",
+    },
+    {
+      lable: 10715,
+      value: "10715-ONE OF THE FAMILY PETS SUPPLY",
+    },
+    {
+      lable: 10715,
+      value: "17504-ONE OF THE FAMILY PETS SUPPLY",
+    },
+    {
+      lable: 10716,
+      value: "10716-WHOLISTIC PAWS-RAMSEY",
+    },
+    {
+      lable: 10718,
+      value: "10718-THE BIG BAD WOOF TAKOMA",
+    },
+    {
+      lable: 10718,
+      value: "13373-METROPOLITAN POLICE DEPT.",
+    },
+    {
+      lable: 10719,
+      value: "10719-CHIEN DE LUXE",
+    },
+    {
+      lable: 10728,
+      value: "10728-LITTLE RASCALS DOGGIE DAY CARE",
+    },
+    {
+      label: 10728,
+      value: "13375-LITTLE RASCALS DOGGIE",
+    },
+    {
+      lable: 10729,
+      value: "10729-HUMANE RESCUE ALLIANCE",
+    },
+  ];
 
   const handleAdd = () => {
     setYear(year + 1);
@@ -203,7 +368,7 @@ const Filter = ({ navigation, route }) => {
             let values = [];
             Object.keys(item).forEach((key) => {
               values = [...values, item[key]];
-              // console.log("EXTRACTED VALUES ===>", values);
+              console.log("EXTRACTED VALUES ===>", values);
             });
             setData((prevData) => [...prevData, values]);
             console.log("DATA ==>", data);
@@ -361,9 +526,6 @@ const Filter = ({ navigation, route }) => {
       });
   };
 
-
-  
-
   // useEffect(()=>{
   //   console.log("EFFECT DATA ==>",data);
   //     },[data,setData])
@@ -383,12 +545,12 @@ const Filter = ({ navigation, route }) => {
     scale(150),
     scale(150),
     scale(150),
-    scale(150),
-    scale(150),
-    scale(150),
-    scale(150),
-    scale(150),
-    scale(150),
+    // scale(150),
+    // scale(150),
+    // scale(150),
+    // scale(150),
+    // scale(150),
+    // scale(150),
   ];
 
   const generateTableData = () => {
@@ -439,7 +601,10 @@ const Filter = ({ navigation, route }) => {
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subCustomer = () => {
@@ -470,7 +635,7 @@ const Filter = ({ navigation, route }) => {
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
-            label : item.id,
+            label: item.id,
             value: item.name,
           };
         });
@@ -478,7 +643,10 @@ const Filter = ({ navigation, route }) => {
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subOutlet = () => {
@@ -507,18 +675,20 @@ const Filter = ({ navigation, route }) => {
     fetch(`${BaseUrl}outlet/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("reslut ==>",result);
         const data = result.responseContent.map((item) => {
           return {
             label: item.customerId,
             value: item.contactName,
           };
         });
-        console.log("result.responseContent", data);
+        console.log("result.responseContent", data.length);
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subFamily = () => {
@@ -557,7 +727,10 @@ const Filter = ({ navigation, route }) => {
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subCategory = () => {
@@ -596,7 +769,10 @@ const Filter = ({ navigation, route }) => {
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subVendor = () => {
@@ -635,7 +811,10 @@ const Filter = ({ navigation, route }) => {
         setSubFilterType(data);
         setLoading(false);
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const subSKU = () => {
@@ -664,7 +843,7 @@ const Filter = ({ navigation, route }) => {
     fetch(`${BaseUrl}mapping/invoice-sku`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("SKU RESULT ===>",result);
+        console.log("SKU RESULT ===>", result);
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
@@ -674,9 +853,11 @@ const Filter = ({ navigation, route }) => {
         console.log("result.responseContent", data);
         setSubFilterType(data);
         setLoading(false);
-       
       })
-      .catch((error) => {console.log("error", error); setLoading(false);});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+      });
   };
 
   const onChangeFilter = (value) => {
@@ -698,14 +879,14 @@ const Filter = ({ navigation, route }) => {
     }
   };
 
-  const onChangeListType = (value) =>{
-    console.log("ON CHANGE ==>", value);
+  const onChangeListType = (value) => {
+    console.log("ON CHANGE LIST ==>", value);
     if (value == "Customer Type") {
       getCustomerTypeData();
     } else if (value == "Customer") {
       getCustomerData();
     } else if (value == "Outlet") {
-      getFamilyData();
+      getOutletData();
     } else if (value == "Family") {
       getFamilyData();
     } else if (value == "Category") {
@@ -715,7 +896,7 @@ const Filter = ({ navigation, route }) => {
     } else if (value == "SKU") {
       getSKUData();
     }
-  }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -756,6 +937,189 @@ const Filter = ({ navigation, route }) => {
     }
   };
 
+  // this is an extensive filteration method
+
+  const filterProducts = (value) => {
+    const subFilterObject = subFilterType.filter((item) => item.value == value);
+    if (filter == "Customer Type") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.customerType == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "Customer") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.map((item) => {
+        if (item.customerId == filterItem) {
+          return {
+            Product: item.skuName,
+            Amount: item.amount,
+            Quantity: item.qty,
+          };
+        }
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "Outlet") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.customerId == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "Family") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.family == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "Category") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.familyCategoryId == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "Vendor") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.vendorId == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    } else if (filter == "SKU") {
+      const filterItem = subFilterObject[0].label;
+      const FilteredProducts = Products.filter(
+        (item) => item.skuId == filterItem
+      ).map((item) => {
+        return {
+          Product: item.skuName,
+          Amount: item.amount,
+          Quantity: item.qty,
+        };
+      });
+      if (FilteredProducts.length > 0) {
+        const keys = Object.keys(FilteredProducts[0]);
+        console.log("keys ====>", keys);
+        setTableHead(keys);
+        FilteredProducts.forEach((item) => {
+          let values = [];
+          Object.keys(item).forEach((key) => {
+            values = [...values, item[key]];
+            console.log("EXTRACTED VALUES ===>", values);
+          });
+          setData((prevData) => [...prevData, values]);
+          console.log("DATA ==>", data);
+        });
+      }
+    }
+  };
+
   const tableData = generateTableData();
   return (
     <SafeAreaView style={GlobalStyle.Container}>
@@ -786,11 +1150,11 @@ const Filter = ({ navigation, route }) => {
             />
             <Text style={styles.back}>Back to Map</Text>
           </TouchableOpacity>
-          <View style={{ marginLeft:scale(10), marginRight:scale(70)}}>
+          <View style={{ marginLeft: scale(10), marginRight: scale(70) }}>
             <Text
               style={styles.miles}
             >{`Within (${radius.name}) miles of (${address})`}</Text>
-            <View style={GlobalStyle.Row}>
+            {/* <View style={GlobalStyle.Row}>
               {Exports?.map((item, index) => {
                 return (
                   <View
@@ -801,7 +1165,7 @@ const Filter = ({ navigation, route }) => {
                   </View>
                 );
               })}
-            </View>
+            </View> */}
           </View>
         </View>
 
@@ -812,48 +1176,92 @@ const Filter = ({ navigation, route }) => {
           setValue={(value) => {
             console.log("value", value);
             setType(value);
-            onChangeListType(value);
+            // onChangeListType(value);
           }}
         />
-        <View style={{ width: "90%", alignSelf: "center", flexDirection:'row', justifyContent:'space-between' }}>
+        <View
+          style={{
+            width: "90%",
+            alignSelf: "center",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <Text style={styles.Text}>Filter By</Text>
-          <TouchableOpacity onPress={()=> setCustomer(null)}>
-          <Text style={styles.Text}>Reset</Text>
+          <TouchableOpacity onPress={() => setFilter(null)}>
+            <Text style={styles.Text}>Reset</Text>
           </TouchableOpacity>
         </View>
-        {
-          filterType.map(item =>{
-            return ( type != item.label ? <TouchableOpacity style={{width: "90%", alignSelf: "center", padding:scale(10)}}
-            onPress={()=> {setCustomer(item); onChangeFilter(item.value);}}
+        {filterType.map((item) => {
+          return type != item.label ? (
+            <TouchableOpacity
+              style={{ width: "90%", alignSelf: "center", padding: scale(10) }}
+              onPress={() => {
+                setFilter(item.value);
+                onChangeFilter(item.value);
+              }}
             >
-              <View style={{alignItems:'center', flexDirection:'row',}}>
-                <View style={{height:scale(20), width:scale(20), borderColor:Colors.Main, borderRadius:scale(20), borderWidth:scale(1), justifyContent:'center'}}>
-                  <View style={{height:scale(10), width:scale(10), backgroundColor: customer?.label == item.label ?  Colors.Main : Colors.White, borderRadius:scale(20), alignSelf:'center'}}/>
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <View
+                  style={{
+                    height: scale(20),
+                    width: scale(20),
+                    borderColor: Colors.Main,
+                    borderRadius: scale(20),
+                    borderWidth: scale(1),
+                    justifyContent: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      height: scale(10),
+                      width: scale(10),
+                      backgroundColor:
+                        filter == item.label ? Colors.Main : Colors.White,
+                      borderRadius: scale(20),
+                      alignSelf: "center",
+                    }}
+                  />
                 </View>
-                <Text style={[styles.Text,{bottom:scale(2), marginLeft:scale(5)}]}>{item.label}</Text>
+                <Text
+                  style={[
+                    styles.Text,
+                    { bottom: scale(2), marginLeft: scale(5) },
+                  ]}
+                >
+                  {item.label}
+                </Text>
               </View>
-            </TouchableOpacity>: null)
-          })
-        }
+            </TouchableOpacity>
+          ) : null;
+        })}
         {/* <RadioButtonRN
           data={filterType}
           style={{ marginHorizontal: scale(20) }}
-          selectedBtn={(value) => {setCustomer(value); console.log("value ==>",value);}}
+          selectedBtn={(value) => {setFilter(value); console.log("value ==>",value);}}
         /> */}
         {/* <DropDown
           title="Filter By"
           items={filterType}
           value={customer}
-          setValue={(value) => setCustomer(value)}
+          setValue={(value) => setFilter(value)}
         /> */}
         <DropDown
           title="Sub Filter"
           items={subFilterType}
           value={subFilter}
-          setValue={(value) => setSubFilter(value)}
+          setValue={(value) => {
+            setSubFilter(value);
+            filterProducts(value);
+          }}
         />
-
+        {/*  borderStyle={styles.borderStyle}> */}
         <View style={GlobalStyle.verticalSpace} />
+        {/* <CustomButton
+          containerStyle={styles.MainContainer}
+          onPress={() => null}
+          title="Filter"
+        /> */}
         <View style={GlobalStyle.Row}>
           <View style={styles.BoxOfTableHeader}>
             <TouchableOpacity onPress={handleMinus}>
@@ -903,6 +1311,54 @@ const Filter = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
+        {data.length > 0 ? (
+          <ScrollView horizontal showsVerticalScrollIndicator={false}>
+            <View>
+              <Table>
+                <Row
+                  data={tableHead}
+                  widthArr={widthArr}
+                  style={styles.header}
+                  textStyle={[styles.text, { color: Colors.White }]}
+                />
+              </Table>
+              <ScrollView style={styles.dataWrapper}>
+                <Table borderStyle={styles.borderStyle}>
+                  {data.map((rowData, index) => (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={widthArr}
+                      style={[
+                        styles.row,
+                        index % 2 && { backgroundColor: Colors.White },
+                      ]}
+                      textStyle={styles.text}
+                    />
+                  ))}
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView>
+        ) : (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: scale(20),
+            }}
+          >
+            <Text
+              style={{
+                color: Colors.Main,
+                fontFamily: Font.Inter300,
+                fontSize: scale(20),
+              }}
+            >
+              Nothing to show
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <BottomText />
       <ConnectionModal />
@@ -957,7 +1413,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   miles: {
-
     color: Colors.Grey,
     fontSize: scale(12),
     // marginRight:scale(50),

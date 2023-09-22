@@ -1,9 +1,10 @@
-export const SIGN_IN = 'SIGNIN';
-export const PASSWORD = 'PASSWORD'
+export const SIGN_IN = "SIGNIN";
+export const PASSWORD = "PASSWORD";
+export const PRODUCTS = "PRODUCTS";
 
 const initialState = {
   userData: null,
-  password: null,
+  ProductsData: null,
 };
 
 const holderReducer = (state = initialState, action) => {
@@ -18,7 +19,11 @@ const holderReducer = (state = initialState, action) => {
         ...state,
         userData: action.password,
       };
-
+    case PRODUCTS:
+      return {
+        ...state,
+        ProductsData: action.payload,
+      };
     default: {
       return state;
     }
