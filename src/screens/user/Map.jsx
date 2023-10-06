@@ -291,7 +291,7 @@ const Map = ({ navigation }) => {
       neededM: 0,
       neededW: 0,
       pageNumber: 1,
-      pageSize: 1,
+      pageSize: 100,
       radius: 5000,
       elat: 45,
       elong: 45,
@@ -303,37 +303,43 @@ const Map = ({ navigation }) => {
       body: raw,
       redirect: "follow",
     };
-   
+
     fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.statusCode == "0") {
-          const keys = Object.keys(result.responseContent[0]);
-          console.log("keys ====>", keys);
-          setTableHead(keys);
+          // const keys = Object.keys(result.responseContent[0]);
+          // console.log("keys ====>", keys);
+          // setTableHead(keys);
+          const q1Array = [];
+          const q2Array = [];
+          const q3Array = [];
+          const q4Array = [];
           let arr = [];
-          result.responseContent.forEach((item) => {
-            let values = [];
-            Object.keys(item).forEach((key) => {
-              values = [...values, item[key]];
-              // console.log("EXTRACTED VALUES ===>", values);
-            });
-            console.log("setData ==>",data);
-            arr = [...arr,values];
-            setData((prevData) => [...prevData, values]);
-          });
-          console.log("setData ==>",arr);
+          for (const item of result.responseContent) {
+            q1Array.push([item.product, item.qty,item.q1, ]);
+            q2Array.push([item.product, item.qty,item.q2, ]);
+            q3Array.push([item.product, item.qty,item.q3,]);
+            q4Array.push([item.product, item.qty,item.q4,]);
+          }
+          // result.responseContent.forEach((item) => {
+          //   let values = [];
+          //   Object.keys(item).forEach((key) => {
+          //     values = [...values, item[key]];
+          //     // console.log("EXTRACTED VALUES ===>", values);
+          //   });
+          //   arr = [...arr, values];
+          //   setData((prevData) => [...prevData, values]);
+          // });
           setLoading(false);
           navigation.navigate("full_table", {
             radius: radius,
             address: address,
             location: location,
-            tableHead1: keys,
-            tableData: arr,
-            listType:listType
+            tableData: [q1Array,q2Array,q3Array,q4Array],
+            listType: listType,
           });
-        }
-        else{
+        } else {
           console.log("error");
         }
       })
