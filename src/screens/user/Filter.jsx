@@ -593,7 +593,7 @@ const Filter = ({ navigation, route }) => {
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
-            label: item.id,
+            key: item.id,
             values: item.name,
           };
         });
@@ -635,7 +635,7 @@ const Filter = ({ navigation, route }) => {
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
-            label: item.id,
+            key: item.id,
             value: item.name,
           };
         });
@@ -677,7 +677,7 @@ const Filter = ({ navigation, route }) => {
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
-            label: item.customerId,
+            key: item.customerId,
             value: item.contactName,
           };
         });
@@ -720,7 +720,7 @@ const Filter = ({ navigation, route }) => {
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
-            label: item.family,
+            key: item.family,
           };
         });
         console.log("result.responseContent", data);
@@ -738,34 +738,25 @@ const Filter = ({ navigation, route }) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      enddate: "2023-12-31",
-      startDate: "2023-01-01",
-      // radius: radius.value,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
-      // elat: location.latitude,
-      // elong: location.longitude,
-    });
+ 
 
     var requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: raw,
+
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-category`, requestOptions)
+    fetch(`${BaseUrl}category/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
-            label: item.familyCategoryId,
+            key: item.familyCategoryId,
           };
         });
-        console.log("result.responseContent", data);
+        console.log("result.CATEGORY", data);
         setSubFilterType(data);
         setLoading(false);
       })
@@ -804,7 +795,7 @@ const Filter = ({ navigation, route }) => {
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
-            label: item.vendorId,
+            key: item.vendorId,
           };
         });
         console.log("result.responseContent", data);
@@ -834,23 +825,24 @@ const Filter = ({ navigation, route }) => {
     });
 
     var requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: raw,
+      
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-sku`, requestOptions)
+    fetch(`${BaseUrl}sku/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log("SKU RESULT ===>", result);
         const data = result.responseContent.map((item) => {
+          console.log("ITEM IN SKU ==>",item);
           return {
             value: item.name,
-            label: item.skuId,
+            key: item.skuId,
           };
         });
-        console.log("result.responseContent", data);
+        // console.log("result.responseContent", data);
         setSubFilterType(data);
         setLoading(false);
       })
@@ -1120,54 +1112,88 @@ const Filter = ({ navigation, route }) => {
     }
   };
 
+  const OnShowTables = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append(
+      "Cookie",
+      "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
+    );
+
+    console.log("type====>", type);
+    var raw = JSON.stringify({
+      listType: type,
+      customertypelo: 0,
+      customertypehi: 0,
+      outletlo: 0,
+      outlethi: 0,
+      familylo: 0,
+      familyhi: 0,
+      categorylo: 0,
+      categoryhi: 0,
+      vendorlo: 0,
+      vendorhi: 0,
+      skulo: 0,
+      skuhi: 0,
+      enddate: "2023-11-19",
+      startDate: "2022-11-19",
+      demandingPage: "Y",
+      neededQ: 3,
+      neededM: 4,
+      neededW: 5,
+      pageNumber: 1,
+      pageSize: 100,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          let arr = [];
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+            arr = [...arr, values];
+            setData((prevData) => [...prevData, values]);
+            console.log("DATA ==>", arr);
+          });
+          setLoading(false);
+          navigation.navigate("full_table", {
+            radius: radius,
+            address: address,
+            location: location,
+            tableHead: tableHead,
+            tableData: arr,
+          });
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const tableData = generateTableData();
   return (
     <SafeAreaView style={GlobalStyle.Container}>
-      <LogBox NoBack />
+      <LogBox />
       <Loading isVisible={loading} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={GlobalStyle.verticalSpace} />
-        <View
-          style={[
-            GlobalStyle.Row,
-            {
-              justifyContent: "space-between",
-              paddingHorizontal: moderateScale(13),
-            },
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <FontAwesome5
-              name="map-marked-alt"
-              color={Colors.Main}
-              size={scale(30)}
-            />
-            <Text style={styles.back}>Back to Map</Text>
-          </TouchableOpacity>
-          <View style={{ marginLeft: scale(10), marginRight: scale(70) }}>
-            <Text
-              style={styles.miles}
-            >{`Within (${radius.name}) miles of (${address})`}</Text>
-            {/* <View style={GlobalStyle.Row}>
-              {Exports?.map((item, index) => {
-                return (
-                  <View
-                    style={{ flexDirection: "row", alignItems: "flex-end" }}
-                  >
-                    <Image source={item.source} style={styles.Image} />
-                    <Text style={styles.Export}>Export as {item.value}</Text>
-                  </View>
-                );
-              })}
-            </View> */}
-          </View>
-        </View>
 
         <DropDown
           title="list By"
@@ -1247,12 +1273,14 @@ const Filter = ({ navigation, route }) => {
           setValue={(value) => setFilter(value)}
         /> */}
         <DropDown
+          save="key"
           title="Sub Filter"
           items={subFilterType}
           value={subFilter}
-          setValue={(value) => {
-            setSubFilter(value);
-            filterProducts(value);
+          setValue={(item) => {
+            console.log("THIS IS SELECTED ==>",item,);
+            setSubFilter(item);
+            // filterProducts(value);
           }}
         />
         {/*  borderStyle={styles.borderStyle}> */}
@@ -1262,7 +1290,7 @@ const Filter = ({ navigation, route }) => {
           onPress={() => null}
           title="Filter"
         /> */}
-        <View style={GlobalStyle.Row}>
+        {/* <View style={GlobalStyle.Row}>
           <View style={styles.BoxOfTableHeader}>
             <TouchableOpacity onPress={handleMinus}>
               <Entypo
@@ -1310,8 +1338,8 @@ const Filter = ({ navigation, route }) => {
               />
             </TouchableOpacity>
           </View>
-        </View>
-        {data.length > 0 ? (
+        </View> */}
+        {/* {data.length > 0 ? (
           <ScrollView horizontal showsVerticalScrollIndicator={false}>
             <View>
               <Table>
@@ -1358,7 +1386,12 @@ const Filter = ({ navigation, route }) => {
               Nothing to show
             </Text>
           </View>
-        )}
+        )} */}
+        <CustomButton
+          containerStyle={styles.MainContainer}
+          onPress={OnShowTables}
+          title="SHOW RESULTS"
+        />
       </ScrollView>
       <BottomText />
       <ConnectionModal />

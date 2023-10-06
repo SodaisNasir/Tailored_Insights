@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { OTP, REGISTER, SIGN_IN, TOKEN, USER_DETAILS } from "../reducer/Holder";
+import { OTP, PASSWORD, REGISTER, SIGN_IN, TOKEN, USER_DETAILS } from "../reducer/Holder";
 import Toast from "react-native-simple-toast";
 
 import { BaseUrl } from "../../utils/url";

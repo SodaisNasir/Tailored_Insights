@@ -8,7 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
 import LogoCard from "../../components/Card/LogoCard";
 import {
@@ -24,7 +24,7 @@ import { MapRadious, Radius, coordinates } from "../../Constants/Data";
 import CustomButton from "../../components/CustomButton";
 import MapComponent from "../../components/MapComponent.jsx";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IS_SIGN_IN, PRODUCTS, SIGN_IN } from "../../redux/reducer/Holder";
 import ConnectionModal from "../../components/Modal/ConnectionModal";
 import CustomInput from "../../components/CustomInput";
@@ -36,10 +36,7 @@ import { Logout } from "../../redux/actions/AuthActions";
 import { BaseUrl } from "../../utils/url";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-simple-toast";
-
-
-
-
+import { useFocusEffect } from "@react-navigation/native";
 
 const Map = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -59,6 +56,11 @@ const Map = ({ navigation }) => {
   const [radius, setRadius] = useState(300);
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.userData);
+  const [data, setData] = useState([]);
+
+  const [tableHead, setTableHead] = useState([]);
+
   const fetchAddress = (latestLocation) => {
     const apiKey = "AIzaSyDkHZhc1UElZ2N-wumI7kqQokBoiME1JIQ";
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latestLocation.latitude},${latestLocation.longitude}&key=${apiKey}`;
@@ -146,6 +148,12 @@ const Map = ({ navigation }) => {
       fetchAddress(latestLocation);
     });
   }, []);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     setData([]);
+  //     setTableHead([]);
+  //   },[])
+  // );
 
   const onChangeRadius = async (radius) => {
     try {
@@ -240,6 +248,98 @@ const Map = ({ navigation }) => {
     }
   };
 
+  const OnShowTables = () => {
+    setLoading(true);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append(
+      "Cookie",
+      "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
+    );
+
+    let listType;
+    if (user.type == "V") {
+      if (user.status.trim() == "Y") {
+        listType = "Outlet";
+      } else {
+        listType = "Category";
+      }
+    } else if (user.type == "C") {
+      listType = "Outlet";
+    } else if (user.type == "Z") {
+      listType = "CustomerType";
+    }
+
+    var raw = JSON.stringify({
+      listType: listType,
+      customertypelo: 0,
+      customertypehi: 0,
+      outletlo: 0,
+      outlethi: 0,
+      familylo: 0,
+      familyhi: 0,
+      categorylo: 0,
+      categoryhi: 0,
+      vendorlo: 0,
+      vendorhi: 0,
+      skulo: 0,
+      skuhi: 0,
+      enddate: "2023-11-19",
+      startDate: "2022-11-19",
+      demandingPage: "Y",
+      neededQ: 0,
+      neededM: 0,
+      neededW: 0,
+      pageNumber: 1,
+      pageSize: 1,
+      radius: 5000,
+      elat: 45,
+      elong: 45,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+   
+    fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.statusCode == "0") {
+          const keys = Object.keys(result.responseContent[0]);
+          console.log("keys ====>", keys);
+          setTableHead(keys);
+          let arr = [];
+          result.responseContent.forEach((item) => {
+            let values = [];
+            Object.keys(item).forEach((key) => {
+              values = [...values, item[key]];
+              // console.log("EXTRACTED VALUES ===>", values);
+            });
+            console.log("setData ==>",data);
+            arr = [...arr,values];
+            setData((prevData) => [...prevData, values]);
+          });
+          console.log("setData ==>",arr);
+          setLoading(false);
+          navigation.navigate("full_table", {
+            radius: radius,
+            address: address,
+            location: location,
+            tableHead1: keys,
+            tableData: arr,
+            listType:listType
+          });
+        }
+        else{
+          console.log("error");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const LogOut = () => {
     dispatch(Logout(setLoading));
   };
@@ -269,18 +369,12 @@ const Map = ({ navigation }) => {
         onChangeRadius={onChangeRadius}
       />
       <CustomButton
-        title="SELECT FILTERS"
+        title="SHOW RESULTS"
         containerStyle={{
           borderRadius: scale(15),
           marginTop: verticalScale(10),
         }}
-        onPress={() =>
-          navigation.navigate("filter", {
-            radius: radius,
-            address: address,
-            location: location,
-          })
-        }
+        onPress={OnShowTables}
       />
 
       <View style={styles.MapBox}>

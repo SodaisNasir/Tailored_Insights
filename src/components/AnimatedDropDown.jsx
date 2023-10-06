@@ -19,7 +19,6 @@ import Entypo from "react-native-vector-icons/Entypo";
 // import { useSelector } from 'react-redux'
 
 const AnimatedDropDown = ({ options,setRadius,onChangeRadius }) => {
-  console.log("options", options);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
