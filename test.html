@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <!-- <h1>Dynamic Table Example</h1>
+    <button onclick="addRow()">Add Row</button> -->
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here -->
+        </tbody>
+    </table>
+
+    <script>
+        function addRow() {
+            var table = document.getElementById("myTable");
+            var newRow = table.insertRow(-1); // Insert a row at the end of the table
+
+            var nameCell = newRow.insertCell(0);
+            var ageCell = newRow.insertCell(1);
+            var countryCell = newRow.insertCell(2);
+
+            nameCell.innerHTML = "<input type='text'>";
+            ageCell.innerHTML = "<input type='number'>";
+            countryCell.innerHTML = "<input type='text'>";
+        }
+    </script>
+</body>
+</html>

@@ -23,6 +23,8 @@ import com.airbnb.android.react.lottie.LottiePackage;
 import com.reactnativedocumentpicker.RNDocumentPickerPackage;
 // react-native-fast-image
 import com.dylanvann.fastimage.FastImageViewPackage;
+// react-native-html-to-pdf
+import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
@@ -90,6 +92,7 @@ public class PackageList {
       new LottiePackage(),
       new RNDocumentPickerPackage(),
       new FastImageViewPackage(),
+      new RNHTMLtoPDFPackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
       new RNLocationPackage(),

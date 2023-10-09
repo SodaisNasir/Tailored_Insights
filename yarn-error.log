@@ -1,21 +1,21 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Dell\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-confirmation-code-field
+  C:\Program Files\nodejs\node.exe C:\Users\Shahbaz Alam\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-html-to-pdf
 
 PATH: 
-  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python311\Scripts\;C:\Python311\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\OpenJDK\openjdk-11.0.16_8\bin;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\nodejs\;C:\Program Files\Java\jdk-19\bin;C:\Program Files\Git\cmd;C:\Users\Dell\AppData\Local\Microsoft\WindowsApps;C:\Users\Dell\AppData\Local\Android\Sdk\platform-tools;C:\Users\Dell\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dell\AppData\Local\GitHubDesktop\bin;C:\Users\Dell\AppData\Roaming\npm
+  C:\Program Files\Microsoft\jdk-11.0.20.8-hotspot\bin;C:\Python311\Scripts\;C:\Python311\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Users\Shahbaz Alam\AppData\Local\Microsoft\WindowsApps;C:\Users\Shahbaz Alam\AppData\Roaming\npm;C:\Users\Shahbaz Alam\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Shahbaz Alam\AppData\Local\GitHubDesktop\bin;C:\Users\Shahbaz Alam\AppData\Local\Android\Sdk\platform-tools;
 
 Yarn version: 
   1.22.19
 
 Node version: 
-  18.12.1
+  18.17.1
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
-      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:107:26)
+  Error: connect EHOSTUNREACH 2606:4700::6810:1d22:443
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1495:16)
 
 npm manifest: 
   {
@@ -31,21 +31,28 @@ npm manifest:
     },
     "dependencies": {
       "@react-native-async-storage/async-storage": "^1.19.2",
+      "@react-native-community/geolocation": "^3.0.6",
       "@react-native-community/netinfo": "^9.4.1",
       "@react-navigation/bottom-tabs": "^6.5.8",
       "@react-navigation/native": "^6.1.7",
       "@react-navigation/native-stack": "^6.9.13",
       "axios": "^1.4.0",
+      "jetifier": "^2.0.0",
       "lottie-react-native": "^5.1.6",
       "moment": "^2.29.4",
+      "radio-buttons-react-native": "^1.0.4",
       "react": "18.2.0",
       "react-hook-form": "^7.45.4",
       "react-native": "0.72.4",
+      "react-native-confirmation-code-field": "^7.3.1",
       "react-native-document-picker": "^9.0.1",
+      "react-native-dropdown-select-list": "^2.0.5",
       "react-native-fast-image": "^8.6.3",
       "react-native-image-picker": "^5.6.1",
       "react-native-image-zoom-viewer": "^3.0.1",
       "react-native-linear-gradient": "^2.8.2",
+      "react-native-location": "^2.5.0",
+      "react-native-maps": "^1.7.1",
       "react-native-modal": "^13.0.1",
       "react-native-orientation-locker": "^1.5.0",
       "react-native-render-html": "^6.3.4",
@@ -1811,6 +1818,11 @@ Lockfile:
       prompts "^2.4.0"
       semver "^7.5.2"
   
+  "@react-native-community/geolocation@^3.0.6":
+    version "3.0.6"
+    resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.0.6.tgz#e2c83c242f917ce5a494cedb161c37abd5f2a72a"
+    integrity sha512-+iidKFgw1HxCJSHVnlywAKu6uerdpDAKTXLRnlsUdhgqtgTiIixb496Z267iPVFmIO1bp4lOU6UiwzmvcyXdbg==
+  
   "@react-native-community/netinfo@^9.4.1":
     version "9.4.1"
     resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.4.1.tgz#7b880758adca65fe47ee866cf7b00416b9dcc192"
@@ -2017,6 +2029,11 @@ Lockfile:
     integrity sha512-MitHFXnhtgwsGZWtT68URpOvLN4EREih1u3QtQiN4VdAxWKRVvGCSvw/Qth0M0Qq3pJpnGOu5JaM/ydK7OGbqg==
     dependencies:
       "@babel/types" "^7.20.7"
+  
+  "@types/geojson@^7946.0.10":
+    version "7946.0.10"
+    resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
+    integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
   
   "@types/graceful-fs@^4.1.3":
     version "4.1.6"
@@ -4750,6 +4767,11 @@ Lockfile:
       import-local "^3.0.2"
       jest-cli "^29.6.3"
   
+  jetifier@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-2.0.0.tgz#699391367ca1fe7bc4da5f8bf691eb117758e4cb"
+    integrity sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ==
+  
   joi@^17.2.1:
     version "17.9.2"
     resolved "https://registry.yarnpkg.com/joi/-/joi-17.9.2.tgz#8b2e4724188369f55451aebd1d0b1d9482470690"
@@ -6093,6 +6115,11 @@ Lockfile:
     dependencies:
       inherits "~2.0.3"
   
+  radio-buttons-react-native@^1.0.4:
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/radio-buttons-react-native/-/radio-buttons-react-native-1.0.4.tgz#ee450f6e81d8f5c22882f338b0ce979f70ab8980"
+    integrity sha512-5AKM/p3a9mykQ1BCIbBnHrDwXZZ6iJuDEDFaiNb2Pa2Nx9EgUMgU5owcrU9g9eaK7didA5rJ3yAUKGnyfhBqcw==
+  
   ramda@^0.27.2:
     version "0.27.2"
     resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.27.2.tgz#84463226f7f36dc33592f6f4ed6374c48306c3f1"
@@ -6143,12 +6170,22 @@ Lockfile:
     dependencies:
       prop-types "^15.7.2"
   
+  react-native-confirmation-code-field@^7.3.1:
+    version "7.3.1"
+    resolved "https://registry.yarnpkg.com/react-native-confirmation-code-field/-/react-native-confirmation-code-field-7.3.1.tgz#e705ee5b73d7749cac29da287379fa8690904fe6"
+    integrity sha512-5vI6BclB31e4vTYg0HmV/Vy9zI5MQZfHr1EN3kYzvaZq4GMIsyr6lrSmnQW1TtWR7Z8oURrhCpwo+JsWXxCoug==
+  
   react-native-document-picker@^9.0.1:
     version "9.0.1"
     resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-9.0.1.tgz#a5ceec157f84dbadb85fe717c657569755f4c6ca"
     integrity sha512-l2c2xChwsdjzZIV9QJc85buC3vXkM5ZuY4943yMDj3TiszJp1spmHNaRMZKYIh3yVwdD2jENm0DBU5AWa+jhLg==
     dependencies:
       invariant "^2.2.4"
+  
+  react-native-dropdown-select-list@^2.0.5:
+    version "2.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-dropdown-select-list/-/react-native-dropdown-select-list-2.0.5.tgz#3626b2bf9b9c5e157b02f60cf36174cde7550056"
+    integrity sha512-TepbcagQVUMB6nLuIlVU2ghRpQHAECOeZWe8K04ymW6NqbKbxuczZSDFfdCiABiiQ2dFD+8Dz65y4K7/uUEqGg==
   
   react-native-fast-image@^8.6.3:
     version "8.6.3"
@@ -6176,6 +6213,18 @@ Lockfile:
     version "2.8.2"
     resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.2.tgz#9811c91751be673ef928ef4aa3ff3a70b82935d6"
     integrity sha512-hgmCsgzd58WNcDCyPtKrvxsaoETjb/jLGxis/dmU3Aqm2u4ICIduj4ECjbil7B7pm9OnuTkmpwXu08XV2mpg8g==
+  
+  react-native-location@^2.5.0:
+    version "2.5.0"
+    resolved "https://registry.yarnpkg.com/react-native-location/-/react-native-location-2.5.0.tgz#b6d2f7e9c3dbe13fbe87587f9533b8bf943b6a35"
+    integrity sha512-myT54tZuFmN6d5RruMVfoa8eY+voJWkSd73xUVhjzJDnQr5uu5MFoH7hMg3trHF1CAkaY/2gIneOspUdGxv59Q==
+  
+  react-native-maps@^1.7.1:
+    version "1.7.1"
+    resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.7.1.tgz#e0b9d68542b4b59b5ca3df375ada7c860fb41f2e"
+    integrity sha512-CHVLzL+Q2jiUGgbt4/vosxVI1SukWyaLGjD62VLgR/wZpnH4Umi9ql1bmKDPWcfj2C1QZwMU0Yc7rXTbvZUIiw==
+    dependencies:
+      "@types/geojson" "^7946.0.10"
   
   react-native-modal@^13.0.1:
     version "13.0.1"

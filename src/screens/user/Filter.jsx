@@ -1206,33 +1206,6 @@ console.log("DATA IN SUB VENDOR ===>",result);
 
       fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
         .then((response) => response.json())
-        // .then((result) => {
-          
-        //   if (result.statusCode == "0") {
-        //     const keys = Object.keys(result.responseContent[0]);
-        //     console.log("keys ====>", keys);
-        //     setTableHead(keys);
-        //     let arr = [];
-        //     result.responseContent.forEach((item) => {
-        //       let values = [];
-        //       Object.keys(item).forEach((key) => {
-        //         values = [...values, item[key]];
-        //         // console.log("EXTRACTED VALUES ===>", values);
-        //       });
-        //       arr = [...arr, values];
-        //       setData((prevData) => [...prevData, values]);
-        //       console.log("DATA ==>", arr);
-        //     });
-        //     setLoading(false);
-        //     navigation.navigate("full_table", {
-        //       radius: radius,
-        //       address: address,
-        //       location: location,
-        //       tableHead: tableHead,
-        //       tableData: arr,
-        //     });
-        //   }
-        // })
         .then((result) => {
           if (result.statusCode == "0") {
             // const keys = Object.keys(result.responseContent[0]);
