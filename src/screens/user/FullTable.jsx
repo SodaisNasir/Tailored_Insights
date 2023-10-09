@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Table, Row, Col, TableWrapper } from "react-native-table-component";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
@@ -33,13 +34,20 @@ const FullTable = ({ navigation, route }) => {
   const { radius, address, location, tableData, listType } = route.params;
   const [year, setYear] = useState(2023);
   const [number, setNumber] = useState(0);
+  const [Qnumber, setQnumber] = useState(1);
+  const [Mnumber, setMnumber] = useState(1);
+  const [Wnumber, setWnumber] = useState(1);
+
+  const [pageNumber, setPageNumber] = useState(1);
   const [demandNumber, setDemandNumber] = useState(0);
   const [data, setData] = useState(tableData);
   const [loading, setLoading] = useState(false);
   const [tableHead, setTableHead] = useState(["Products", "Quantity", "Sales"]);
-  const [demand, setDemand] = useState("Q");
+  const [demand, setDemand] = useState("Y");
+  const [displayedDemand, setDisplayedDemand] = useState("Q");
+  const firstRenderRef = useRef(true);
 
-  const OnShowTables = (demand) => {
+  const OnShowTables = () => {
     setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -47,7 +55,19 @@ const FullTable = ({ navigation, route }) => {
       "Cookie",
       "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
     );
-    console.log("DEMAND IN SHPW TABLEE", demand, year);
+    console.log(
+      "DEMAND IN SHOW TABLE",
+      "demand",
+      demand,
+      "year",
+      year,
+      "pageNumber",
+      pageNumber,
+      "listType",
+      listType,
+      "Qnumber",
+      Qnumber
+    );
     var raw = JSON.stringify({
       listType: listType,
       customertypelo: 0,
@@ -63,13 +83,13 @@ const FullTable = ({ navigation, route }) => {
       skulo: 0,
       skuhi: 0,
       enddate: "2023-11-19",
-      startDate: `${year}-11-19`,
+      startDate: `${year - 1}-11-19`,
       demandingPage: demand,
-      neededQ: number,
-      neededM: number,
-      neededW: number,
-      pageNumber: number + 1,
-      pageSize: number + 1 * 10,
+      neededQ: Qnumber,
+      neededM: Mnumber,
+      neededW: 0,
+      pageNumber: pageNumber,
+      pageSize: 100,
       radius: 5000,
       elat: 45,
       elong: 45,
@@ -103,33 +123,52 @@ const FullTable = ({ navigation, route }) => {
           const q2Array = [];
           const q3Array = [];
           const q4Array = [];
+          const q5Array = [];
+          const q6Array = [];
+          const q7Array = [];
+          const q8Array = [];
           if (demand == "Q") {
             for (const item of result.responseContent) {
-              q1Array.push([item.product, item.qty, item.m1]);
-              q2Array.push([item.product, item.qty, item.m2]);
-              q3Array.push([item.product, item.qty, item.m3]);
-              // q4Array.push([item.product, item.qty,item.q4,]);
+              q1Array.push([item.product, item.qty, `$${item.m1}`]);
+              q2Array.push([item.product, item.qty, `$${item.m2}`]);
+              q3Array.push([item.product, item.qty, `$${item.m3}`]);
             }
-            console.log("===================");
-            console.log("MONTH DATA ==>", [q1Array, q2Array, q3Array]);
-            console.log("===================");
             setData([q1Array, q2Array, q3Array]);
+            setLoading(false);
           } else if (demand == "Y") {
             for (const item of result.responseContent) {
-              q1Array.push([item.product, item.qty, item.q1]);
-              q2Array.push([item.product, item.qty, item.q2]);
-              q3Array.push([item.product, item.qty, item.q3]);
-              q4Array.push([item.product, item.qty, item.q4]);
+              q1Array.push([item.product, item.qty, `$${item.q1}`]);
+              q2Array.push([item.product, item.qty, `$${item.q2}`]);
+              q3Array.push([item.product, item.qty, `$${item.q3}`]);
+              q4Array.push([item.product, item.qty, `$${item.q4}`]);
+            }
+            // console.log("QUATER DATA ==>", [
+            //   q1Array,
+            //   q2Array,
+            //   q3Array,
+            //   q4Array,
+            // ]);
+            // console.log("===================");
+            setData([q1Array, q2Array, q3Array, q4Array]);
+
+            setLoading(false);
+          } else if (demand == "M") {
+            for (const item of result.responseContent) {
+              q1Array.push([item.product, item.qty, `$${item.w1}`]);
+              q2Array.push([item.product, item.qty, `$${item.w2}`]);
+              q3Array.push([item.product, item.qty, `$${item.w3}`]);
+              q4Array.push([item.product, item.qty, `$${item.w4}`]);
+              q5Array.push([item.product, item.qty, `$${item.w5}`]);
+              q6Array.push([item.product, item.qty, `$${item.w6}`]);
+              setData([q1Array, q2Array, q3Array, q4Array, q5Array, q6Array]);
+              setLoading(false);
             }
           }
-          console.log("===================");
-          console.log("MONTH DATA ==>", [q1Array, q2Array, q3Array, q4Array]);
-          console.log("===================");
-          setData([q1Array, q2Array, q3Array, q4Array]);
         } else {
           Toast.show("No data found");
+          setLoading(false);
         }
-        setLoading(false);
+
         // navigation.navigate("full_table", {
         //   radius: radius,
         //   address: address,
@@ -138,20 +177,25 @@ const FullTable = ({ navigation, route }) => {
         //   tableData: data,
         // });
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) =>{console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
   };
 
+  useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+    } else {
+      OnShowTables();
+    }
+  }, [year, pageNumber, demand, demandNumber, Qnumber, Mnumber]);
+
   const [widthArr, setWidthArr] = useState([
-    scale(200),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
-    scale(100),
+    scale(170),
+    scale(90),
+    scale(90),
+    scale(90),
+    scale(90),
+    scale(90),
+    scale(90),
   ]);
 
   const generateTableData = () => {
@@ -166,24 +210,43 @@ const FullTable = ({ navigation, route }) => {
     return tableData;
   };
 
+  const increseMonths = () => {
+    if (Mnumber < 11) {
+      setMnumber(Mnumber + 1);
+    }
+  };
+
+  const decreaseMonths = () => {
+    if (Mnumber > 1) {
+      setMnumber(Mnumber - 1);
+    }
+  };
+
   const handleAdd = () => {
     setYear(year + 1);
-    OnShowTables("Y");
   };
   const handleMinus = () => {
     setYear(year - 1);
-    OnShowTables("Y");
   };
 
   const handleDemandAdd = () => {
-    if (demandNumber < 2) {
-      setDemandNumber(demandNumber + 1);
+    console.log("==================");
+    console.log("handleDemandAdd");
+    console.log("==================");
+    if (Qnumber <= 3) {
+      setQnumber(Qnumber + 1);
     }
+
+    // if (demandNumber < 3 && displayedDemand == "M") {
+    //   setDemandNumber(demandNumber + 1);
+    // } else if (demandNumber < 3) {
+    //   setDemandNumber(demandNumber + 1);
+    // }
     // OnShowTables();
   };
   const handleDemandMinus = () => {
-    if (demandNumber >= 1) {
-      setDemandNumber(demandNumber - 1);
+    if (Qnumber > 1) {
+      setQnumber(Qnumber - 1);
     }
 
     // OnShowTables();
@@ -191,33 +254,49 @@ const FullTable = ({ navigation, route }) => {
 
   const QAdd = () => {
     console.log("NUMBER IN ADD Q ==>", number);
-    if (number < 3) {
-      if (demand != "Q") {
+    if (displayedDemand == "M") {
+      if (number < 2) {
         setNumber(number + 1);
-        OnShowTables();
-      } else {
+      }
+    } else if (displayedDemand == "W") {
+      if (number < 5) {
+        setNumber(number + 1);
+      }
+    } else {
+      if (number < 3) {
         setNumber(number + 1);
       }
     }
   };
   const QMin = () => {
     if (number >= 1) {
-      if (demand != "Q") {
-        setNumber(number - 1);
-        OnShowTables();
-      } else {
-        setNumber(number - 1);
-      }
+      setNumber(number - 1);
     }
   };
 
+  const increasePage = () => {
+    setPageNumber(pageNumber + 1);
+    setNumber(0);
+  };
+
+  const decreasePage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+      setNumber(0);
+    }
+  };
   const drillDown = () => {
-    if (demand == "Q") {
+    if (demand == "Y") {
+      setDemand("Q");
+      setDisplayedDemand("M");
+      setNumber(0);
+    } else if (demand == "Q") {
       setDemand("M");
-      OnShowTables("Q");
-    } else if (demand == "M") {
+      setDisplayedDemand("W");
+      setNumber(0);
+    } else {
       setDemand("W");
-      OnShowTables("M");
+      setNumber(0);
     }
   };
 
@@ -297,7 +376,7 @@ const FullTable = ({ navigation, route }) => {
               })
             }
             style={{
-              height: scale(100),
+              height: demand == "M" ? scale(150) : scale(100),
               width: "20%",
               backgroundColor: "#C9C9C9",
               alignItems: "center",
@@ -317,11 +396,13 @@ const FullTable = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setDemand("Q");
-              OnShowTables("Q");
+              setDemand("Y");
+              setDisplayedDemand("Q")
+              setPageNumber(1);
+              
             }}
             style={{
-              height: scale(100),
+              height: demand == "M" ? scale(150) : scale(100),
               width: "20%",
               backgroundColor: "#C9C9C9",
               alignItems: "center",
@@ -336,7 +417,7 @@ const FullTable = ({ navigation, route }) => {
             </Text>
           </TouchableOpacity>
           <View>
-            {demand == "Q" ? (
+            {demand == "Y" ? (
               <View
                 style={[
                   styles.BoxOfTableHeader,
@@ -359,6 +440,77 @@ const FullTable = ({ navigation, route }) => {
                   />
                 </TouchableOpacity>
               </View>
+            ) : (
+              <View
+                style={[
+                  styles.BoxOfTableHeader,
+                  { height: scale(50), width: "100%" },
+                ]}
+              >
+                <TouchableOpacity onPress={handleDemandMinus}>
+                  <Entypo
+                    name="chevron-left"
+                    color={Colors.White}
+                    size={scale(20)}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.Year}>{`Q${Qnumber}`}</Text>
+                {/* <Ionicons
+                    name="filter"
+                    color={Colors.White}
+                    size={scale(18)}
+                  /> */}
+                <TouchableOpacity onPress={handleDemandAdd}>
+                  <Entypo
+                    name="chevron-right"
+                    color={Colors.White}
+                    size={scale(20)}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+            {demand == "M" ? (
+              <View
+                style={[
+                  styles.BoxOfTableHeader,
+                  {
+                    height: scale(50),
+                    width: "100%",
+                    backgroundColor:  "#339CCC",
+                    //   justifyContent: "space-between",
+                    //   paddingHorizontal: moderateScale(20),
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  activeOpacity={Mnumber == 0 && 1}
+                  onPress={decreaseMonths}
+                >
+                  <Entypo
+                    name="chevron-left"
+                    color={Colors.White}
+                    size={scale(20)}
+                  />
+                </TouchableOpacity>
+                <View onPress={drillDown}>
+                  <Text style={styles.Year}>
+                    {`M${Mnumber + 1}`}
+                    <Ionicons
+                      name="filter"
+                      color={Colors.White}
+                      size={scale(18)}
+                    />
+                  </Text>
+                </View>
+
+                <TouchableOpacity onPress={increseMonths}>
+                  <Entypo
+                    name="chevron-right"
+                    color={Colors.White}
+                    size={scale(20)}
+                  />
+                </TouchableOpacity>
+              </View>
             ) : null}
             <View
               style={[
@@ -366,7 +518,7 @@ const FullTable = ({ navigation, route }) => {
                 {
                   height: scale(50),
                   width: "100%",
-                  backgroundColor: "#339CCC",
+                  backgroundColor: demand == "M" ? Colors.Main:"#339CCC",
                   //   justifyContent: "space-between",
                   //   paddingHorizontal: moderateScale(20),
                 },
@@ -381,7 +533,7 @@ const FullTable = ({ navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={drillDown}>
                 <Text style={styles.Year}>
-                  {`Q${number + 1}`}
+                  {`${displayedDemand}${number + 1}`}
                   <Ionicons
                     name="filter"
                     color={Colors.White}
@@ -398,47 +550,56 @@ const FullTable = ({ navigation, route }) => {
                 />
               </TouchableOpacity>
             </View>
-            {demand != "Q" ? (
-              <View
-                style={[
-                  styles.BoxOfTableHeader,
-                  { height: scale(50), width: "100%" },
-                ]}
-              >
-                <TouchableOpacity onPress={handleDemandMinus}>
-                  <Entypo
-                    name="chevron-left"
-                    color={Colors.White}
-                    size={scale(20)}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.Year}>{`${demand}${
-                  demandNumber + 1
-                }`}</Text>
-                <TouchableOpacity onPress={handleDemandAdd}>
-                  <Entypo
-                    name="chevron-right"
-                    color={Colors.White}
-                    size={scale(20)}
-                  />
-                </TouchableOpacity>
-              </View>
-            ) : null}
+
+            {/* {demand != "Y" ? : null} */}
           </View>
         </View>
-
-        <ScrollView horizontal showsVerticalScrollIndicator={false}>
+        <View
+          style={[
+            styles.BoxOfTableHeader,
+            {
+              height: scale(50),
+              width: "100%",
+              backgroundColor: demand == "M" ? "#339CCC":Colors.Main,
+              //   justifyContent: "space-between",
+              //   paddingHorizontal: moderateScale(20),
+            },
+          ]}
+        >
+          <TouchableOpacity
+            activeOpacity={pageNumber == 0 && 1}
+            onPress={decreasePage}
+          >
+            <Entypo name="chevron-left" color={Colors.White} size={scale(20)} />
+          </TouchableOpacity>
           <View>
+            <Text style={styles.Year}>{`Page number ${pageNumber}`}</Text>
+          </View>
+
+          <TouchableOpacity onPress={increasePage}>
+            <Entypo
+              name="chevron-right"
+              color={Colors.White}
+              size={scale(20)}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {!loading ? (
+          <>
             <Table>
-              {/*  borderStyle={styles.borderStyle}> */}
-              <Row
-                data={tableHead}
-                widthArr={widthArr.slice(0, tableHead.length)}
-                style={styles.header}
-                textStyle={[styles.text, { color: Colors.White }]}
-              />
-            </Table>
-            {demand == "Q" ? (
+                {/*  borderStyle={styles.borderStyle}> */}
+                <Row
+                  data={tableHead}
+                  widthArr={widthArr.slice(0, tableHead.length)}
+                  style={[styles.header,{   backgroundColor: demand == "M" ? Colors.Main:"#339CCC",}]}
+                  textStyle={[styles.text, { color: Colors.White }]}
+                />
+              </Table>
+          <ScrollView  showsVerticalScrollIndicator={false}>
+            <View>
+            
+
               <ScrollView style={styles.dataWrapper}>
                 <Table borderStyle={styles.borderStyle}>
                   {data[number].map((rowData, index) => {
@@ -459,41 +620,52 @@ const FullTable = ({ navigation, route }) => {
                   })}
                 </Table>
               </ScrollView>
-            ) : (
-              <ScrollView style={styles.dataWrapper}>
-                <Table borderStyle={styles.borderStyle}>
-                  {data[demandNumber].map((rowData, index) => {
-                    return (
-                      <Row
-                        key={index}
-                        data={rowData}
-                        widthArr={widthArr.slice(0, tableHead.length)}
-                        style={[
-                          styles.row,
-                          index % 2 == 0
-                            ? { backgroundColor: Colors.White }
-                            : null,
-                        ]}
-                        textStyle={styles.text}
-                      />
-                    );
-                  })}
-                </Table>
-              </ScrollView>
-            )}
+            </View>
+          </ScrollView>
+          </>
+        ) : (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ActivityIndicator size={"large"} color={Colors.Main} />
           </View>
-        </ScrollView>
+        )}
       </View>
       <ConnectionModal />
-      <Loading isVisible={loading} />
+      {/* <Loading isVisible={loading} /> */}
     </SafeAreaView>
   );
 };
 
+// (
+//   <ScrollView style={styles.dataWrapper}>
+//     <Table borderStyle={styles.borderStyle}>
+//       {data[demandNumber].map((rowData, index) => {
+//         return (
+//           <Row
+//             key={index}
+//             data={rowData}
+//             widthArr={widthArr.slice(0, tableHead.length)}
+//             style={[
+//               styles.row,
+//               index % 2 == 0
+//                 ? { backgroundColor: Colors.White }
+//                 : null,
+//             ]}
+//             textStyle={styles.text}
+//           />
+//         );
+//       })}
+//     </Table>
+//   </ScrollView>
+// )
 const styles = StyleSheet.create({
   header: {
     height: verticalScale(50),
-    backgroundColor: Colors.Main,
+    backgroundColor: "#339CCC",
   },
   text: { textAlign: "center", fontFamily: Font.Inter400, color: Colors.Black },
   dataWrapper: { marginTop: -1, flexDirection: "row" },

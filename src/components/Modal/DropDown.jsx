@@ -16,7 +16,7 @@ const DropDown = forwardRef((props, ref) => {
     <View style={{ width: "90%", alignSelf: "center" }}>
       <Text style={styles.Text}>{props.title}</Text>
       <SelectList
-         save="key"
+         save={props.save}
         placeholder="Select a value"
         arrowicon={
           <Entypo name="chevron-down" size={scale(18)} color={Colors.Black} />

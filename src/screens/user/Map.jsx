@@ -263,13 +263,14 @@ const Map = ({ navigation }) => {
         listType = "Outlet";
       } else {
         listType = "Category";
+        
       }
     } else if (user.type == "C") {
       listType = "Outlet";
     } else if (user.type == "Z") {
       listType = "CustomerType";
     }
-
+    console.log("listType ==>",listType);
     var raw = JSON.stringify({
       listType: listType,
       customertypelo: 0,
@@ -317,10 +318,10 @@ const Map = ({ navigation }) => {
           const q4Array = [];
           let arr = [];
           for (const item of result.responseContent) {
-            q1Array.push([item.product, item.qty,item.q1, ]);
-            q2Array.push([item.product, item.qty,item.q2, ]);
-            q3Array.push([item.product, item.qty,item.q3,]);
-            q4Array.push([item.product, item.qty,item.q4,]);
+            q1Array.push([item.product, item.qty,`$${item.q1}`, ]);
+            q2Array.push([item.product, item.qty,`$${item.q2}`, ]);
+            q3Array.push([item.product, item.qty,`$${item.q3}`,]);
+            q4Array.push([item.product, item.qty,`$${item.q4}`,]);
           }
           // result.responseContent.forEach((item) => {
           //   let values = [];
@@ -340,10 +341,11 @@ const Map = ({ navigation }) => {
             listType: listType,
           });
         } else {
-          console.log("error");
+          Toast.show("No data found");
+          setLoading(false);
         }
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
   };
 
   const LogOut = () => {

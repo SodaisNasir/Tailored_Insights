@@ -7,11 +7,13 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
 import LogBox from "../../components/Card/LogoCard";
 import { Colors } from "../../utils/Colors";
+
 import {
   moderateScale,
   mvs,
@@ -31,6 +33,7 @@ import BottomText from "../../components/Card/BottomText";
 import { useSelector } from "react-redux";
 import { State } from "react-native-image-zoom-viewer/built/image-viewer.type";
 import RadioButtonRN from "radio-buttons-react-native";
+import Toast from "react-native-simple-toast";
 
 import {
   ZTypeFilter,
@@ -43,15 +46,17 @@ import { BaseUrl } from "../../utils/url";
 import { useFocusEffect } from "@react-navigation/native";
 import Loading from "../../components/Modal/Loading";
 import CustomButton from "../../components/CustomButton";
+import ListModal from "../../components/Modal/ListModal";
 
 const Filter = ({ navigation, route }) => {
   const [year, setYear] = useState(2023);
   const [number, setNumber] = useState(1);
   const [type, setType] = useState("");
-  const [subFilter, setSubFilter] = useState("");
+  const [subFilter, setSubFilter] = useState(null);
   const [filter, setFilter] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [modalState, updatemodalState] = useState(false);
 
   const [listType, setListType] = useState([]);
   const [filterType, setFilterType] = useState([]);
@@ -738,8 +743,6 @@ const Filter = ({ navigation, route }) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
- 
-
     var requestOptions = {
       method: "GET",
       headers: myHeaders,
@@ -753,7 +756,7 @@ const Filter = ({ navigation, route }) => {
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
-            key: item.familyCategoryId,
+            key: item.familyId,
           };
         });
         console.log("result.CATEGORY", data);
@@ -783,19 +786,20 @@ const Filter = ({ navigation, route }) => {
     });
 
     var requestOptions = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: raw,
+      // body: raw,
       redirect: "follow",
     };
 
-    fetch(`${BaseUrl}mapping/invoice-vendor`, requestOptions)
+    fetch(`${BaseUrl}vendor/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
+console.log("DATA IN SUB VENDOR ===>",result);
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
-            key: item.vendorId,
+            key: item.id,
           };
         });
         console.log("result.responseContent", data);
@@ -827,19 +831,19 @@ const Filter = ({ navigation, route }) => {
     var requestOptions = {
       method: "GET",
       headers: myHeaders,
-      
+
       redirect: "follow",
     };
 
     fetch(`${BaseUrl}sku/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log("SKU RESULT ===>", result);
+        console.log("SKU RESULT ===>", result.responseContent.length);
         const data = result.responseContent.map((item) => {
-          console.log("ITEM IN SKU ==>",item);
+          // console.log("ITEM IN SKU ==>",item);
           return {
             value: item.name,
-            key: item.skuId,
+            key: item.id,
           };
         });
         // console.log("result.responseContent", data);
@@ -1114,77 +1118,158 @@ const Filter = ({ navigation, route }) => {
 
   const OnShowTables = () => {
     setLoading(true);
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Cookie",
-      "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
-    );
+    if (type == null || type == "") {
+      setTimeout(() => {
+        setLoading(false);
+        alert("Please select a type");
+      }, 2000);
+    } else if (subFilter == null) {
+      setTimeout(() => {
+        setLoading(false);
+        alert("Please select a sub filter");
+      }, 2000);
+    } else {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append(
+        "Cookie",
+        "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
+      );
+      var customertypelo = 0;
+      var customertypehi = 0;
+      var outletlo = 0;
+      var outlethi = 0;
+      var familylo = 0;
+      var familyhi = 0;
+      var categorylo = 0;
+      var categoryhi = 0;
+      var vendorlo = 0;
+      var vendorhi = 0;
+      var skulo = 0;
+      var skuhi = 0;
+      console.log("type====>", type);
+      if (filter == "Customer Type") {
+        customertypelo = subFilter.key;
+        customertypehi = subFilter.key;
+      } else if (filter == "Outlet") {
+        outletlo = subFilter.key;
+        outlethi = subFilter.key;
+      } else if (filter == "Family") {
+        familylo = subFilter.key;
+        familyhi = subFilter.key;
+      } else if (filter == "Category") {
+        categorylo = subFilter.key;
+        categoryhi = subFilter.key;
+      } else if (filter == "Vendor") {
+        vendorlo = subFilter.key;
+        vendorhi = subFilter.key;
+      } else if (filter == "Sku") {
+        skulo = subFilter.key;
+        skuhi = subFilter.key;
+      } else {
+        alert("customer parameters ant not avaliable in api");
+      }
 
-    console.log("type====>", type);
-    var raw = JSON.stringify({
-      listType: type,
-      customertypelo: 0,
-      customertypehi: 0,
-      outletlo: 0,
-      outlethi: 0,
-      familylo: 0,
-      familyhi: 0,
-      categorylo: 0,
-      categoryhi: 0,
-      vendorlo: 0,
-      vendorhi: 0,
-      skulo: 0,
-      skuhi: 0,
-      enddate: "2023-11-19",
-      startDate: "2022-11-19",
-      demandingPage: "Y",
-      neededQ: 3,
-      neededM: 4,
-      neededW: 5,
-      pageNumber: 1,
-      pageSize: 100,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
-    });
+      var raw = JSON.stringify({
+        listType: type,
+        customertypelo: customertypelo,
+        customertypehi: customertypehi,
+        outletlo: outletlo,
+        outlethi: outlethi,
+        familylo: familylo,
+        familyhi: familyhi,
+        categorylo: categorylo,
+        categoryhi: categoryhi,
+        vendorlo: vendorlo,
+        vendorhi: vendorhi,
+        skulo: skulo,
+        skuhi: skuhi,
+        enddate: "2023-11-19",
+        startDate: "2022-11-19",
+        demandingPage: "Y",
+        neededQ: 0,
+        neededM: 0,
+        neededW: 0,
+        pageNumber: 1,
+        pageSize: 100,
+        radius: 5000,
+        elat: 45,
+        elong: 45,
+      });
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
 
-    fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.statusCode == "0") {
-          const keys = Object.keys(result.responseContent[0]);
-          console.log("keys ====>", keys);
-          setTableHead(keys);
-          let arr = [];
-          result.responseContent.forEach((item) => {
-            let values = [];
-            Object.keys(item).forEach((key) => {
-              values = [...values, item[key]];
-              // console.log("EXTRACTED VALUES ===>", values);
+      fetch(`${BaseUrl}/mapping/invoicePageDataByListType`, requestOptions)
+        .then((response) => response.json())
+        // .then((result) => {
+          
+        //   if (result.statusCode == "0") {
+        //     const keys = Object.keys(result.responseContent[0]);
+        //     console.log("keys ====>", keys);
+        //     setTableHead(keys);
+        //     let arr = [];
+        //     result.responseContent.forEach((item) => {
+        //       let values = [];
+        //       Object.keys(item).forEach((key) => {
+        //         values = [...values, item[key]];
+        //         // console.log("EXTRACTED VALUES ===>", values);
+        //       });
+        //       arr = [...arr, values];
+        //       setData((prevData) => [...prevData, values]);
+        //       console.log("DATA ==>", arr);
+        //     });
+        //     setLoading(false);
+        //     navigation.navigate("full_table", {
+        //       radius: radius,
+        //       address: address,
+        //       location: location,
+        //       tableHead: tableHead,
+        //       tableData: arr,
+        //     });
+        //   }
+        // })
+        .then((result) => {
+          if (result.statusCode == "0") {
+            // const keys = Object.keys(result.responseContent[0]);
+            // console.log("keys ====>", keys);
+            // setTableHead(keys);
+            const q1Array = [];
+            const q2Array = [];
+            const q3Array = [];
+            const q4Array = [];
+            let arr = [];
+            for (const item of result.responseContent) {
+              q1Array.push([item.product, item.qty,`$${item.q1}`, ]);
+              q2Array.push([item.product, item.qty,`$${item.q2}`, ]);
+              q3Array.push([item.product, item.qty,`$${item.q3}`,]);
+              q4Array.push([item.product, item.qty,`$${item.q4}`,]);
+            }
+            setLoading(false);
+            navigation.navigate("full_table", {
+              radius: radius,
+              address: address,
+              location: location,
+              tableData: [q1Array,q2Array,q3Array,q4Array],
+              listType: listType,
             });
-            arr = [...arr, values];
-            setData((prevData) => [...prevData, values]);
-            console.log("DATA ==>", arr);
-          });
+          } else {
+            Toast.show("No data found");
           setLoading(false);
-          navigation.navigate("full_table", {
-            radius: radius,
-            address: address,
-            location: location,
-            tableHead: tableHead,
-            tableData: arr,
-          });
-        }
-      })
-      .catch((error) => console.log("error", error));
+          }
+        })
+        .catch((error) => {console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
+    }
+  };
+
+  const onSelectSubFilter = (item) => {
+    setSubFilter(item);
+    console.log("THIS IS IN SEELCT HANDLE ==>", item);
+    updatemodalState(false);
   };
 
   const tableData = generateTableData();
@@ -1261,28 +1346,40 @@ const Filter = ({ navigation, route }) => {
             </TouchableOpacity>
           ) : null;
         })}
-        {/* <RadioButtonRN
-          data={filterType}
-          style={{ marginHorizontal: scale(20) }}
-          selectedBtn={(value) => {setFilter(value); console.log("value ==>",value);}}
-        /> */}
         {/* <DropDown
-          title="Filter By"
-          items={filterType}
-          value={customer}
-          setValue={(value) => setFilter(value)}
-        /> */}
-        <DropDown
           save="key"
           title="Sub Filter"
           items={subFilterType}
           value={subFilter}
-          setValue={(item) => {
-            console.log("THIS IS SELECTED ==>",item,);
-            setSubFilter(item);
+          setValue={(value) => {
+            console.log("THIS IS SELECTED in SUB FILTER ==>", value);
+            setSubFilter(value);
+            // const ky = subFilterType.filter((item)=> item.value == value)
+            // console.log("========");
+            // console.log(ky);
+            // console.log("========");
             // filterProducts(value);
           }}
-        />
+        /> */}
+        <View style={{ width: "90%", alignSelf: "center" }}>
+          <Text style={styles.Text}>Sub Filter</Text>
+          <TouchableOpacity
+            onPress={() => updatemodalState(true)}
+            style={styles.subFilterView}
+          >
+            <Text
+              style={{
+                color: Colors.Black,
+                fontSize: scale(13),
+                fontFamily: Font.Inter500,
+                width: "90%",
+              }}
+            >
+              {subFilter == null ? "Select a value" : subFilter.value}
+            </Text>
+            <Entypo name="chevron-down" size={scale(18)} color={Colors.Black} />
+          </TouchableOpacity>
+        </View>
         {/*  borderStyle={styles.borderStyle}> */}
         <View style={GlobalStyle.verticalSpace} />
         {/* <CustomButton
@@ -1392,8 +1489,15 @@ const Filter = ({ navigation, route }) => {
           onPress={OnShowTables}
           title="SHOW RESULTS"
         />
+        <ListModal
+          data={subFilterType}
+          onPress={onSelectSubFilter}
+          isVisible={modalState}
+          onBackdropPress={() => updatemodalState(false)}
+        />
       </ScrollView>
       <BottomText />
+
       <ConnectionModal />
     </SafeAreaView>
   );
@@ -1472,5 +1576,16 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     marginTop: verticalScale(10),
     marginBottom: verticalScale(5),
+  },
+  subFilterView: {
+    backgroundColor: Colors.Non,
+    height: verticalScale(50),
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: scale(20),
+    borderRadius: scale(10),
+    borderWidth: scale(1),
+    borderColor: Colors.border,
+    flexDirection: "row",
   },
 });
