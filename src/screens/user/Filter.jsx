@@ -63,7 +63,7 @@ const Filter = ({ navigation, route }) => {
   const [subFilterType, setSubFilterType] = useState([]);
   const [data, setData] = useState([]);
 
-  const { radius, address, location } = route.params;
+  const { radius, address, location, setMethod } = route.params;
   const user = useSelector((state) => state.userData);
   const Products = useSelector((state) => state.ProductsData);
 
@@ -795,7 +795,7 @@ const Filter = ({ navigation, route }) => {
     fetch(`${BaseUrl}vendor/findAll`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-console.log("DATA IN SUB VENDOR ===>",result);
+        console.log("DATA IN SUB VENDOR ===>", result);
         const data = result.responseContent.map((item) => {
           return {
             value: item.name,
@@ -1135,72 +1135,90 @@ console.log("DATA IN SUB VENDOR ===>",result);
         "Cookie",
         "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
       );
-      var customertypelo = 0;
-      var customertypehi = 0;
-      var outletlo = 0;
-      var outlethi = 0;
-      var familylo = 0;
-      var familyhi = 0;
-      var categorylo = 0;
-      var categoryhi = 0;
-      var vendorlo = 0;
-      var vendorhi = 0;
-      var skulo = 0;
-      var skuhi = 0;
-      console.log("type====>", type);
+      let rawData = {};
+      console.log("type====>", type,filter== "SKU");
       if (filter == "Customer Type") {
-        customertypelo = subFilter.key;
-        customertypehi = subFilter.key;
+        rawData = {
+          customertypelo: subFilter.key,
+          customertypehi: subFilter.key,
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+        };
       } else if (filter == "Outlet") {
-        outletlo = subFilter.key;
-        outlethi = subFilter.key;
+        rawData = {
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+          outletlo: subFilter.key,
+          outlethi: subFilter.key,
+        };
       } else if (filter == "Family") {
-        familylo = subFilter.key;
-        familyhi = subFilter.key;
+        rawData = {
+          familylo: subFilter.key,
+          familyhi: subFilter.key,
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+        };
       } else if (filter == "Category") {
-        categorylo = subFilter.key;
-        categoryhi = subFilter.key;
+        rawData = {
+          categorylo: subFilter.key,
+          categoryhi: subFilter.key,
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+        };
       } else if (filter == "Vendor") {
-        vendorlo = subFilter.key;
-        vendorhi = subFilter.key;
-      } else if (filter == "Sku") {
-        skulo = subFilter.key;
-        skuhi = subFilter.key;
+        rawData = {
+          vendorlo: subFilter.key,
+          vendorhi: subFilter.key,
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+        };
+      } else if (filter == "SKU") {
+        rawData = {
+          listType: type,
+          enddate: "2023-11-19",
+          startDate: "2022-11-19",
+          demandingPage: "Y",
+          radius: 5000,
+          elat: 45,
+          elong: 45,
+          skulo: subFilter.key,
+          skuhi: subFilter.key,
+        };
       } else {
         alert("customer parameters ant not avaliable in api");
       }
-
-      var raw = JSON.stringify({
-        listType: type,
-        customertypelo: customertypelo,
-        customertypehi: customertypehi,
-        outletlo: outletlo,
-        outlethi: outlethi,
-        familylo: familylo,
-        familyhi: familyhi,
-        categorylo: categorylo,
-        categoryhi: categoryhi,
-        vendorlo: vendorlo,
-        vendorhi: vendorhi,
-        skulo: skulo,
-        skuhi: skuhi,
-        enddate: "2023-11-19",
-        startDate: "2022-11-19",
-        demandingPage: "Y",
-        neededQ: 0,
-        neededM: 0,
-        neededW: 0,
-        pageNumber: 1,
-        pageSize: 100,
-        radius: 5000,
-        elat: 45,
-        elong: 45,
-      });
-
+console.log("==========");
+console.log("==========>",rawData);
+console.log("==========");
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
-        body: raw,
+        body: JSON.stringify(rawData),
         redirect: "follow",
       };
 
@@ -1217,25 +1235,30 @@ console.log("DATA IN SUB VENDOR ===>",result);
             const q4Array = [];
             let arr = [];
             for (const item of result.responseContent) {
-              q1Array.push([item.product, item.qty,`$${item.q1}`, ]);
-              q2Array.push([item.product, item.qty,`$${item.q2}`, ]);
-              q3Array.push([item.product, item.qty,`$${item.q3}`,]);
-              q4Array.push([item.product, item.qty,`$${item.q4}`,]);
+              q1Array.push([item.product, item.qty, `$${item.q1}`]);
+              q2Array.push([item.product, item.qty, `$${item.q2}`]);
+              q3Array.push([item.product, item.qty, `$${item.q3}`]);
+              q4Array.push([item.product, item.qty, `$${item.q4}`]);
             }
             setLoading(false);
+            setMethod([q1Array, q2Array, q3Array, q4Array]);
             navigation.navigate("full_table", {
               radius: radius,
               address: address,
               location: location,
-              tableData: [q1Array,q2Array,q3Array,q4Array],
-              listType: listType,
+              tableData: [q1Array, q2Array, q3Array, q4Array],
+              listType: type,
             });
           } else {
             Toast.show("No data found");
-          setLoading(false);
+            setLoading(false);
           }
         })
-        .catch((error) => {console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
+        .catch((error) => {
+          console.log("error", error);
+          setLoading(false);
+          Toast.show("Network Error, Please Try again");
+        });
     }
   };
 

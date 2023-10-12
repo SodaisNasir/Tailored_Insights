@@ -29,6 +29,8 @@ import ConnectionModal from "../../components/Modal/ConnectionModal";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Loading from "../../components/Modal/Loading";
 import { BaseUrl } from "../../utils/url";
+import RNHTMLtoPDF from "react-native-html-to-pdf";
+import RNPrint from "react-native-print";
 
 const FullTable = ({ navigation, route }) => {
   const { radius, address, location, tableData, listType } = route.params;
@@ -46,7 +48,108 @@ const FullTable = ({ navigation, route }) => {
   const [demand, setDemand] = useState("Y");
   const [displayedDemand, setDisplayedDemand] = useState("Q");
   const firstRenderRef = useRef(true);
+  console.log("YYAZAAO ==>", data[0].length);
+  console.log("==========");
+  const printPDF = async () => {
+    const results = await RNHTMLtoPDF.convert({
+      html: `
+      <!DOCTYPE html>
+<html>
 
+<head>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body onload="renderData()">
+    <!-- <h1>Dynamic Table Example</h1>
+    <button onclick="addRow()">Add Row</button> -->
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here -->
+            ${data.map((element) =>
+              element.map((item, index) => {
+                return `<tr>
+<td>${item[0]}</td>
+<td>${item[1]}</td>
+<td>${item[2]}</td>
+</tr>
+`;
+              }).join("")
+            )}
+        </tbody>
+    </table>
+
+    <!-- <script>
+        const allData = [
+            [
+                ["Nutro Products, Inc. 22lb NUT LID AD LAMB & SW POT", 2, "$0"]
+            ],
+            [
+                ["Nutro Products, Inc. 22lb NUT LID AD LAMB & SW POT", 2, "$0"]
+            ],
+            [
+                ["Nutro Products, Inc. 22lb NUT LID AD LAMB & SW POT", 2, "$188.76"]
+            ],
+            [
+                ["Nutro Products, Inc. 22lb NUT LID AD LAMB & SW POT", 2, "$0"]
+            ]
+        ];
+
+        function addRow(rowData, table) {
+            const newRow = table.insertRow(-1); // Insert a row at the end of the table
+
+            const nameCell = newRow.insertCell(0);
+            const ageCell = newRow.insertCell(1);
+            const countryCell = newRow.insertCell(2);
+
+            nameCell.innerHTML = rowData[0];
+            ageCell.innerHTML = rowData[1];
+            countryCell.innerHTML = rowData[2];
+        }
+
+        function renderData() {
+            const table = document.getElementById("myTable");
+            allData.forEach(item => {
+                addRow(item[0], table);
+            });
+        }
+
+    </script> -->
+</body>
+
+</html>
+      `,
+      fileName: `PDF_${Math.floor(Math.random() * 10000)}`,
+      base64: true,
+    });
+
+    await RNPrint.print({ filePath: results.filePath });
+  };
   const OnShowTables = () => {
     setLoading(true);
     var myHeaders = new Headers();
@@ -94,7 +197,7 @@ const FullTable = ({ navigation, route }) => {
       elat: 45,
       elong: 45,
     });
-
+    console.log("RAWW ==>", raw);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -177,13 +280,18 @@ const FullTable = ({ navigation, route }) => {
         //   tableData: data,
         // });
       })
-      .catch((error) =>{console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+        Toast.show("Network Error, Please Try again");
+      });
   };
 
   useEffect(() => {
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
     } else {
+      console.log("ELSE IS TRIGGERED IN USEEFFECT ==>");
       OnShowTables();
     }
   }, [year, pageNumber, demand, demandNumber, Qnumber, Mnumber]);
@@ -347,13 +455,16 @@ const FullTable = ({ navigation, route }) => {
           <View style={{ marginLeft: scale(10), marginRight: scale(70) }}>
             <View style={GlobalStyle.Row}>
               {Exports?.map((item, index) => {
+                const onPress = item.value == "PDF" ? () => printPDF() : null;
                 return (
-                  <View
-                    style={{ flexDirection: "row", alignItems: "flex-end" }}
-                  >
-                    <Image source={item.source} style={styles.Image} />
-                    <Text style={styles.Export}>Export as {item.value}</Text>
-                  </View>
+                  <TouchableOpacity onPress={onPress}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "flex-end" }}
+                    >
+                      <Image source={item.source} style={styles.Image} />
+                      <Text style={styles.Export}>Export as {item.value}</Text>
+                    </View>
+                  </TouchableOpacity>
                 );
               })}
             </View>
@@ -368,13 +479,14 @@ const FullTable = ({ navigation, route }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
               navigation.navigate("filter", {
                 radius: radius,
                 address: address,
                 location: location,
-              })
-            }
+                setMethod: setData,
+              });
+            }}
             style={{
               height: demand == "M" ? scale(150) : scale(100),
               width: "20%",
@@ -396,10 +508,10 @@ const FullTable = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              console.log("HELLOOOO");
               setDemand("Y");
-              setDisplayedDemand("Q")
+              setDisplayedDemand("Q");
               setPageNumber(1);
-              
             }}
             style={{
               height: demand == "M" ? scale(150) : scale(100),
@@ -476,7 +588,7 @@ const FullTable = ({ navigation, route }) => {
                   {
                     height: scale(50),
                     width: "100%",
-                    backgroundColor:  "#339CCC",
+                    backgroundColor: "#339CCC",
                     //   justifyContent: "space-between",
                     //   paddingHorizontal: moderateScale(20),
                   },
@@ -518,7 +630,7 @@ const FullTable = ({ navigation, route }) => {
                 {
                   height: scale(50),
                   width: "100%",
-                  backgroundColor: demand == "M" ? Colors.Main:"#339CCC",
+                  backgroundColor: demand == "M" ? Colors.Main : "#339CCC",
                   //   justifyContent: "space-between",
                   //   paddingHorizontal: moderateScale(20),
                 },
@@ -560,7 +672,7 @@ const FullTable = ({ navigation, route }) => {
             {
               height: scale(50),
               width: "100%",
-              backgroundColor: demand == "M" ? "#339CCC":Colors.Main,
+              backgroundColor: demand == "M" ? "#339CCC" : Colors.Main,
               //   justifyContent: "space-between",
               //   paddingHorizontal: moderateScale(20),
             },
@@ -588,40 +700,41 @@ const FullTable = ({ navigation, route }) => {
         {!loading ? (
           <>
             <Table>
-                {/*  borderStyle={styles.borderStyle}> */}
-                <Row
-                  data={tableHead}
-                  widthArr={widthArr.slice(0, tableHead.length)}
-                  style={[styles.header,{   backgroundColor: demand == "M" ? Colors.Main:"#339CCC",}]}
-                  textStyle={[styles.text, { color: Colors.White }]}
-                />
-              </Table>
-          <ScrollView  showsVerticalScrollIndicator={false}>
-            <View>
-            
-
-              <ScrollView style={styles.dataWrapper}>
-                <Table borderStyle={styles.borderStyle}>
-                  {data[number].map((rowData, index) => {
-                    return (
-                      <Row
-                        key={index}
-                        data={rowData}
-                        widthArr={widthArr.slice(0, tableHead.length)}
-                        style={[
-                          styles.row,
-                          index % 2 == 0
-                            ? { backgroundColor: Colors.White }
-                            : null,
-                        ]}
-                        textStyle={styles.text}
-                      />
-                    );
-                  })}
-                </Table>
-              </ScrollView>
-            </View>
-          </ScrollView>
+              {/*  borderStyle={styles.borderStyle}> */}
+              <Row
+                data={tableHead}
+                widthArr={widthArr.slice(0, tableHead.length)}
+                style={[
+                  styles.header,
+                  { backgroundColor: demand == "M" ? Colors.Main : "#339CCC" },
+                ]}
+                textStyle={[styles.text, { color: Colors.White }]}
+              />
+            </Table>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View>
+                <ScrollView style={styles.dataWrapper}>
+                  <Table borderStyle={styles.borderStyle}>
+                    {data[number].map((rowData, index) => {
+                      return (
+                        <Row
+                          key={index}
+                          data={rowData}
+                          widthArr={widthArr.slice(0, tableHead.length)}
+                          style={[
+                            styles.row,
+                            index % 2 == 0
+                              ? { backgroundColor: Colors.White }
+                              : null,
+                          ]}
+                          textStyle={styles.text}
+                        />
+                      );
+                    })}
+                  </Table>
+                </ScrollView>
+              </View>
+            </ScrollView>
           </>
         ) : (
           <View

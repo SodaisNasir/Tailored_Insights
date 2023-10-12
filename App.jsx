@@ -39,8 +39,8 @@ const dispatch = useDispatch();
         <>
           {SignIn == null ? (
             <AuthNavigator />
-          ) : // && SignIn?.id?.slice(-2) != "00"
-          SignIn != null ? (
+          ) : // 
+          SignIn != null && SignIn?.id?.slice(-2) != "00"  ? (
             <UserNavigator />
           ) : (
             <AdminNavigator />

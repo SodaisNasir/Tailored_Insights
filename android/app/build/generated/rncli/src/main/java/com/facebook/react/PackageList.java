@@ -35,6 +35,8 @@ import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.rnmaps.maps.MapsPackage;
 // react-native-orientation-locker
 import org.wonday.orientation.OrientationPackage;
+// react-native-print
+import com.christopherdro.RNPrint.RNPrintPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
@@ -98,6 +100,7 @@ public class PackageList {
       new RNLocationPackage(),
       new MapsPackage(),
       new OrientationPackage(),
+      new RNPrintPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new VectorIconsPackage()

@@ -86,14 +86,14 @@ export const WhatAreYou = [
 ];
 
 export const Money = [
-  { title: "Trail", id: 1 },
-  { title: "Paid", id: 2 },
-  { title: "Close", id: 3 },
+  { title: "Trail", id: 1 ,value:'T'},
+  { title: "Paid", id: 2 ,value:'P'},
+  { title: "Close", id: 3 ,value:'C'},
 ];
 
 export const Access = [
-  { title: "Full", id: 1 },
-  { title: "Partial", id: 2 },
+  { title: "Full", id: 1, value:"Y" },
+  { title: "Partial", id: 2, value:"N" },
 ];
 
 export const Exports = [
