@@ -35,6 +35,7 @@
 			</dict>
 		</dict>
 	</dict>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
@@ -42,6 +43,33 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fonts/AntDesign.ttf</string>
+		<string>fonts/Entypo.ttf</string>
+		<string>fonts/EvilIcons.ttf</string>
+		<string>fonts/Feather.ttf</string>
+		<string>fonts/FontAwesome.ttf</string>
+		<string>fonts/FontAwesome5_Brands.ttf</string>
+		<string>fonts/FontAwesome5_Regular.ttf</string>
+		<string>fonts/FontAwesome5_Solid.ttf</string>
+		<string>fonts/Fontisto.ttf</string>
+		<string>fonts/Foundation.ttf</string>
+		<string>fonts/Ionicons.ttf</string>
+		<string>fonts/MaterialIcons.ttf</string>
+		<string>fonts/MaterialCommunityIcons.ttf</string>
+		<string>fonts/Zocial.ttf</string>
+		<string>fonts/Inter-Black.ttf</string>
+		<string>fonts/Inter-Bold.ttf</string>
+		<string>fonts/Inter-ExtraBold.ttf</string>
+		<string>fonts/Inter-ExtraLight.ttf</string>
+		<string>fonts/Inter-Light.ttf</string>
+		<string>fonts/Inter-Medium.ttf</string>
+		<string>fonts/Inter-Regular.ttf</string>
+		<string>fonts/Inter-SemiBold.ttf</string>
+		<string>fonts/Inter-Thin.ttf</string>
+		
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

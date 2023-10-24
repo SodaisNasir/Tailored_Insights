@@ -54,6 +54,8 @@ const Filter = ({ navigation, route }) => {
   const [type, setType] = useState("");
   const [subFilter, setSubFilter] = useState(null);
   const [filter, setFilter] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const [startDate, setStartDate] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [modalState, updatemodalState] = useState(false);
@@ -67,168 +69,16 @@ const Filter = ({ navigation, route }) => {
   const user = useSelector((state) => state.userData);
   const Products = useSelector((state) => state.ProductsData);
 
-  const Static = [
-    {
-      lable: 10655,
-      value: "10655-SOFTCARE COMPUTER CONSULTING",
-    },
-    {
-      lable: 10655,
-      value: "13348-SOFTCARE COMPUTER CONSULTING",
-    },
-    {
-      lable: 10660,
-      value: "10660-METRO K9 ACADEMY LLC",
-    },
-    {
-      lable: 10664,
-      value: "10664-NATURAL TAIL TREATS LLC",
-    },
-    {
-      lable: 10664,
-      value: "13356-NATURAL TAIL TREATS LLC",
-    },
-    {
-      lable: 10667,
-      value: "10667-FUSSY FRIENDS PET SUPPLY",
-    },
-    {
-      lable: 10667,
-      value: "13357-FUSSY FRIENDS PET SUPPLY",
-    },
-    {
-      lable: 10671,
-      value: "10671-The Grooming Shoppe  Inc dba the Petcare Market",
-    },
-    {
-      lable: 10671,
-      value: "18408-The Petcare  Market",
-    },
-    {
-      lable: 10675,
-      value: "10675-WOOF GANG BAKERY & GROOMING",
-    },
-    {
-      lable: 10676,
-      value: "10676-WHOLISTIC PAWS-RIDGEWOOD",
-    },
-    {
-      lable: 10676,
-      value: "13360-WHOLISTIC PAWS",
-    },
-    {
-      lable: 10676,
-      value: "13361-WHOLISTIC PAWS",
-    },
-    {
-      lable: 10676,
-      value: "18399-Wholistic Ridgewood ship to Ramsey",
-    },
-    {
-      lable: 10679,
-      value: "10679-DONNA S PET DEPOT",
-    },
-    {
-      lable: 10681,
-      value: "10681-BLACKINN",
-    },
-    {
-      lable: 10682,
-      value: "13362-SHAMPOOCHIES",
-    },
-    {
-      lable: 10683,
-      value: "10683-MAMA S & PAPA S",
-    },
-    {
-      lable: 10687,
-      value: "10687-PET SUPPLIES PLUS #4006",
-    },
-    {
-      lable: 10692,
-      value: "10692-WESTWOOD PETS UNLIMITED",
-    },
-    {
-      lable: 10692,
-      value: "19586-WESTWOOD PETS UNLIMITED",
-    },
-    {
-      lable: 10694,
-      value: "10694-Pet Goods",
-    },
-    {
-      lable: 10694,
-      value: "13363-PET GOODS-SUCCASUNNA",
-    },
-    {
-      lable: 10694,
-      value: "19626-Pet Goods 2 Roxbury",
-    },
-    {
-      lable: 10702,
-      value: "10702-Plaza Pet World, Inc.",
-    },
-    {
-      lable: 10702,
-      value: "18065-Plaza Pet World, Inc.",
-    },
-    {
-      lable: 10708,
-      value: "10708-MOYSESTRA ENTERPRISES, INC.",
-    },
-    {
-      lable: 10708,
-      value: "13370-PET SUPPLIES PLUS #4003",
-    },
-    {
-      lable: 10709,
-      value: "10709-PAWS TO LOVE ADOPTIONS,INC.",
-    },
-    {
-      lable: 10710,
-      value: "10710-AMY S ROYAL TREATMENT",
-    },
-    {
-      lable: 10711,
-      value: "10711-Hound About Town (McWilliams)",
-    },
-    {
-      lable: 10715,
-      value: "10715-ONE OF THE FAMILY PETS SUPPLY",
-    },
-    {
-      lable: 10715,
-      value: "17504-ONE OF THE FAMILY PETS SUPPLY",
-    },
-    {
-      lable: 10716,
-      value: "10716-WHOLISTIC PAWS-RAMSEY",
-    },
-    {
-      lable: 10718,
-      value: "10718-THE BIG BAD WOOF TAKOMA",
-    },
-    {
-      lable: 10718,
-      value: "13373-METROPOLITAN POLICE DEPT.",
-    },
-    {
-      lable: 10719,
-      value: "10719-CHIEN DE LUXE",
-    },
-    {
-      lable: 10728,
-      value: "10728-LITTLE RASCALS DOGGIE DAY CARE",
-    },
-    {
-      label: 10728,
-      value: "13375-LITTLE RASCALS DOGGIE",
-    },
-    {
-      lable: 10729,
-      value: "10729-HUMANE RESCUE ALLIANCE",
-    },
-  ];
+  function getCurrentDateInYYYYMMDD() {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(currentDate.getDate()).padStart(2, "0");
+
+    setCurrentDate(`${year}-${month}-${day}`);
+    setStartDate(`${year - 1}-${month}-${day}`);
+  }
 
   const handleAdd = () => {
     setYear(year + 1);
@@ -531,9 +381,9 @@ const Filter = ({ navigation, route }) => {
       });
   };
 
-  // useEffect(()=>{
-  //   console.log("EFFECT DATA ==>",data);
-  //     },[data,setData])
+  useEffect(()=>{
+    getCurrentDateInYYYYMMDD()
+      },[])
   const [tableHead, setTableHead] = useState([
     // "Back",
     // "QTY",
@@ -775,14 +625,11 @@ const Filter = ({ navigation, route }) => {
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-12-31",
-      startDate: "2023-01-01",
-      // radius: radius.value,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
-      // elat: location.latitude,
-      // elong: location.longitude,
+      enddate: currentDate,
+      startDate: startDate,
+      radius: radius,
+      elat: location.latitude,
+      elong: location.longitude,
     });
 
     var requestOptions = {
@@ -818,14 +665,11 @@ const Filter = ({ navigation, route }) => {
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      enddate: "2023-12-31",
-      startDate: "2023-01-01",
-      // radius: radius.value,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
-      // elat: location.latitude,
-      // elong: location.longitude,
+      enddate: currentDate,
+      startDate: startDate,
+      radius: radius,
+      elat: location.latitude,
+      elong: location.longitude,
     });
 
     var requestOptions = {
@@ -1136,85 +980,82 @@ const Filter = ({ navigation, route }) => {
         "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
       );
       let rawData = {};
-      console.log("type====>", type,filter== "SKU");
       if (filter == "Customer Type") {
         rawData = {
           customertypelo: subFilter.key,
           customertypehi: subFilter.key,
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
+          elat: location.latitude,
+          elong: location.longitude,
         };
       } else if (filter == "Outlet") {
         rawData = {
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
-          outletlo: subFilter.key,
-          outlethi: subFilter.key,
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
+          elat: location.latitude,
+          elong: location.longitude,
         };
       } else if (filter == "Family") {
         rawData = {
           familylo: subFilter.key,
           familyhi: subFilter.key,
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
+          elat: location.latitude,
+          elong: location.longitude,
         };
       } else if (filter == "Category") {
         rawData = {
           categorylo: subFilter.key,
           categoryhi: subFilter.key,
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
+          elat: location.latitude,
+          elong: location.longitude,
         };
       } else if (filter == "Vendor") {
         rawData = {
           vendorlo: subFilter.key,
           vendorhi: subFilter.key,
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
+          elat: location.latitude,
+          elong: location.longitude,
         };
       } else if (filter == "SKU") {
         rawData = {
           listType: type,
-          enddate: "2023-11-19",
-          startDate: "2022-11-19",
+          enddate: currentDate,
+          startDate: startDate,
+          radius: radius,
+          elat: location.latitude,
+          elong: location.longitude,
           demandingPage: "Y",
-          radius: 5000,
-          elat: 45,
-          elong: 45,
           skulo: subFilter.key,
           skuhi: subFilter.key,
         };
       } else {
         alert("customer parameters ant not avaliable in api");
       }
-console.log("==========");
-console.log("==========>",rawData);
-console.log("==========");
+      console.log("==========");
+      console.log("==========>", rawData);
+      console.log("==========");
       var requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -1248,6 +1089,7 @@ console.log("==========");
               location: location,
               tableData: [q1Array, q2Array, q3Array, q4Array],
               listType: type,
+              recordLength: result.totalRecord,
             });
           } else {
             Toast.show("No data found");

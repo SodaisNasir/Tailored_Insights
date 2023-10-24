@@ -23,6 +23,8 @@ import com.airbnb.android.react.lottie.LottiePackage;
 import com.reactnativedocumentpicker.RNDocumentPickerPackage;
 // react-native-fast-image
 import com.dylanvann.fastimage.FastImageViewPackage;
+// react-native-fs
+import com.rnfs.RNFSPackage;
 // react-native-html-to-pdf
 import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
 // react-native-image-picker
@@ -35,6 +37,8 @@ import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.rnmaps.maps.MapsPackage;
 // react-native-orientation-locker
 import org.wonday.orientation.OrientationPackage;
+// react-native-permissions
+import com.zoontek.rnpermissions.RNPermissionsPackage;
 // react-native-print
 import com.christopherdro.RNPrint.RNPrintPackage;
 // react-native-safe-area-context
@@ -94,12 +98,14 @@ public class PackageList {
       new LottiePackage(),
       new RNDocumentPickerPackage(),
       new FastImageViewPackage(),
+      new RNFSPackage(),
       new RNHTMLtoPDFPackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
       new RNLocationPackage(),
       new MapsPackage(),
       new OrientationPackage(),
+      new RNPermissionsPackage(),
       new RNPrintPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),

@@ -9,6 +9,8 @@ import {
   Text,
   Image,
   ActivityIndicator,
+  Alert,
+  Platform,
 } from "react-native";
 import { Table, Row, Col, TableWrapper } from "react-native-table-component";
 import { GlobalStyle } from "../../Constants/GlobalStyle";
@@ -31,26 +33,105 @@ import Loading from "../../components/Modal/Loading";
 import { BaseUrl } from "../../utils/url";
 import RNHTMLtoPDF from "react-native-html-to-pdf";
 import RNPrint from "react-native-print";
+import { PERMISSIONS, RESULTS, request } from "react-native-permissions";
+
+import {
+  writeFile,
+  DownloadDirectoryPath,
+  DocumentDirectoryPath,
+} from "react-native-fs";
+import XLSX from "xlsx";
 
 const FullTable = ({ navigation, route }) => {
-  const { radius, address, location, tableData, listType } = route.params;
-  const [year, setYear] = useState(2023);
+  const CD = new Date();
+  const { radius, address, location, tableData, listType, recordLength } =
+    route.params;
+  const [year, setYear] = useState(CD.getFullYear());
+  let maxPages = Math.round(recordLength / 10);
   const [number, setNumber] = useState(0);
   const [Qnumber, setQnumber] = useState(1);
   const [Mnumber, setMnumber] = useState(1);
   const [Wnumber, setWnumber] = useState(1);
-
   const [pageNumber, setPageNumber] = useState(1);
   const [demandNumber, setDemandNumber] = useState(0);
   const [data, setData] = useState(tableData);
   const [loading, setLoading] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
   const [tableHead, setTableHead] = useState(["Products", "Quantity", "Sales"]);
   const [demand, setDemand] = useState("Y");
   const [displayedDemand, setDisplayedDemand] = useState("Q");
   const firstRenderRef = useRef(true);
-  console.log("YYAZAAO ==>", data[0].length);
-  console.log("==========");
+  const [currentDate, setCurrentDate] = useState("");
+  const [startDate, setStartDate] = useState("");
+
+  const requestStoragePermission = async () => {
+    let permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE; // Default permission for Android
+
+    if (Platform.OS === "ios") {
+      permission = PERMISSIONS.IOS.PHOTO_LIBRARY; // Use the appropriate permission for iOS
+    }
+
+    try {
+      const result = await request(permission);
+      console.log("result", result);
+      if (result == RESULTS.GRANTED) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const ExportData = (data) => {
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+    const wabout = XLSX.write(wb, { type: "binary", bookType: "xlsx" });
+    let rd = Math.random() * 100;
+
+    console.log(
+      "DownloadDirectory ==>",
+      DownloadDirectoryPath,
+      "DocumentDirectoryPath ===>",
+      DocumentDirectoryPath
+    );
+    const path =
+      Platform.OS == "android"
+        ? `${DownloadDirectoryPath}/file${rd.toFixed(0)}.csv`
+        : `${DocumentDirectoryPath}/file${rd.toFixed(0)}.xlsx`;
+    writeFile(path, wabout, "ascii")
+      .then((result) => {
+        console.log("HEHHEEHEHHE", result);
+        alert(`Successfully exported CSV file`);
+      })
+      .catch((error) => {
+        console.log("ERROR ===>", error);
+        alert("Something went wrong please try again");
+      });
+  };
+  const createCSV = async () => {
+    const permission = await requestStoragePermission();
+    console.log("permission", permission);
+    if (permission) {
+      const jsonArray = data.map(
+        (element) =>
+          element.map((item) => {
+            return {
+              Product: item[0],
+              Quantity: item[1],
+              Sales: item[2],
+            };
+          })
+        // .join();
+      );
+      ExportData(jsonArray.flat());
+    } else {
+      alert("Cant not create CSV file without  Storage Permission");
+    }
+  };
   const printPDF = async () => {
+    setLoadingPdf(true);
     const results = await RNHTMLtoPDF.convert({
       html: `
       <!DOCTYPE html>
@@ -92,14 +173,16 @@ const FullTable = ({ navigation, route }) => {
         <tbody>
             <!-- Rows will be added here -->
             ${data.map((element) =>
-              element.map((item, index) => {
-                return `<tr>
+              element
+                .map((item, index) => {
+                  return `<tr>
 <td>${item[0]}</td>
 <td>${item[1]}</td>
 <td>${item[2]}</td>
 </tr>
 `;
-              }).join("")
+                })
+                .join("")
             )}
         </tbody>
     </table>
@@ -149,27 +232,16 @@ const FullTable = ({ navigation, route }) => {
     });
 
     await RNPrint.print({ filePath: results.filePath });
+    setLoadingPdf(false);
   };
   const OnShowTables = () => {
+    const startD = currentDate.split("-");
     setLoading(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append(
       "Cookie",
       "ARRAffinity=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1; ARRAffinitySameSite=2f04080791214b9cd44673d14595786928ab2c0b432cd4549ad24da8c30a08e1"
-    );
-    console.log(
-      "DEMAND IN SHOW TABLE",
-      "demand",
-      demand,
-      "year",
-      year,
-      "pageNumber",
-      pageNumber,
-      "listType",
-      listType,
-      "Qnumber",
-      Qnumber
     );
     var raw = JSON.stringify({
       listType: listType,
@@ -185,19 +257,20 @@ const FullTable = ({ navigation, route }) => {
       vendorhi: 0,
       skulo: 0,
       skuhi: 0,
-      enddate: "2023-11-19",
-      startDate: `${year - 1}-11-19`,
+      enddate: `${year}-${startD[1]}-${startD[2]}`,
+      startDate: `${year - 1}-${startD[1]}-${startD[2]}`,
       demandingPage: demand,
       neededQ: Qnumber,
       neededM: Mnumber,
       neededW: 0,
       pageNumber: pageNumber,
-      pageSize: 100,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
+      pageSize: 10,
+      radius: radius,
+      elat: location.latitude,
+      elong: location.longitude,
     });
-    console.log("RAWW ==>", raw);
+
+    console.log("HIS IS MY RAW ==>", raw);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -230,6 +303,7 @@ const FullTable = ({ navigation, route }) => {
           const q6Array = [];
           const q7Array = [];
           const q8Array = [];
+          maxPages = Math.round(result.totalRecord / 10);
           if (demand == "Q") {
             for (const item of result.responseContent) {
               q1Array.push([item.product, item.qty, `$${item.m1}`]);
@@ -269,6 +343,7 @@ const FullTable = ({ navigation, route }) => {
           }
         } else {
           Toast.show("No data found");
+          setData(null);
           setLoading(false);
         }
 
@@ -287,9 +362,22 @@ const FullTable = ({ navigation, route }) => {
       });
   };
 
+  function getCurrentDateInYYYYMMDD() {
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    // setYear(year);
+    setCurrentDate(`${year}-${month}-${day}`);
+    setStartDate(`${year - 1}-${month}-${day}`);
+  }
+
   useEffect(() => {
+    console.log("firstRenderRef.current", firstRenderRef.current);
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
+      getCurrentDateInYYYYMMDD();
     } else {
       console.log("ELSE IS TRIGGERED IN USEEFFECT ==>");
       OnShowTables();
@@ -331,7 +419,11 @@ const FullTable = ({ navigation, route }) => {
   };
 
   const handleAdd = () => {
-    setYear(year + 1);
+    const currentDate = new Date();
+    const yearz = currentDate.getFullYear();
+    if (yearz > year) {
+      setYear(year + 1);
+    }
   };
   const handleMinus = () => {
     setYear(year - 1);
@@ -383,8 +475,10 @@ const FullTable = ({ navigation, route }) => {
   };
 
   const increasePage = () => {
-    setPageNumber(pageNumber + 1);
-    setNumber(0);
+    if (pageNumber != maxPages) {
+      setPageNumber(pageNumber + 1);
+      setNumber(0);
+    }
   };
 
   const decreasePage = () => {
@@ -455,7 +549,8 @@ const FullTable = ({ navigation, route }) => {
           <View style={{ marginLeft: scale(10), marginRight: scale(70) }}>
             <View style={GlobalStyle.Row}>
               {Exports?.map((item, index) => {
-                const onPress = item.value == "PDF" ? () => printPDF() : null;
+                const onPress =
+                  item.value == "PDF" ? () => printPDF() : () => createCSV();
                 return (
                   <TouchableOpacity onPress={onPress}>
                     <View
@@ -698,44 +793,48 @@ const FullTable = ({ navigation, route }) => {
         </View>
 
         {!loading ? (
-          <>
-            <Table>
-              {/*  borderStyle={styles.borderStyle}> */}
-              <Row
-                data={tableHead}
-                widthArr={widthArr.slice(0, tableHead.length)}
-                style={[
-                  styles.header,
-                  { backgroundColor: demand == "M" ? Colors.Main : "#339CCC" },
-                ]}
-                textStyle={[styles.text, { color: Colors.White }]}
-              />
-            </Table>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View>
-                <ScrollView style={styles.dataWrapper}>
-                  <Table borderStyle={styles.borderStyle}>
-                    {data[number].map((rowData, index) => {
-                      return (
-                        <Row
-                          key={index}
-                          data={rowData}
-                          widthArr={widthArr.slice(0, tableHead.length)}
-                          style={[
-                            styles.row,
-                            index % 2 == 0
-                              ? { backgroundColor: Colors.White }
-                              : null,
-                          ]}
-                          textStyle={styles.text}
-                        />
-                      );
-                    })}
-                  </Table>
-                </ScrollView>
-              </View>
-            </ScrollView>
-          </>
+          data != null && (
+            <>
+              <Table>
+                {/*  borderStyle={styles.borderStyle}> */}
+                <Row
+                  data={tableHead}
+                  widthArr={widthArr.slice(0, tableHead.length)}
+                  style={[
+                    styles.header,
+                    {
+                      backgroundColor: demand == "M" ? Colors.Main : "#339CCC",
+                    },
+                  ]}
+                  textStyle={[styles.text, { color: Colors.White }]}
+                />
+              </Table>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View>
+                  <ScrollView style={styles.dataWrapper}>
+                    <Table borderStyle={styles.borderStyle}>
+                      {data[number].map((rowData, index) => {
+                        return (
+                          <Row
+                            key={index}
+                            data={rowData}
+                            widthArr={widthArr.slice(0, tableHead.length)}
+                            style={[
+                              styles.row,
+                              index % 2 == 0
+                                ? { backgroundColor: Colors.White }
+                                : null,
+                            ]}
+                            textStyle={styles.text}
+                          />
+                        );
+                      })}
+                    </Table>
+                  </ScrollView>
+                </View>
+              </ScrollView>
+            </>
+          )
         ) : (
           <View
             style={{
@@ -748,33 +847,10 @@ const FullTable = ({ navigation, route }) => {
         )}
       </View>
       <ConnectionModal />
-      {/* <Loading isVisible={loading} /> */}
+      <Loading isVisible={loadingPdf} />
     </SafeAreaView>
   );
 };
-
-// (
-//   <ScrollView style={styles.dataWrapper}>
-//     <Table borderStyle={styles.borderStyle}>
-//       {data[demandNumber].map((rowData, index) => {
-//         return (
-//           <Row
-//             key={index}
-//             data={rowData}
-//             widthArr={widthArr.slice(0, tableHead.length)}
-//             style={[
-//               styles.row,
-//               index % 2 == 0
-//                 ? { backgroundColor: Colors.White }
-//                 : null,
-//             ]}
-//             textStyle={styles.text}
-//           />
-//         );
-//       })}
-//     </Table>
-//   </ScrollView>
-// )
 const styles = StyleSheet.create({
   header: {
     height: verticalScale(50),

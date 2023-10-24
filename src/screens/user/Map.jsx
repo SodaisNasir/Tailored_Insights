@@ -53,10 +53,12 @@ const Map = ({ navigation }) => {
     },
   });
   const [location, setLocation] = useState(null);
-  const [radius, setRadius] = useState(300);
+  const [radius, setRadius] = useState({value:30});
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userData);
+  const [currentDate, setCurrentDate] = useState("");
+  const [startDate, setStartDate] = useState("");
   const [data, setData] = useState([]);
 
   const [tableHead, setTableHead] = useState([]);
@@ -92,11 +94,11 @@ const Map = ({ navigation }) => {
         customeridhi: 20000,
         vendoridlo: 0,
         vendoridhi: 20000,
-        enddate: "2023-08-1",
-        startDate: "2023-07-1",
-        radius: 5000,
-        elat: 45,
-        elong: 45,
+        enddate: currentDate,
+        startDate: startDate,
+        radius: radius.value,
+        elat: location.latitude,
+        elong: location.longitude,
       });
 
       var requestOptions = {
@@ -135,18 +137,41 @@ const Map = ({ navigation }) => {
     }
   };
 
+  function getCurrentDateInYYYYMMDD() {
+    const currentDate = new Date();
+  
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(currentDate.getDate()).padStart(2, '0');
+  
+   setCurrentDate(`${year}-${month}-${day}`);
+   setStartDate(`${year-1}-${month}-${day}`);
+  }
+
   useEffect(() => {
+    RNLocation.configure({
+      
+    })
     RNLocation.getLatestLocation().then(async (latestLocation) => {
       console.log("====================================");
       console.log("latestLocation", latestLocation);
       console.log("====================================");
+      await AsyncStorage.setItem(
+        "location",
+        JSON.stringify({
+          latitude: latestLocation.latitude,
+          longitude: latestLocation.longitude,
+        })
+      );
       setLocation({
         latitude: latestLocation.latitude,
         longitude: latestLocation.longitude,
       });
       fetchProductsData();
       fetchAddress(latestLocation);
+      
     });
+    getCurrentDateInYYYYMMDD()
   }, []);
   // useFocusEffect(
   //   useCallback(() => {
@@ -156,12 +181,13 @@ const Map = ({ navigation }) => {
   // );
 
   const onChangeRadius = async (radius) => {
+
     try {
       let base_url = `${BaseUrl}mapping/invoice-outlet-location`;
 
       const data = await AsyncStorage.getItem("user_details");
       const userData = JSON.parse(data);
-      console.log("radius ==>", radius);
+     
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -182,41 +208,16 @@ const Map = ({ navigation }) => {
         default:
           break;
       }
-      // {
-      //   "customeridlo": 0,
-      //   "customeridhi": 20000,
-      //   "vendoridlo": 0,
-      //   "vendoridhi": 20000,
-      //   "enddate": "2023-11-19",
-      //   "startDate": "2023-11-19",
-      //   "radius": 5000,
-      //   "elat": 45,
-      //   "elong": 45
-      // }
-
-      // {
-      //   customeridlo: customeridlo,
-      //   customeridhi: customeridhi,
-      //   vendoridlo: vendoridlo,
-      //   vendoridhi: vendoridhi,
-      //   radius: radius,
-      //   // elat: location.latitude,
-      //   // elong: location.longitude,
-      //   elat: 45,
-      //   elong: 45,
-      //   enddate: "2023-11-19",
-      //   startDate: "2023-11-19",
-      // }
       var raw = JSON.stringify({
         customeridlo: 0,
         customeridhi: 20000,
         vendoridlo: 0,
         vendoridhi: 20000,
-        enddate: "2023-11-19",
-        startDate: "2023-11-19",
-        radius: 5000,
-        elat: 45,
-        elong: 45,
+        enddate: currentDate,
+        startDate: startDate,
+        radius: radius.value,
+        elat: location.latitude,
+        elong: location.longitude,
       });
 
       var requestOptions = {
@@ -263,41 +264,26 @@ const Map = ({ navigation }) => {
         listType = "Outlet";
       } else {
         listType = "Category";
-        
       }
     } else if (user.type == "C") {
       listType = "Outlet";
     } else if (user.type == "Z") {
       listType = "CustomerType";
     }
-    console.log("listType ==>",listType);
     var raw = JSON.stringify({
       listType: listType,
-      customertypelo: 0,
-      customertypehi: 0,
-      outletlo: 0,
-      outlethi: 0,
-      familylo: 0,
-      familyhi: 0,
-      categorylo: 0,
-      categoryhi: 0,
-      vendorlo: 0,
-      vendorhi: 0,
-      skulo: 0,
-      skuhi: 0,
-      enddate: "2023-11-19",
-      startDate: "2022-11-19",
+      enddate: currentDate,
+        startDate: startDate,
       demandingPage: "Y",
-      neededQ: 0,
-      neededM: 0,
-      neededW: 0,
       pageNumber: 1,
-      pageSize: 100,
-      radius: 5000,
-      elat: 45,
-      elong: 45,
+      pageSize: 10,
+      radius: radius.value,
+      elat: location.latitude,
+      elong: location.longitude,
     });
 
+
+    console.log("HIS IS MY RAW ==>", raw);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -318,10 +304,10 @@ const Map = ({ navigation }) => {
           const q4Array = [];
           let arr = [];
           for (const item of result.responseContent) {
-            q1Array.push([item.product, item.qty,`$${item.q1}`, ]);
-            q2Array.push([item.product, item.qty,`$${item.q2}`, ]);
-            q3Array.push([item.product, item.qty,`$${item.q3}`,]);
-            q4Array.push([item.product, item.qty,`$${item.q4}`,]);
+            q1Array.push([item.product, item.qty, `$${item.q1}`]);
+            q2Array.push([item.product, item.qty, `$${item.q2}`]);
+            q3Array.push([item.product, item.qty, `$${item.q3}`]);
+            q4Array.push([item.product, item.qty, `$${item.q4}`]);
           }
           // result.responseContent.forEach((item) => {
           //   let values = [];
@@ -334,18 +320,23 @@ const Map = ({ navigation }) => {
           // });
           setLoading(false);
           navigation.navigate("full_table", {
-            radius: radius,
+            radius: radius.value,
             address: address,
             location: location,
-            tableData: [q1Array,q2Array,q3Array,q4Array],
+            tableData: [q1Array, q2Array, q3Array, q4Array],
             listType: listType,
+            recordLength: result.totalRecord,
           });
         } else {
           Toast.show("No data found");
           setLoading(false);
         }
       })
-      .catch((error) => {console.log("error", error); setLoading(false);    Toast.show("Network Error, Please Try again");});
+      .catch((error) => {
+        console.log("error", error);
+        setLoading(false);
+        Toast.show("Network Error, Please Try again");
+      });
   };
 
   const LogOut = () => {
